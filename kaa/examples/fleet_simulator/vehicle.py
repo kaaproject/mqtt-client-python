@@ -51,15 +51,11 @@ class Vehicle:
 
         @self.kaa_client.command_handler("remote_toggle")
         def remote_toggle(command: Command) -> CommandResponse:
-            try:
-                for key, value in command.payload.items():
-                    payload_value = int(value)
-                    setattr(self, key, payload_value)
-                    self.log_command(key, payload_value)
-                    return CommandResponse(command, status_code=200)
-            except Exception as error:
-                logger.error(
-                    f"Invalid command payload [{error}] [{command.to_dict()}]")
+            for key, value in command.payload.items():
+                payload_value = int(value)
+                setattr(self, key, payload_value)
+                self.log_command(key, payload_value)
+            return CommandResponse(command, status_code=200)
 
         @self.kaa_client.command_handler("change_trip_status")
         def trip_status(command: Command) -> CommandResponse:
