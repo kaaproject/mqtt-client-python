@@ -1,0 +1,9 @@
+[project]
+name = "kaa-mqtt-client"
+version = "0.0.1"
+authors = [
+    {name = "Oleksandr Burdeinyi",  email="aburdeinyi@kaaiot.io"}
+]
+
+[tool.distutils.bdist_wheel]
+universal = true
