@@ -68,8 +68,10 @@ class KaaMqttClient(object):
                 logger.info(f"Received configuration: [{message.topic}] []")
                 configuration_str = message.payload.decode('utf-8')
                 configuration = Configuration(**json.loads(configuration_str))
-                configuration_response= func(configuration)
+                configuration_response = func(configuration)
                 logger.info(f"Processed configuration request: {configuration_response.to_dict()}")
+                response_topic = self.topics.get_configuration_status_reply_topic()
+                client.publish(response_topic, configuration_response.to_json())
             self.add_configuration_handler(_handle_inner)
             return _handle_inner
         return decorator

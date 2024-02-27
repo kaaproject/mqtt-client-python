@@ -27,21 +27,17 @@ class ConfigurationStatusResponse(object):
     config_id: str
     status_code: int
     reason_phrase: str
-    config: Dict[str, Any]
 
-    def __init__(self, config_id: str, status_code: int = None, reason_phrase: str = None,
-                 config: Dict[str, Any] = None):
+    def __init__(self, config_id: str, status_code: int = None, reason_phrase: str = None):
         self.config_id = config_id
         self.status_code = status_code
         self.reason_phrase = reason_phrase
-        self.config = config
 
     def to_dict(self) -> Dict[str, Any]:
         return {
             "configId": self.config_id,
             "statusCode": self.status_code,
-            "reason_phrase": self.reason_phrase,
-            "config": self.config
+            "reasonPhrase": self.reason_phrase
         }
 
     def to_json(self):

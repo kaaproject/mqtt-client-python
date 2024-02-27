@@ -13,6 +13,9 @@ class KaaClientTopicsConfig:
     def get_configuration_status_topic(self) -> str:
         return f"kp1/{self.application_version}/cmx/{self.token}/config/json/status"
 
+    def get_configuration_status_reply_topic(self) -> str:
+        return f"kp1/{self.application_version}/cmx/{self.token}/applied/json"
+
     def get_data_collection_topic(self, request_id: int = None) -> str:
         if not request_id:
             request_id = random.randint(1, 99)

@@ -27,7 +27,7 @@ class SimpleCounterClient:
         def update_config(c: Configuration) -> ConfigurationStatusResponse:
             for k, v in c.config.items():
                 self.config[k] = v
-            return ConfigurationStatusResponse(c.config_id, 200, "applied", self.config)
+            return ConfigurationStatusResponse(c.config_id, 200, "applied")
 
         @self.kaa_client.command_handler("inc")
         def increment(command: Command) -> CommandResponse:
