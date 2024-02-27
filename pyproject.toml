@@ -7,3 +7,13 @@ authors = [
 
 [tool.distutils.bdist_wheel]
 universal = true
+
+[build-system]
+requires = ["setuptools>=67.8.0", "wheel"]
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+include = ["kaa*"]
+exclude = ["examples*"]
