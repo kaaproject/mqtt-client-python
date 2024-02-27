@@ -5,7 +5,7 @@ import time
 
 from examples.fleet_simulator.config import Config
 from examples.fleet_simulator.vehicle import Vehicle
-from kaa.client.kaa_mqtt_client import KaaMqttClient
+from kaa_mqtt_cleint.kaa_mqtt_client import KaaMqttClient
 
 logger = logging.getLogger(__name__)
 

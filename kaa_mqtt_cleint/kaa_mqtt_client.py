@@ -7,9 +7,9 @@ from typing import Callable, Any
 import paho.mqtt.client as mqtt
 from paho.mqtt.client import MQTTMessage, Client as MqttClient
 
-from kaa.client.command import Command, CommandResponse, BatchCommandsResponse, apply_commands
-from kaa.client.configuration import Configuration, ConfigurationStatusResponse
-from kaa.client.mqtt_topics import KaaClientTopicsConfig
+from kaa_mqtt_cleint.command import Command, CommandResponse, apply_commands
+from kaa_mqtt_cleint.configuration import Configuration, ConfigurationResponse
+from kaa_mqtt_cleint.mqtt_topics import KaaClientTopicsConfig
 
 logger = logging.getLogger(__name__)
 
@@ -62,7 +62,7 @@ class KaaMqttClient(object):
             self.connect()
 
     def configuration_handler(self):
-        def decorator(func: Callable[[Configuration], ConfigurationStatusResponse]):
+        def decorator(func: Callable[[Configuration], ConfigurationResponse]):
             @wraps(func)
             def _handle_inner(client: MqttClient, userdata: Any, message: MQTTMessage):
                 logger.info(f"Received configuration: [{message.topic}] []")

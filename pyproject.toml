@@ -1,19 +1,13 @@
 [project]
-name = "kaa-mqtt-client"
+name = "kaa_mqtt_client"
+description = """\
+This library implement Kaa MQTT client
+"""
 version = "0.0.1"
 authors = [
     {name = "Oleksandr Burdeinyi",  email="aburdeinyi@kaaiot.io"}
 ]
 
+
 [tool.distutils.bdist_wheel]
 universal = true
-
-[build-system]
-requires = ["setuptools>=67.8.0", "wheel"]
-
-[tool.setuptools]
-include-package-data = false
-
-[tool.setuptools.packages.find]
-include = ["kaa*"]
-exclude = ["examples*"]

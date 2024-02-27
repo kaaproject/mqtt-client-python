@@ -5,9 +5,9 @@ import random
 import time
 import uuid
 
-from kaa.client.command import Command, CommandResponse
-from kaa.client.configuration import Configuration, ConfigurationStatusResponse
-from kaa.client.kaa_mqtt_client import KaaMqttClient
+from kaa_mqtt_cleint import Command, CommandResponse
+from kaa_mqtt_cleint.configuration import Configuration, ConfigurationResponse
+from kaa_mqtt_cleint.kaa_mqtt_client import KaaMqttClient
 
 logger = logging.getLogger(__name__)
 
@@ -44,10 +44,10 @@ class Vehicle:
 
     def define_handlers(self):
         @self.kaa_client.configuration_handler()
-        def update_config(c: Configuration) -> ConfigurationStatusResponse:
+        def update_config(c: Configuration) -> ConfigurationResponse:
             for k, v in c.config.items():
                 self.config[k] = v
-            return ConfigurationStatusResponse(c.config_id, 200)
+            return ConfigurationResponse(c.config_id, 200)
 
         @self.kaa_client.command_handler("remote_toggle")
         def remote_toggle(command: Command) -> CommandResponse:

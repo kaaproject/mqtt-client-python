@@ -4,9 +4,7 @@ import os
 import time
 import uuid
 
-from kaa.client.command import Command, CommandResponse
-from kaa.client.configuration import Configuration, ConfigurationStatusResponse
-from kaa.client.kaa_mqtt_client import KaaMqttClient
+from kaa_mqtt_cleint import KaaMqttClient, Command, CommandResponse, Configuration, ConfigurationResponse
 
 logger = logging.getLogger(__name__)
 
@@ -24,10 +22,10 @@ class SimpleCounterClient:
 
     def define_handlers(self):
         @self.kaa_client.configuration_handler()
-        def update_config(c: Configuration) -> ConfigurationStatusResponse:
+        def update_config(c: Configuration) -> ConfigurationResponse:
             for k, v in c.config.items():
                 self.config[k] = v
-            return ConfigurationStatusResponse(c.config_id, 200, "applied")
+            return ConfigurationResponse(c.config_id, 200, "applied")
 
         @self.kaa_client.command_handler("inc")
         def increment(command: Command) -> CommandResponse:
@@ -42,7 +40,7 @@ class SimpleCounterClient:
 
         @self.kaa_client.command_handler("fail")
         def fail(command: Command) -> CommandResponse:
-            raise Exception("Manually triggered exception to simulate client side errors")
+            raise Exception("Manually triggered exception to simulate kaa_mqtt_cleint side errors")
 
     def increment(self, inc: int = None):
         if inc is None:

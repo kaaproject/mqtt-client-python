@@ -23,7 +23,7 @@ class Configuration:
         return json.dumps(self.to_dict())
 
 
-class ConfigurationStatusResponse(object):
+class ConfigurationResponse(object):
     config_id: str
     status_code: int
     reason_phrase: str
@@ -45,9 +45,9 @@ class ConfigurationStatusResponse(object):
 
 
 def apply_configuration(configuration: Configuration,
-                        func: Callable[[Configuration], ConfigurationStatusResponse]) -> ConfigurationStatusResponse:
+                        func: Callable[[Configuration], ConfigurationResponse]) -> ConfigurationResponse:
     try:
         return func(configuration)
     except Exception as e:
         logger.error(f"Failed to apply configuration: {e}")
-        return ConfigurationStatusResponse(configuration.config_id, 500, reason_phrase=str(e))
+        return ConfigurationResponse(configuration.config_id, 500, reason_phrase=str(e))
