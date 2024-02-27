@@ -7,9 +7,9 @@ from typing import Callable, Any
 import paho.mqtt.client as mqtt
 from paho.mqtt.client import MQTTMessage, Client as MqttClient
 
-from kaa_mqtt_cleint.command import Command, CommandResponse, apply_commands
-from kaa_mqtt_cleint.configuration import Configuration, ConfigurationResponse
-from kaa_mqtt_cleint.mqtt_topics import KaaClientTopicsConfig
+from kaa_mqtt_client.command import Command, CommandResponse, apply_commands
+from kaa_mqtt_client.configuration import Configuration, ConfigurationResponse
+from kaa_mqtt_client.mqtt_topics import KaaClientTopicsConfig
 
 logger = logging.getLogger(__name__)
 

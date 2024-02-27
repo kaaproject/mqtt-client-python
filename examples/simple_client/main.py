@@ -4,7 +4,7 @@ import os
 import time
 import uuid
 
-from kaa_mqtt_cleint import KaaMqttClient, Command, CommandResponse, Configuration, ConfigurationResponse
+from kaa_mqtt_client import KaaMqttClient, Command, CommandResponse, Configuration, ConfigurationResponse
 
 logger = logging.getLogger(__name__)
 
@@ -40,7 +40,7 @@ class SimpleCounterClient:
 
         @self.kaa_client.command_handler("fail")
         def fail(command: Command) -> CommandResponse:
-            raise Exception("Manually triggered exception to simulate kaa_mqtt_cleint side errors")
+            raise Exception("Manually triggered exception to simulate kaa_mqtt_client side errors")
 
     def increment(self, inc: int = None):
         if inc is None:

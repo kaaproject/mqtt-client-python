@@ -5,9 +5,7 @@ import random
 import time
 import uuid
 
-from kaa_mqtt_cleint import Command, CommandResponse
-from kaa_mqtt_cleint.configuration import Configuration, ConfigurationResponse
-from kaa_mqtt_cleint.kaa_mqtt_client import KaaMqttClient
+from kaa_mqtt_client import Command, CommandResponse, Configuration, ConfigurationResponse, KaaMqttClient
 
 logger = logging.getLogger(__name__)
 

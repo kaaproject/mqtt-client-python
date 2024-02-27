@@ -3,9 +3,9 @@ import logging
 import threading
 import time
 
-from examples.fleet_simulator.config import Config
-from examples.fleet_simulator.vehicle import Vehicle
-from kaa_mqtt_cleint.kaa_mqtt_client import KaaMqttClient
+from config import Config
+from vehicle import Vehicle
+from kaa_mqtt_client.kaa_mqtt_client import KaaMqttClient
 
 logger = logging.getLogger(__name__)
 
