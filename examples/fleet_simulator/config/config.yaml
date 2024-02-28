@@ -1,0 +1,57 @@
+kpc_host: 'mqtt.cloud.kaaiot.com'
+kpc_port: '1883'
+
+######
+# Set your application version
+######
+application_version: ''
+update_interval: 10
+endpoints:
+  - name: "vehicle-1"
+    token: "vehicle-1-token"
+    routes_file: "route-1.json"
+    metadata:
+      name: "Vehicle 1"
+      lon: -0.0395317
+      lat: 51.5025671
+      engine: "gasoline"
+      model: "Boxster"
+      brand: "Porsche"
+      year: 2019
+      maxSpeed: 264
+      maxRange: 447
+      power: 265
+      Address: Dock Hill Ave, Rotherhithe, London SE16 6AX, United Kingdom
+      trip_active: false
+  - name: "vehicle-2"
+    token: "vehicle-2-token"
+    routes_file: "route-2.json"
+    metadata:
+      name: "Vehicle 2"
+      lon: -0.04619
+      lat: 51.50196
+      engine: "gasoline"
+      model: "C-Class"
+      brand: "Mercedes-Benz"
+      year: 2018
+      maxSpeed: 224
+      maxRange: 600
+      power: 275
+      Address: Canon Beck Rd, Rotherhithe, London SE16 6DF, UK
+      trip_active: false
+  - name: "vehicle-3"
+    token: "vehicle-3-token"
+    routes_file: "route-3.json"
+    metadata:
+      name: "Vehicle 3"
+      lon: -0.0511303
+      lat: 51.5020937
+      engine: "electric"
+      model: "Smart EQ Fortwo"
+      brand: "Mercedes-Benz"
+      year: 2019
+      maxSpeed: 130
+      maxRange: 90
+      power: 80
+      Address: 23 Clifton Pl, Rotherhithe, London SE16 7DB, UK
+      trip_active: false

@@ -1,0 +1,5 @@
+paho-mqtt~=1.5.1
+PyYAML~=6.0.1
+# mqtt-client-python
+# git+https://github.com/kaaproject/mqtt-client-python.git
+../..

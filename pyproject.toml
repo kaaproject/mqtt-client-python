@@ -1,0 +1,13 @@
+[project]
+name = "kaa_mqtt_client"
+description = """\
+This library implement Kaa MQTT client
+"""
+version = "0.0.1"
+authors = [
+    {name = "Oleksandr Burdeinyi",  email="aburdeinyi@kaaiot.io"}
+]
+
+
+[tool.distutils.bdist_wheel]
+universal = true
