@@ -1,3 +1,8 @@
 env
 build
+<<<<<<< HEAD
 kaa_mqtt_client.egg-info
+=======
+kaa_mqtt_client.egg-info
+__pycache__
+>>>>>>> 41f1c58 (AGILE-5592: added .gitignore for build files)
