@@ -9,7 +9,7 @@ This project implements the Kaaiot API to provide remote access and system scann
 To begin, install the project using the following commands:
 
 ```bash
-git clone https://github.com/ViktorKW/mqtt-client-python
+git clone -b AGILE-5592 https://github.com/vnpmgit/mqtt-client-python.git
 cd mqtt-client-python
 python3 -m venv env
 source env/bin/activate
@@ -47,7 +47,7 @@ To resolve the issue, you need to create a new application and an endpoint. The 
    ![commands](./imgs/token.png)
 4. **Get Application Version**: Open your newly created device and copy the second variable, `appVersion.name`. This will be `APPLICATION_VERSION`, the 2 out of 3 variables.
    ![commands](./imgs/app_name.png)
-5. **Get Default KPC Host**: Finally, copy `DEFAULT_KPC_HOST` from the URL of your Kaaiot console. This is the third variable.
+5. **Get Default KPC Host**: Finally, copy domain from the URL of your Kaaiot console. This is the `DEFAULT_KPC_HOST`, the third variable.
    ![KPC host picture](./imgs/kpc_host.png)
 
 ## Provisioning Your Python Script
