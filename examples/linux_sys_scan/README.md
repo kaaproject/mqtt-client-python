@@ -74,4 +74,6 @@ In your device page, navigate to the Commands section. You can execute terminal 
 {"command": "ls"}
 ```
 
+![commands](./imgs/commands.png)
+
 This is it! From this point, you should hopefully be able to execute commands and view data from your Linux system. Thank you for following this guide.
