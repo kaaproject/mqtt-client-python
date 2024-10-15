@@ -43,10 +43,10 @@ To resolve the issue, you need to create a new application and an endpoint. The 
 2. **Add a Device**: In the Devices tab, select your application from the dropdown and click "Add device". Choose a name for the device and create it.
    ![creating device picture](./imgs/add_device.png)
 
-3. **Copy the Token**: You will be greeted with a token. Copy this; it is `ENDPOINT_TOKEN`, 1 out of the 3 required variables.
-
+3. **Copy the Token**: You will be greeted with a token. Copy it. That is `ENDPOINT_TOKEN`, 1 out of the 3 required variables.
+   ![commands](./imgs/token.png)
 4. **Get Application Version**: Open your newly created device and copy the second variable, `appVersion.name`. This will be `APPLICATION_VERSION`, the 2 out of 3 variables.
-
+   ![commands](./imgs/app_name.png)
 5. **Get Default KPC Host**: Finally, copy `DEFAULT_KPC_HOST` from the URL of your Kaaiot console. This is the third variable.
    ![KPC host picture](./imgs/kpc_host.png)
 
