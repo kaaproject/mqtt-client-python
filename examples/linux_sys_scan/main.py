@@ -101,10 +101,10 @@ def run_endpoint(kpc_host, kpc_port, app_version, token, metadata, update_interv
         sys_scan_client.step()
 
 def main():
-    kaa_kpc_host = os.environ.get("DEFAULT_KPC_HOST", "mqtt.cloud.kaaiot.com")
+    kaa_kpc_host = os.environ.get("DEFAULT_KPC_HOST")
     kaa_kpc_port = int(os.environ.get("DEFAULT_KPC_PORT", '1883'))
     app_version = os.environ.get("APPLICATION_VERSION")
-    token = os.environ.get("ENDPOINT_TOKEN", "counter_token")
+    token = os.environ.get("ENDPOINT_TOKEN")
     metadata = get_machine_metadata()
 
     run_endpoint(kaa_kpc_host, kaa_kpc_port, app_version, token, metadata, 60)
