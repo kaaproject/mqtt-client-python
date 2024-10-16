@@ -7,9 +7,8 @@ import datetime
 
 from timestamp_logger import TimestampLogger
 from kaa_mqtt_client import KaaMqttClient, Command, CommandResponse, Configuration, ConfigurationResponse
-from local_system import get_machine_metadata
+from local_system import get_machine_metadata, get_system_data
 from docker_manager import DockerManager
-from system_data_sampler import SystemDataSampler
 from constants import logger
 
 class SysScanClient:
@@ -73,7 +72,7 @@ class SysScanClient:
 
     def step(self):
         logger.info("Publishing periodic metrics")
-        data_sample = SystemDataSampler.get_system_data()
+        data_sample = get_system_data()
         self.publish_data_sample(data_sample)
         time.sleep(self.update_interval)
 

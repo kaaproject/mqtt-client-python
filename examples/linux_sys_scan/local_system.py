@@ -69,6 +69,7 @@ def get_machine_metadata():
     cpu_details = cpuinfo.get_cpu_info()
     disk_info = psutil.disk_usage('/')
     memory_info = psutil.virtual_memory()
+    
     result = {
         "system": platform.system(),
         "release": platform.release(),
@@ -79,21 +80,49 @@ def get_machine_metadata():
         "cpu_model": cpu_details['brand_raw'],
         "physical_cores": psutil.cpu_count(logical=False),
         "logical_cores": psutil.cpu_count(logical=True),
-        "disk_space_gb": bytes_to_gbs(disk_info.total),
-        "memory_gb": bytes_to_gbs(memory_info.total),
+        "disk_space_gb": round(bytes_to_gbs(disk_info.total) ,2),
+        "ram_gb": round(bytes_to_gbs(memory_info.total), 2),
     }
+
+    gpu_info = get_machine_gpu_metadata()
+    if gpu_info:
+        result = {**result, **gpu_info}
 
     print(f'Result: {result}')
     return result
 
 def get_machine_gpu_metadata():
     gpu_info = get_machine_gpu()
-    if gpu_info:
+
+    gpu_name = gpu_info.get("name")
+    gpu_driver = gpu_info.get("driver")
+    gpu_memory = gpu_info.get("memory")
+
+    if gpu_driver is not None and gpu_memory is not None:
         return {
-            "gpu_name": gpu_info['name'],
-            "gpu_driver": gpu_info['driver'] if not gpu_info['is_integrated'] else None,
-            "gpu_memory_mb": gpu_info['memory'] if not gpu_info['is_integrated'] else None
+            "gpu_name": gpu_name,
+            "gpu_driver": gpu_driver,
+            "gpu_memory_mb": gpu_memory
         }
+    elif gpu_name is not None:
+        return {
+            "gpu_name": gpu_name
+        }
+    else:
+        return {
+            "gpu_name": "not found"
+        }
+
+
+def get_system_data():
     return {
-        "gpu_name": "not found"
+        "cpu_load": psutil.cpu_percent(interval=1),
+        "disk_free": psutil.disk_usage('/').free,
+        "ram_free": psutil.virtual_memory().available,
+        "bytes_sent": psutil.net_io_counters().bytes_sent,
+        "bytes_recv": psutil.net_io_counters().bytes_recv,
+        "battery_power": psutil.sensors_battery().percent,
+        "battery_plugged": psutil.sensors_battery().power_plugged,
+        **get_gpu_info(),
+        **get_cpu_temperature_info()
     }
