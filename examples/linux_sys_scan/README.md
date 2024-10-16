@@ -6,16 +6,25 @@ This project implements the Kaaiot API to provide remote access and system scann
 
 ## Installation
 
-To begin, install the project using the following commands:
+To get started with the project, follow these steps:
 
-```bash
-git clone -b AGILE-5592 https://github.com/vnpmgit/mqtt-client-python.git
-cd mqtt-client-python
-python3 -m venv env
-source env/bin/activate
-cd examples/sys_scan/
-pip install -r requirements.txt
-```
+1. Ensure Python is installed on your system:
+
+   ```bash
+   sudo apt install python3.12-venv
+   pip install setuptools
+   ```
+
+2. Install the project using the following commands:
+
+   ```bash
+   git clone -b AGILE-5592 https://github.com/vnpmgit/mqtt-client-python.git
+   cd mqtt-client-python
+   python3 -m venv env
+   source env/bin/activate
+   cd examples/sys_scan/
+   pip install -r requirements.txt
+   ```
 
 ## Launch the Project
 
@@ -61,7 +70,7 @@ export APPLICATION_VERSION="YOUR_APPLICATION_VERSION"
 export ENDPOINT_TOKEN="YOUR_ENDPOINT_TOKEN"
 ```
 
-Now you can launch the program, and hopefully, you will start receiving data.
+Now you can launch the program with `python3 main.py`, and hopefully, you will start receiving data.
 
 ## Executing Commands
 
