@@ -115,14 +115,23 @@ def get_machine_gpu_metadata():
 
 
 def get_system_data():
+    battery = psutil.sensors_battery()
+    battery_power = 0
+    battery_plugged = False
+    
+    if battery:
+        battery_power = battery.percent
+        battery_plugged = battery.power_plugged
+
     return {
         "cpu_load": psutil.cpu_percent(interval=1),
         "disk_free": psutil.disk_usage('/').free,
         "ram_free": psutil.virtual_memory().available,
         "bytes_sent": psutil.net_io_counters().bytes_sent,
         "bytes_recv": psutil.net_io_counters().bytes_recv,
-        "battery_power": psutil.sensors_battery().percent,
-        "battery_plugged": psutil.sensors_battery().power_plugged,
+        "battery_power": battery_power,
+        "battery_plugged": battery_plugged,
         **get_gpu_info(),
         **get_cpu_temperature_info()
     }
+
