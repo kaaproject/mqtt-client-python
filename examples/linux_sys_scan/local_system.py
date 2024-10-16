@@ -22,11 +22,17 @@ def get_cpu_temperature_info():
     if cpu_per_core_temp is None:
         return {}
     temp_values = [float(temp) for temp in cpu_per_core_temp.values()]
-    average_temp = sum(temp_values) / len(temp_values)
+    if temp_values:
+        average_temp = sum(temp_values) / len(temp_values)
+        return {
+            'cpu_per_core_temp': cpu_per_core_temp,
+            'cpu_average_temp': average_temp
+        }
+
     return {
-        'cpu_per_core_temp': cpu_per_core_temp,
-        'cpu_average_temp': average_temp
+        'cpu_average_temp': None
     }
+
 
 def get_cpu_temperature():
     try:
