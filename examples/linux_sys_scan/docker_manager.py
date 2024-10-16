@@ -3,29 +3,69 @@ import shlex
 import docker
 import os
 
+from timestamp_logger import TimestampLogger
 from constants import logger
 
 class DockerManager:
-    def __init__(self, log_function):
+    def __init__(self):
         self.docker_client = docker.from_env()
-        self.log_function = log_function  # Function to log timestamped messages
+        self.old_data = {}
+
 
     def pull_images(self, image_list):
         for img in image_list:
             image_name = f"{img['image']}:{img.get('tag', 'latest')}"
             command = ["docker", "pull", image_name]
             command_str = ' '.join(shlex.quote(arg) for arg in command)
+
             try:
                 result = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
                 logger.info(f"Pull result for {image_name}: {result.stdout.strip()}")
+                TimestampLogger.combine_timestamp_logs(command_str, result.stdout.strip())  # Log the error
             except subprocess.CalledProcessError as e:
                 err_msg = e.stderr.strip() or 'An unknown error occurred.'
                 logger.error(f"Failed to pull image {image_name}: {err_msg}")
-                self.log_function(command_str, err_msg)  # Log the error
+                TimestampLogger.combine_timestamp_logs(command_str, err_msg)  # Log the error
+            
+            self.old_data["images"].append(img)
+
+
+    def remove_images(self, images_list): 
+        for img in images_list:
+            image_name = img['image']
+
+            command = ["docker", "rmi", "-f", image_name]
+            command_str = ' '.join(shlex.quote(arg) for arg in command)
+            try:
+                result = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                logger.info(f"Deleting image {image_name}: {result.stdout.strip()}")
+                TimestampLogger.combine_timestamp_logs(command_str, result.stdout.strip())
+            except subprocess.CalledProcessError as e:
+                err_msg = e.stderr.strip() or 'An unknown error occurred.'
+                logger.error(f"Failed to delete image {image_name}: {err_msg}")
+                TimestampLogger.combine_timestamp_logs(command_str, err_msg)  # Log the error
+
+
+    def remove_containers(self, containers_list):
+        for cont in containers_list:
+            cont_name = cont['container_name']
+
+            command = ["docker", "rm", "-f", cont_name]
+            command_str = ' '.join(shlex.quote(arg) for arg in command)
+            try:
+                result = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                logger.info(f"Deleting container {cont_name}: {result.stdout.strip()}")
+                TimestampLogger.combine_timestamp_logs(command_str, result.stdout.strip())
+            except subprocess.CalledProcessError as e:
+                err_msg = e.stderr.strip() or 'An unknown error occurred.'
+                logger.error(f"Failed to delete container {cont_name}: {err_msg}")
+                TimestampLogger.combine_timestamp_logs(command_str, err_msg)  # Log the error
+
 
     def create_containers(self, container_list):
         for container in container_list:
             self.run_container(container)
+
 
     def run_container(self, container):
         command = ['docker', 'run', '-d', "--restart", "unless-stopped"]
@@ -39,10 +79,13 @@ class DockerManager:
 
         if result.returncode == 0:
             logger.info("Container started successfully: " + result.stdout.strip())
-            self.log_function(command_str, result.stdout.strip())  # Log success
+            TimestampLogger.combine_timestamp_logs(command_str, result.stdout.strip())  # Log success
         else:
             logger.error("Error starting container: " + result.stderr.strip())
-            self.log_function(command_str, result.stderr.strip())  # Log error
+            TimestampLogger.combine_timestamp_logs(command_str, result.stderr.strip())  # Log error
+        
+        self.old_data["containers"].append(container)
+        logger.info(f"\n\nold_data {self.old_data}\n\n")
 
     def build_container_options(self, container):
         options = []
@@ -59,3 +102,60 @@ class DockerManager:
         for option in options:
             final_options.extend(option.split())
         return final_options
+    
+
+    def detect_changes(self, new_data):
+        logger.info(f"NEW_DATA {new_data}")
+        
+        for img in new_data.get('images', []):
+            if 'tag' not in img or not img['tag']:
+                img['tag'] = "latest"
+
+        changes = {
+            'removed_images': [],
+            'added_images': [],
+            'removed_containers': [],
+            'added_containers': [],
+        }
+
+        old_images = {img['image']: img['tag'] for img in self.old_data.get('images', [])}
+        new_images = {img['image']: img['tag'] for img in new_data.get('images', [])}
+
+        for img_key, new_tag in new_images.items():
+            if img_key not in old_images:
+                changes['added_images'].append({'image': img_key, 'tag': new_tag})
+            elif old_images[img_key] != new_tag:
+                changes['removed_images'].append({'image': img_key, 'tag': old_images[img_key]})
+                changes['added_images'].append({'image': img_key, 'tag': new_tag})
+
+        for img_key in old_images.keys():
+            if img_key not in new_images:
+                changes['removed_images'].append({'image': img_key, 'tag': old_images[img_key]})
+
+        old_containers = {cont['container_name']: cont for cont in self.old_data.get('containers', [])}
+        new_containers = {cont['container_name']: cont for cont in new_data.get('containers', [])}
+
+        for cont_key, new_cont in new_containers.items():
+            if cont_key not in old_containers:
+                changes['added_containers'].append(new_cont)
+            else:
+                old_cont = old_containers[cont_key]
+                if old_cont['image'] != new_cont['image'] or old_cont['ports'] != new_cont['ports']:
+                    changes['removed_containers'].append(old_cont)
+                    changes['added_containers'].append(new_cont)
+
+        for cont_key in old_containers.keys():
+            if cont_key not in new_containers:
+                changes['removed_containers'].append(old_containers[cont_key])
+
+        self.old_data = new_data
+        logger.info(f"\n\nCHANGES: {changes}\n\n")
+        return changes
+
+
+    def apply_docker_changes(self, docker_changes):
+        self.remove_containers(docker_changes["removed_containers"])
+        self.remove_images(docker_changes["removed_images"])
+
+        self.pull_images(docker_changes["added_images"])
+        self.create_containers(docker_changes["added_containers"])
