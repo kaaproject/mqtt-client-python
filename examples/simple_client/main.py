@@ -109,8 +109,7 @@ def run_endpoint(kpc_host, kpc_port, app_version, token, metadata, update_interv
             Token: [{token}]
         """
     )
-    # logger.info(f"Send device metadata [{simple_counter_client.metadata}]")
-    # kaa_client.publish_metadata(simple_counter_client.metadata)
+
     while simple_counter_client.is_running:
         simple_counter_client.step()
 

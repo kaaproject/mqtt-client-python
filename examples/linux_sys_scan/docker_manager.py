@@ -21,11 +21,11 @@ class DockerManager:
             try:
                 result = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
                 logger.info(f"Pull result for {image_name}: {result.stdout.strip()}")
-                TimestampLogger.combine_timestamp_logs(command_str, result.stdout.strip())  # Log the error
+                TimestampLogger.combine_timestamp_logs(command_str, result.stdout.strip())  
             except subprocess.CalledProcessError as e:
                 err_msg = e.stderr.strip() or 'An unknown error occurred.'
                 logger.error(f"Failed to pull image {image_name}: {err_msg}")
-                TimestampLogger.combine_timestamp_logs(command_str, err_msg)  # Log the error
+                TimestampLogger.combine_timestamp_logs(command_str, err_msg)  
             
             self.old_data["images"].append(img)
 
@@ -43,7 +43,7 @@ class DockerManager:
             except subprocess.CalledProcessError as e:
                 err_msg = e.stderr.strip() or 'An unknown error occurred.'
                 logger.error(f"Failed to delete image {image_name}: {err_msg}")
-                TimestampLogger.combine_timestamp_logs(command_str, err_msg)  # Log the error
+                TimestampLogger.combine_timestamp_logs(command_str, err_msg)  
 
 
     def remove_containers(self, containers_list):
@@ -59,7 +59,7 @@ class DockerManager:
             except subprocess.CalledProcessError as e:
                 err_msg = e.stderr.strip() or 'An unknown error occurred.'
                 logger.error(f"Failed to delete container {cont_name}: {err_msg}")
-                TimestampLogger.combine_timestamp_logs(command_str, err_msg)  # Log the error
+                TimestampLogger.combine_timestamp_logs(command_str, err_msg)  
 
 
     def create_containers(self, container_list):
@@ -79,10 +79,10 @@ class DockerManager:
 
         if result.returncode == 0:
             logger.info("Container started successfully: " + result.stdout.strip())
-            TimestampLogger.combine_timestamp_logs(command_str, result.stdout.strip())  # Log success
+            TimestampLogger.combine_timestamp_logs(command_str, result.stdout.strip())  
         else:
             logger.error("Error starting container: " + result.stderr.strip())
-            TimestampLogger.combine_timestamp_logs(command_str, result.stderr.strip())  # Log error
+            TimestampLogger.combine_timestamp_logs(command_str, result.stderr.strip()) 
         
         self.old_data["containers"].append(container)
         logger.info(f"\n\nold_data {self.old_data}\n\n")

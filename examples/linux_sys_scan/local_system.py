@@ -57,7 +57,7 @@ def get_integrated_gpu_name():
 def get_machine_gpu():
     gpus = GPUtil.getGPUs()
     if gpus:
-        gpu = gpus[0]  # Get the first GPU
+        gpu = gpus[0]  
         return {
             "name": gpu.name,
             "driver": gpu.driver,
