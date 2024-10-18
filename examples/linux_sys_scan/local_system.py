@@ -30,7 +30,7 @@ def get_cpu_temperature_info():
         }
 
     return {
-        'cpu_average_temp': None
+        'cpu_average_temp': 0
     }
 
 
