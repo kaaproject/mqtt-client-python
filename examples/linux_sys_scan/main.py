@@ -9,6 +9,7 @@ from kaa_mqtt_client import KaaMqttClient, Command, CommandResponse, Configurati
 from local_system import get_machine_metadata, get_system_data
 from docker_manager import DockerManager
 from constants import logger, kaa_kpc_port, kaa_kpc_host, app_version, token
+from dashboard import initialize_dashboards
 
 class SysScanClient:
     def __init__(self, client: KaaMqttClient, metadata:dict, docker_manager_instance: DockerManager, update_interval: int = 120):
@@ -100,6 +101,7 @@ def run_endpoint(kpc_host, kpc_port, app_version, token, metadata, update_interv
         sys_scan_client.step()
 
 def main():
+    initialize_dashboards()
     metadata = get_machine_metadata()
     run_endpoint(kaa_kpc_host, kaa_kpc_port, app_version, token, metadata, 120)
 
