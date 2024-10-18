@@ -97,9 +97,9 @@ In your device page, navigate to the Commands section. You can execute terminal 
 ![commands](./imgs/commands.png)
 
 
-## Viewing Your Data with Kaaiot Dashboard
+## Viewing Your Data with Kaaiot Dashboard (Optional)
 
-You can use the Kaaiot dashboard to create a custom UI for viewing your data, going beyond the default device page.
+You can use the Kaaiot dashboard to create a custom UI to view your data and go beyond the default device page.
 
 ### Creating a Dashboard
 
