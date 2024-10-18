@@ -4,6 +4,7 @@ This project implements the Kaaiot API to provide remote access and system scann
 
 ![running endpoint](./imgs/running_endpoint.png)
 
+
 ## Installation
 
 To get started with the project, follow these steps:
@@ -38,7 +39,8 @@ Upon your first launch, you may encounter a series of errors:
 
 ![error picture](./imgs/env_vars_not_found.png)
 
-The program scans your system and attempts to send the data, but it doesn't know where to send it due to missing environment variables such as `DEFAULT_KPC_HOST`, `APPLICATION_VERSION`, and `ENDPOINT_TOKEN`. Here’s how to get them.
+The program scans your system and attempts to send the data, but it doesn't know where to send it due to missing environment variables such as `DEFAULT_KPC_HOST`, `APPLICATION_VERSION`, `APPLICATION_NAME`, `TENANT_ID` and `ENDPOINT_TOKEN`. Here’s how to get them.
+
 
 ## Setting Up Environment Variables
 
@@ -52,25 +54,34 @@ To resolve the issue, you need to create a new application and an endpoint. The 
 2. **Add a Device**: In the Devices tab, select your application from the dropdown and click "Add device". Choose a name for the device and create it.
    ![creating device picture](./imgs/add_device.png)
 
-3. **Copy the Token**: You will be greeted with a token. Copy it. That is `ENDPOINT_TOKEN`, 1 out of the 3 required variables.
+3. **Copy the Token**: You will be greeted with a token. Copy it. That is `ENDPOINT_TOKEN`, 1 out of the 5 required variables.
    ![commands](./imgs/token.png)
-4. **Get Application Version**: Open your newly created device and copy the second variable, `appVersion.name`. This will be `APPLICATION_VERSION`, the 2 out of 3 variables.
-   ![commands](./imgs/app_name.png)
-5. **Get Default KPC Host**: Finally, copy domain from the URL of your Kaaiot console. This is the `DEFAULT_KPC_HOST`, the third variable.
+
+4. **Get Application Version**: Open your newly created device and copy the `appVersion.name` and `appName` . This will be `APPLICATION_VERSION` and `APPLICATION_NAME`, the 3 out of 5 variables.
+   ![app name and version picture](./imgs/app_name_version.png)
+
+5. **Get Tenant ID**: In the top right corner, click on `profile icon` and copy `Tenant ID`. That's 4 out of 5.
+   ![tenant id picture](./imgs/tenant_id.png)
+
+6. **Get Default KPC Host**: Finally, copy domain from the URL of your Kaaiot console. This is the `DEFAULT_KPC_HOST`, the last variable.
    ![KPC host picture](./imgs/kpc_host.png)
+
 
 ## Provisioning Your Python Script
 
-In your terminal, set these environment variables:
+In your terminal, copy these environment variables:
 
 ```bash
 export DEFAULT_KPC_HOST="YOUR_KCP_HOST"
 export DEFAULT_KPC_PORT="1883"
+export APPLICATION_NAME="YOUR_APPLICATION_NAME"
 export APPLICATION_VERSION="YOUR_APPLICATION_VERSION"
 export ENDPOINT_TOKEN="YOUR_ENDPOINT_TOKEN"
+export TENANT_ID="YOUR_TENANT_ID"
 ```
 
 Now you can launch the program with `python3 main.py`, and hopefully, you will start receiving data.
+
 
 ## Executing Commands
 
@@ -85,4 +96,27 @@ In your device page, navigate to the Commands section. You can execute terminal 
 
 ![commands](./imgs/commands.png)
 
-This is it! From this point, you should hopefully be able to execute commands and view data from your Linux system. Thank you for following this guide.
+
+## Viewing Your Data with Kaaiot Dashboard
+
+You can use the Kaaiot dashboard to create a custom UI for viewing your data, going beyond the default device page.
+
+### Creating a Dashboard
+
+Open the **Solutions** tab. A solution is automatically created for each application, but you can create a new one if needed.  
+   ![Open Dashboard](./imgs/open_dashboard.png)
+
+### Quick Start
+
+To keep things simple, here’s a quick example. After running the `python3 main.py` script, a *JSON template* will be generated with the environment variables you provided earlier. 
+
+1. In the top right corner, click **Import Dashboard**.
+2. Navigate to the `./dashboards/output` folder and copy the code from `device_overview.json`.
+3. Paste the code into the import dialog.
+
+You should now see a dashboard similar to the one shown below:  
+![Dashboard](./imgs/dashboard.png)
+
+
+## Conclusion
+This is it! From this point, you should hopefully be able to execute commands and view data about your Linux system from KaaIot. Thank you for following this guide and i hope that it was useful to you.
