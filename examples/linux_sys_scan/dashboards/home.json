@@ -1,0 +1,178 @@
+{
+  "path": "/home",
+  "displayName": "",
+  "order": 0,
+  "dashboardType": "simple",
+  "widgets": {
+    "629011af-972c-4243-b9ca-57141de8a613": {
+      "config": {
+        "header": {
+          "displayIcon": true,
+          "displayTitle": true,
+          "stylingCustomization": {
+            "additionalStyles": {
+              "header": {},
+              "title": {}
+            },
+            "textPlacement": "start"
+          },
+          "tableActionsLayout": "dropdown",
+          "title": "Endpoint list"
+        },
+        "endpointRegistration": {
+          "creationSchema": {
+            "properties": {
+              "endpointToken": {
+                "description": "An initial authentication token for your endpoint in the platform. If you leave this field blank, the token will be auto-generated for you. <a href=\"https://docs.kaaiot.io/KAA/docs/latest/Kaa-concepts/#endpoint-token\" target=\"_blank\">Learn more</a>",
+                "pattern": "^[^+#/.]+$",
+                "title": "Endpoint token",
+                "type": "string"
+              },
+              "metadata": {
+                "properties": {},
+                "title": "Metadata",
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "enable": false,
+          "uiSchema": {
+            "displayLabel": false
+          }
+        },
+        "row": {
+          "updateOnSelect": true,
+          "path": "/device_overview/:endpointId",
+          "parameters": {
+            "itemJsonPath": "endpointId"
+          },
+          "rowsSelectable": false,
+          "groupByType": "metadata",
+          "wdVariableName": "selectedEndpoints",
+          "newTab": false,
+          "redirectTo": "dashboard",
+          "redirectEnable": true
+        },
+        "type": "epList",
+        "pagination": false,
+        "columns": [
+          {
+            "cellType": "text",
+            "columnFilter": {
+              "dataFilterType": "none"
+            },
+            "columnWidth": "auto",
+            "dataSourceType": "metadata",
+            "display": "Endpoint ID",
+            "text": [
+              "${endpointId}"
+            ]
+          },
+          {
+            "cellType": "text",
+            "columnFilter": {
+              "dataFilterType": "none"
+            },
+            "columnOrder": 0,
+            "columnWidth": "auto",
+            "dataSourceType": "metadata",
+            "display": "Name",
+            "text": [
+              "${metadata.name}"
+            ]
+          },
+          {
+            "mathExpression": "params.value",
+            "display": "Online",
+            "timeseries": "connectivity",
+            "timeseriesPath": "values.value",
+            "columnFilter": {
+              "dataFilterType": "none"
+            },
+            "columnWidth": "auto",
+            "icons": [
+              {
+                "condition": "1",
+                "icon": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/672a8359-af2a-48eb-93d9-367c870bbf18.svg",
+                "operator": "==",
+                "sortName": "online"
+              },
+              {
+                "condition": "1",
+                "icon": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/03a62bb1-14d2-4a07-9757-f5f2f39f1073.svg",
+                "operator": "!=",
+                "sortName": "offline"
+              }
+            ],
+            "cellType": "icon",
+            "dataSourceType": "timeseries"
+          }
+        ],
+        "endpointUpdate": {
+          "creationSchema": {
+            "properties": {
+              "metadata": {
+                "properties": {},
+                "title": "form.commons.labels.metadata",
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "enable": false,
+          "uiSchema": {}
+        },
+        "defaultSort": {
+          "sortDirection": "ASC",
+          "sortKey": null
+        },
+        "serviceIntegration": {
+          "applicationName": "{APP_NAME}",
+          "applicationSelection": "single",
+          "applicationVersionName": "{APP_VERSION}",
+          "filterBy": "endpointFilter",
+          "filterId": "${disabled}",
+          "service": "epr",
+          "showRelatedEndpoints": false,
+          "timeseriesService": "epts"
+        }
+      },
+      "info": {
+        "version": "1.2.0"
+      },
+      "lastUpdated": 1729159601518,
+      "layout": {
+        "h": 7,
+        "minH": 4,
+        "minW": 3,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "order": 0
+    }
+  },
+  "configuration": {},
+  "displayTitle": true,
+  "title": "Home",
+  "isTopLevel": true,
+  "displayDescription": true,
+  "icons": {
+    "default": {
+      "path": "/img/dashboard/grey.svg",
+      "type": "default"
+    },
+    "hover": {
+      "path": "/img/dashboard/hovered.svg",
+      "type": "hover"
+    },
+    "selected": {
+      "path": "/img/dashboard/orange.svg",
+      "type": "selected"
+    }
+  },
+  "sidebarTitle": "Home",
+  "description": "Contains list of all connected devices",
+  "dashboardResourceId": "dashboard:0ece5a89-0a6d-41ac-a204-43eb44bcb6a2"
+}
