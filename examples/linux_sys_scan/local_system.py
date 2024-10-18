@@ -133,6 +133,7 @@ def get_system_data():
         "cpu_load": psutil.cpu_percent(interval=1),
         "disk_free": psutil.disk_usage('/').free,
         "ram_free": psutil.virtual_memory().available,
+        "ram_total": psutil.virtual_memory().total,
         "bytes_sent": psutil.net_io_counters().bytes_sent,
         "bytes_recv": psutil.net_io_counters().bytes_recv,
         "battery_power": battery_power,
