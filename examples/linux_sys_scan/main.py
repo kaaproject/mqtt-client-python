@@ -1,5 +1,4 @@
 import logging
-import os
 import time
 import subprocess
 import uuid
@@ -9,7 +8,7 @@ from timestamp_logger import TimestampLogger
 from kaa_mqtt_client import KaaMqttClient, Command, CommandResponse, Configuration, ConfigurationResponse
 from local_system import get_machine_metadata, get_system_data
 from docker_manager import DockerManager
-from constants import logger
+from constants import logger, kaa_kpc_port, kaa_kpc_host, app_version, token
 
 class SysScanClient:
     def __init__(self, client: KaaMqttClient, metadata:dict, docker_manager_instance: DockerManager, update_interval: int = 120):
@@ -101,13 +100,8 @@ def run_endpoint(kpc_host, kpc_port, app_version, token, metadata, update_interv
         sys_scan_client.step()
 
 def main():
-    kaa_kpc_host = f"mqtt.{os.environ.get('DEFAULT_KPC_HOST')}"
-    kaa_kpc_port = int(os.environ.get("DEFAULT_KPC_PORT", '1883'))
-    app_version = os.environ.get("APPLICATION_VERSION")
-    token = os.environ.get("ENDPOINT_TOKEN")
     metadata = get_machine_metadata()
-
-    run_endpoint(kaa_kpc_host, kaa_kpc_port, app_version, token, metadata, 60)
+    run_endpoint(kaa_kpc_host, kaa_kpc_port, app_version, token, metadata, 120)
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format='%(asctime)s %(message)s')
