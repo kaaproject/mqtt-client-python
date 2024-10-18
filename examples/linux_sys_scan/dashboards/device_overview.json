@@ -1,14 +1,11 @@
 {
   "path": "/device_overview/:endpointId",
   "displayName": "Device overview",
-  "order": 1,
+  "order": 0,
   "dashboardType": "entityRelated",
   "widgets": {
-    "d7213da3-b981-4d43-91f1-7022e13078f3": {
+    "350b623f-44ac-4357-bfc3-ec83749afda8": {
       "config": {
-        "appearance": {
-          "showActions": false
-        },
         "datasets": [
           {
             "dataFormat": "aggregated",
@@ -16,141 +13,6 @@
             "analyticsTimestampField": "@timestamp",
             "name": "trendData",
             "analyticsIndex": "{TENANT_ID}-*",
-            "analyticsSplitRows": [
-              {
-                "aggregation": "date-histogram",
-                "columnName": "time",
-                "dateHistogramInterval": 1800000
-              }
-            ],
-            "updateInterval": 120000,
-            "showLast": 86400,
-            "rangeType": "customRange",
-            "rawMetrics": [
-              {
-                "columnName": "rate",
-                "field": "dataSample.charge_rate"
-              }
-            ],
-            "range": {
-              "from": "now-1d",
-              "to": "now"
-            },
-            "analyticsEndpointIds": [
-              "${dashboard.route.id}"
-            ],
-            "analyticsMetrics": [
-              {
-                "aggregation": "avg",
-                "field": "dataSample.cpu_average_temp",
-                "label": "value"
-              }
-            ]
-          },
-          {
-            "dataSource": "last-timeseries",
-            "lastTsAppName": "{APP_NAME}",
-            "lastTsEndpointIds": [
-              "${dashboard.route.id}"
-            ],
-            "lastTsServiceInstanceName": "epts",
-            "lastTsTimeseries": [
-              {
-                "columnName": "value",
-                "timeSeriesName": "auto~battery_power",
-                "timeSeriesValue": "values.value"
-              }
-            ],
-            "name": "currentValue",
-            "updateInterval": 120000
-          }
-        ],
-        "header": {
-          "displayIcon": true,
-          "displayTitle": true,
-          "enableSecurityVisibility": true,
-          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/913eb6f8-03d6-4763-a701-15afd64019e2.svg",
-          "securityVisibility": {
-            "effect": "allow",
-            "resourceType": "Endpoint",
-            "type": "Rule"
-          },
-          "stylingCustomization": {
-            "additionalStyles": {
-              "header": {},
-              "title": {}
-            },
-            "textPlacement": "start"
-          },
-          "title": "Overall CPU temperature [%]"
-        },
-        "specification": "{\n  \"$schema\": \"https://vega.github.io/schema/vega/v5.json\",\n  \"padding\": {\n    \"top\": 0,\n    \"left\": 12,\n    \"right\": 12,\n    \"bottom\": 12\n  },\n  \"data\": [\n    {\n      \"name\": \"trend\",\n      \"source\": \"trendData\",\n      \"transform\": [\n        {\"type\": \"formula\", \"expr\": \"datetime(datum['time'])\", \"as\": \"time\"},\n        {\"type\": \"collect\", \"sort\": {\"field\": \"time\", \"order\": \"descending\"}}\n      ]\n    }\n  ],\n  \"scales\": [\n    {\n      \"name\": \"xscale\",\n      \"type\": \"time\",\n      \"range\": \"width\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"time\"}\n    },\n    {\n      \"name\": \"yscale\",\n      \"type\": \"linear\",\n      \"range\": \"height\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"value\"},\n      \"nice\": true,\n      \"zero\": true\n    }\n  ],\n  \"marks\": [\n    {\n      \"type\": \"rect\",\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"value\": 0},\n          \"y\": {\"value\": 0},\n          \"width\": {\"signal\": \"width\"},\n          \"height\": {\"signal\": \"height\"},\n          \"fill\": {\"value\": \"#2B3339\"},\n          \"cornerRadius\": {\"value\": 4}\n        }\n      }\n    },\n    {\n      \"type\": \"line\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"stroke\": {\"value\": \"#BD3CA4\"},\n          \"strokeWidth\": {\"signal\": \"datum.value ? 2 : 0\"}\n        }\n      }\n    },\n    {\n      \"type\": \"area\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"y2\": {\"scale\": \"yscale\", \"value\": 0},\n          \"fill\": {\n            \"value\": {\n              \"gradient\": \"linear\",\n              \"stops\": [\n                {\"offset\": 0, \"color\": \"#43244B\"},\n                {\"offset\": 1, \"color\": \"#762B76\"}\n              ]\n            }\n          },\n          \"strokeWidth\": {\"value\": 2},\n          \"opacity\": {\"value\": 0.8}\n        }\n      }\n    },\n    {\n      \"type\": \"group\",\n      \"encode\": {\n        \"enter\": {\n          \"align\": {\"value\": \"center\"},\n          \"baseline\": {\"value\": \"middle\"}\n        },\n        \"update\": {\n          \"x\": {\"signal\": \"width / 2\"},\n          \"y\": {\"signal\": \"height / 2\"}\n        }\n      },\n      \"layout\": {\"padding\": 10, \"columns\": 3, \"align\": \"none\", \"center\": false},\n      \"marks\": [\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"signal\": \"0\"}, \"y\": {\"value\": 0}},\n                \"enter\": {\n                  \"text\": {\"signal\": \"format((datum.value), '.1f')\"},\n                  \"fontSize\": {\"value\": 56},\n                  \"fill\": {\"value\": \"#FFFFFF\"},\n                  \"align\": {\"value\": \"center\"},\n                  \"font\": {\"value\": \"Digital-7\"},\n                  \"baseline\": {\"value\": \"middle\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 1 : 0\"}\n                }\n              }\n            },\n            {\n              \"type\": \"image\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\n                  \"url\": {\n                    \"value\": \"https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/widgets/aaoen/gg--unavailable%20%282%29.svg\"\n                  },\n                  \"align\":{\"value\": \"center\"},\n                  \"y\": {\"signal\": \"-100\"},\n                  \"width\": {\"signal\": \"200\"},\n                  \"height\": {\"signal\": \"200\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 1\"}\n                }\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"value\": 0}, \"y\": {\"value\": -25}},\n                \"enter\": {\n                  \"text\": {\"value\": \"%\"},\n                  \"fontSize\": {\"value\": 14},\n                  \"fill\": {\"value\": \"#CCCCCC\"},\n                  \"align\": {\"value\": \"left\"},\n                  \"baseline\": {\"value\": \"top\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 0\"}\n                }\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
-        "type": "@kaa/vega-chart-widget"
-      },
-      "lastUpdated": 1729237173269,
-      "layout": {
-        "x": 0,
-        "y": 11,
-        "w": 2,
-        "h": 5,
-        "minH": 1,
-        "minW": 2
-      },
-      "order": 8
-    },
-    "c86c6040-9dec-4bac-aa4a-c754f0eb691e": {
-      "config": {
-        "header": {
-          "displayIcon": true,
-          "displayTitle": true,
-          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/6d78e7f5-3b90-498b-8fa0-2e414c4c49e2.svg",
-          "stylingCustomization": {
-            "additionalStyles": {
-              "header": {},
-              "title": {}
-            },
-            "textPlacement": "start"
-          },
-          "title": "Docker configuration"
-        },
-        "schema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"images\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"image\": {\n            \"type\": \"string\"\n          },\n          \"tag\": {\n            \"type\": \"string\"\n          }\n        },\n        \"required\": [\n          \"image\"\n        ]\n      },\n      \"title\": \"Images\"\n    },\n    \"containers\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"container_name\": {\n            \"type\": \"string\"\n          },\n          \"image\": {\n            \"type\": \"string\"\n          },\n          \"ports\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"string\"\n            }\n          },\n          \"env\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"name\": {\n                  \"type\": \"string\"\n                },\n                \"value\": {\n                  \"type\": \"string\"\n                }\n              },\n              \"required\": [\n                \"name\",\n                \"value\"\n              ]\n            }\n          },\n          \"networks\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"name\": {\n                  \"type\": \"string\"\n                },\n                \"bridge\": {\n                  \"type\": \"string\"\n                }\n              },\n              \"required\": [\n                \"name\"\n              ]\n            }\n          },\n          \"network_mode\": {\n            \"type\": \"string\"\n          },\n          \"volumes\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"string\"\n            }\n          },\n          \"cap-add\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"string\"\n            }\n          }\n        },\n        \"required\": [\n          \"container_name\",\n          \"image\"\n        ]\n      },\n      \"title\": \"Containers\"\n    }\n  }\n}",
-        "serviceIntegration": {
-          "batchUpdate": false,
-          "defaultConfig": false,
-          "updateInterval": 1000,
-          "configurationType": "endpoint",
-          "endpointId": "${dashboard.route.id}",
-          "applicationVersionName": "{APP_VERSION}",
-          "service": "ecr",
-          "enableConfirmation": false,
-          "showUpdatedAtTime": false
-        },
-        "type": "configuration",
-        "uiSchema": "{\n  \"ui:options\": {\n    \"layout\": \"horizontal\"\n  },\n  \"images\": {\n    \"ui:options\": {\n      \"search\": {\n        \"enabled\": true,\n        \"searchBy\": \"name\",\n        \"placeholder\": \"Search by Name\"\n      }\n    }\n  },\n  \"containers\": {\n    \"ui:options\": {\n      \"search\": {\n        \"enabled\": true,\n        \"searchBy\": \"name\",\n        \"placeholder\": \"Search by Name\"\n      }\n    }\n  }\n}"
-      },
-      "lastUpdated": 1729162903627,
-      "layout": {
-        "x": 0,
-        "y": 26,
-        "w": 5,
-        "h": 12,
-        "minH": 3.5,
-        "minW": 2
-      },
-      "order": 3
-    },
-    "35158262-3e70-4930-a1c1-643551b28969": {
-      "config": {
-        "appearance": {
-          "showActions": false
-        },
-        "datasets": [
-          {
-            "dataFormat": "aggregated",
-            "dataSource": "analytics",
-            "analyticsTimestampField": "@timestamp",
-            "name": "trendData",
-            "analyticsIndex": "d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-*",
             "analyticsSplitRows": [
               {
                 "aggregation": "date-histogram",
@@ -192,42 +54,45 @@
             "lastTsTimeseries": [
               {
                 "columnName": "value",
-                "timeSeriesName": "auto~ram_free",
+                "timeSeriesName": "auto~bytes_sent",
                 "timeSeriesValue": "values.value"
               }
             ],
             "name": "currentValue",
-            "updateInterval": 120000
+            "updateInterval": 2000
           }
         ],
-        "header": {
-          "displayIcon": true,
-          "displayTitle": true,
-          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/dbac580e-7ec9-46d2-9b12-4b8d82c15e12.svg",
-          "stylingCustomization": {
-            "additionalStyles": {
-              "header": {},
-              "title": {}
-            },
-            "textPlacement": "start"
-          },
-          "title": "Free RAM [GB]"
+        "specification": "{\n  \"$schema\": \"https://vega.github.io/schema/vega/v5.json\",\n  \"padding\": {\n    \"top\": 0,\n    \"left\": 12,\n    \"right\": 12,\n    \"bottom\": 12\n  },\n  \"data\": [\n    {\n      \"name\": \"trend\",\n      \"transform\": [\n        {\"type\": \"formula\", \"expr\": \"datetime(datum['time'])\", \"as\": \"time\"},\n        {\"type\": \"collect\", \"sort\": {\"field\": \"time\", \"order\": \"descending\"}}\n      ]\n    }\n  ],\n  \"scales\": [\n    {\n      \"name\": \"xscale\",\n      \"type\": \"time\",\n      \"range\": \"width\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"time\"}\n    },\n    {\n      \"name\": \"yscale\",\n      \"type\": \"linear\",\n      \"range\": \"height\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"value\"},\n      \"nice\": true,\n      \"zero\": true\n    }\n  ],\n  \"marks\": [\n    {\n      \"type\": \"rect\",\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"value\": 0},\n          \"y\": {\"value\": 0},\n          \"width\": {\"signal\": \"width\"},\n          \"height\": {\"signal\": \"height\"},\n          \"fill\": {\"value\": \"#2B3339\"},\n          \"cornerRadius\": {\"value\": 4}\n        }\n      }\n    },\n    {\n      \"type\": \"line\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"stroke\": {\"value\": \"#BD3CA4\"},\n          \"strokeWidth\": {\"signal\": \"datum.value ? 2 : 0\"}\n        }\n      }\n    },\n    {\n      \"type\": \"area\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"y2\": {\"scale\": \"yscale\", \"value\": 0},\n          \"fill\": {\n            \"value\": {\n              \"gradient\": \"linear\",\n              \"stops\": [\n                {\"offset\": 0, \"color\": \"#43244B\"},\n                {\"offset\": 1, \"color\": \"#762B76\"}\n              ]\n            }\n          },\n          \"strokeWidth\": {\"value\": 2},\n          \"opacity\": {\"value\": 0.8}\n        }\n      }\n    },\n    {\n      \"type\": \"group\",\n      \"encode\": {\n        \"enter\": {\n          \"align\": {\"value\": \"center\"},\n          \"baseline\": {\"value\": \"middle\"}\n        },\n        \"update\": {\n          \"x\": {\"signal\": \"width / 2\"},\n          \"y\": {\"signal\": \"height / 2\"}\n        }\n      },\n      \"layout\": {\"padding\": 10, \"columns\": 3, \"align\": \"none\", \"center\": false},\n      \"marks\": [\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"signal\": \"0\"}, \"y\": {\"value\": 0}},\n                \"enter\": {\n                  \"text\": {\"signal\": \"format((datum.value)/1024/1024, '.1f')\"},\n                  \"fontSize\": {\"value\": 56},\n                  \"fill\": {\"value\": \"#FFFFFF\"},\n                  \"align\": {\"value\": \"center\"},\n                  \"font\": {\"value\": \"Digital-7\"},\n                  \"baseline\": {\"value\": \"middle\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 1 : 0\"}\n                }\n              }\n            },\n            {\n              \"type\": \"image\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\n                  \"url\": {\n                    \"value\": \"https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/widgets/aaoen/gg--unavailable%20%282%29.svg\"\n                  },\n                  \"align\":{\"value\": \"center\"},\n                  \"y\": {\"signal\": \"-100\"},\n                  \"width\": {\"signal\": \"200\"},\n                  \"height\": {\"signal\": \"200\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 1\"}\n                }\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"value\": 0}, \"y\": {\"value\": -25}},\n                \"enter\": {\n                  \"text\": {\"value\": \"MB\"},\n                  \"fontSize\": {\"value\": 14},\n                  \"fill\": {\"value\": \"#CCCCCC\"},\n                  \"align\": {\"value\": \"left\"},\n                  \"baseline\": {\"value\": \"top\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 0\"}\n                }\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
+        "appearance": {
+          "showActions": false
         },
-        "specification": "{\n  \"$schema\": \"https://vega.github.io/schema/vega/v5.json\",\n  \"padding\": {\n    \"top\": 0,\n    \"left\": 12,\n    \"right\": 12,\n    \"bottom\": 12\n  },\n  \"data\": [\n    {\n      \"name\": \"trend\",\n      \"source\": \"trendData\",\n      \"transform\": [\n        {\"type\": \"formula\", \"expr\": \"datetime(datum['time'])\", \"as\": \"time\"},\n        {\"type\": \"collect\", \"sort\": {\"field\": \"time\", \"order\": \"descending\"}}\n      ]\n    }\n  ],\n  \"scales\": [\n    {\n      \"name\": \"xscale\",\n      \"type\": \"time\",\n      \"range\": \"width\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"time\"}\n    },\n    {\n      \"name\": \"yscale\",\n      \"type\": \"linear\",\n      \"range\": \"height\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"value\"},\n      \"nice\": true,\n      \"zero\": true\n    }\n  ],\n  \"marks\": [\n    {\n      \"type\": \"rect\",\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"value\": 0},\n          \"y\": {\"value\": 0},\n          \"width\": {\"signal\": \"width\"},\n          \"height\": {\"signal\": \"height\"},\n          \"fill\": {\"value\": \"#2B3339\"},\n          \"cornerRadius\": {\"value\": 4}\n        }\n      }\n    },\n    {\n      \"type\": \"line\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"stroke\": {\"value\": \"#BD3CA4\"},\n          \"strokeWidth\": {\"signal\": \"datum.value ? 2 : 0\"}\n        }\n      }\n    },\n    {\n      \"type\": \"area\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"y2\": {\"scale\": \"yscale\", \"value\": 0},\n          \"fill\": {\n            \"value\": {\n              \"gradient\": \"linear\",\n              \"stops\": [\n                {\"offset\": 0, \"color\": \"#43244B\"},\n                {\"offset\": 1, \"color\": \"#762B76\"}\n              ]\n            }\n          },\n          \"strokeWidth\": {\"value\": 2},\n          \"opacity\": {\"value\": 0.8}\n        }\n      }\n    },\n    {\n      \"type\": \"group\",\n      \"encode\": {\n        \"enter\": {\n          \"align\": {\"value\": \"center\"},\n          \"baseline\": {\"value\": \"middle\"}\n        },\n        \"update\": {\n          \"x\": {\"signal\": \"width / 2\"},\n          \"y\": {\"signal\": \"height / 2\"}\n        }\n      },\n      \"layout\": {\"padding\": 10, \"columns\": 3, \"align\": \"none\", \"center\": false},\n      \"marks\": [\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"signal\": \"0\"}, \"y\": {\"value\": 0}},\n                \"enter\": {\n                  \"text\": {\"signal\": \"format((datum.value)/1024/1024/1024, '.1f')\"},\n                  \"fontSize\": {\"value\": 56},\n                  \"fill\": {\"value\": \"#FFFFFF\"},\n                  \"align\": {\"value\": \"center\"},\n                  \"font\": {\"value\": \"Digital-7\"},\n                  \"baseline\": {\"value\": \"middle\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 1 : 0\"}\n                }\n              }\n            },\n            {\n              \"type\": \"image\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\n                  \"url\": {\n                    \"value\": \"https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/widgets/aaoen/gg--unavailable%20%282%29.svg\"\n                  },\n                  \"align\":{\"value\": \"center\"},\n                  \"y\": {\"signal\": \"-100\"},\n                  \"width\": {\"signal\": \"200\"},\n                  \"height\": {\"signal\": \"200\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 1\"}\n                }\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"value\": 0}, \"y\": {\"value\": -25}},\n                \"enter\": {\n                  \"text\": {\"value\": \"GB\"},\n                  \"fontSize\": {\"value\": 14},\n                  \"fill\": {\"value\": \"#CCCCCC\"},\n                  \"align\": {\"value\": \"left\"},\n                  \"baseline\": {\"value\": \"top\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 0\"}\n                }\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
+        "header": {
+          "stylingCustomization": {
+            "textPlacement": "start",
+            "additionalStyles": {
+              "title": {},
+              "header": {}
+            }
+          },
+          "displayTitle": true,
+          "title": "Bytes sent [MB]",
+          "displayIcon": true,
+          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/786344ee-72e8-4d08-85ab-3d99143b1f9c.svg"
+        },
         "type": "@kaa/vega-chart-widget"
       },
-      "lastUpdated": 1729237284793,
+      "lastUpdated": 1729251118202,
       "layout": {
-        "x": 6,
+        "x": 8,
         "y": 11,
         "w": 2,
         "h": 5,
         "minH": 1,
         "minW": 2
       },
-      "order": 10
+      "order": 9
     },
-    "ecead747-693b-4cd6-baa7-3c7296af138e": {
+    "0c0ab311-ed06-4189-aa81-2d7a1138686d": {
       "config": {
         "commandsDefinition": {
           "commandField": "LINUX_COMMAND",
@@ -281,7 +146,7 @@
       },
       "order": 7
     },
-    "539f1f14-d1bc-4b89-be1c-4c38990fba4c": {
+    "c5484123-32f2-4064-8186-5c49a42f4259": {
       "lastUpdated": 1729243445960,
       "config": {
         "dataSource": {
@@ -420,11 +285,320 @@
       },
       "order": 0
     },
-    "0e24cafd-41fb-4bfd-b8b2-6b30718738ff": {
+    "c9f40ae9-4218-45a1-84fa-3945917bdcbd": {
       "config": {
+        "header": {
+          "displayIcon": true,
+          "displayTitle": true,
+          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/6d78e7f5-3b90-498b-8fa0-2e414c4c49e2.svg",
+          "stylingCustomization": {
+            "additionalStyles": {
+              "header": {},
+              "title": {}
+            },
+            "textPlacement": "start"
+          },
+          "title": "Docker configuration"
+        },
+        "schema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"images\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"image\": {\n            \"type\": \"string\"\n          },\n          \"tag\": {\n            \"type\": \"string\"\n          }\n        },\n        \"required\": [\n          \"image\"\n        ]\n      },\n      \"title\": \"Images\"\n    },\n    \"containers\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"container_name\": {\n            \"type\": \"string\"\n          },\n          \"image\": {\n            \"type\": \"string\"\n          },\n          \"ports\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"string\"\n            }\n          },\n          \"env\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"name\": {\n                  \"type\": \"string\"\n                },\n                \"value\": {\n                  \"type\": \"string\"\n                }\n              },\n              \"required\": [\n                \"name\",\n                \"value\"\n              ]\n            }\n          },\n          \"networks\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"name\": {\n                  \"type\": \"string\"\n                },\n                \"bridge\": {\n                  \"type\": \"string\"\n                }\n              },\n              \"required\": [\n                \"name\"\n              ]\n            }\n          },\n          \"network_mode\": {\n            \"type\": \"string\"\n          },\n          \"volumes\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"string\"\n            }\n          },\n          \"cap-add\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"string\"\n            }\n          }\n        },\n        \"required\": [\n          \"container_name\",\n          \"image\"\n        ]\n      },\n      \"title\": \"Containers\"\n    }\n  }\n}",
+        "serviceIntegration": {
+          "batchUpdate": false,
+          "defaultConfig": false,
+          "updateInterval": 1000,
+          "configurationType": "endpoint",
+          "endpointId": "${dashboard.route.id}",
+          "applicationVersionName": "{APP_VERSION}",
+          "service": "ecr",
+          "enableConfirmation": false,
+          "showUpdatedAtTime": false
+        },
+        "type": "configuration",
+        "uiSchema": "{\n  \"ui:options\": {\n    \"layout\": \"horizontal\"\n  },\n  \"images\": {\n    \"ui:options\": {\n      \"search\": {\n        \"enabled\": true,\n        \"searchBy\": \"name\",\n        \"placeholder\": \"Search by Name\"\n      }\n    }\n  },\n  \"containers\": {\n    \"ui:options\": {\n      \"search\": {\n        \"enabled\": true,\n        \"searchBy\": \"name\",\n        \"placeholder\": \"Search by Name\"\n      }\n    }\n  }\n}"
+      },
+      "lastUpdated": 1729162903627,
+      "layout": {
+        "x": 0,
+        "y": 26,
+        "w": 5,
+        "h": 12,
+        "minH": 3.5,
+        "minW": 2
+      },
+      "order": 3
+    },
+    "fa24f1c3-a011-4791-b0ff-e9ac22b6b380": {
+      "config": {
+        "datasets": [
+          {
+            "dataFormat": "aggregated",
+            "dataSource": "analytics",
+            "analyticsTimestampField": "@timestamp",
+            "name": "trendData",
+            "analyticsIndex": "d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-*",
+            "analyticsSplitRows": [
+              {
+                "aggregation": "date-histogram",
+                "columnName": "time",
+                "dateHistogramInterval": 1800000
+              }
+            ],
+            "updateInterval": 120000,
+            "showLast": 86400,
+            "rangeType": "customRange",
+            "rawMetrics": [
+              {
+                "columnName": "rate",
+                "field": "dataSample.charge_rate"
+              }
+            ],
+            "range": {
+              "from": "now-1d",
+              "to": "now"
+            },
+            "analyticsEndpointIds": [
+              "${dashboard.route.id}"
+            ],
+            "analyticsMetrics": [
+              {
+                "aggregation": "avg",
+                "field": "dataSample.cpu_load",
+                "label": "value"
+              }
+            ]
+          },
+          {
+            "beforeDate": "",
+            "dataSource": "last-timeseries",
+            "lastTsAppName": "{APP_NAME}",
+            "lastTsEndpointIds": [
+              "${dashboard.route.id}"
+            ],
+            "lastTsServiceInstanceName": "epts",
+            "lastTsTimeseries": [
+              {
+                "columnName": "value",
+                "timeSeriesName": "auto~cpu_load",
+                "timeSeriesValue": "values.value"
+              }
+            ],
+            "name": "currentValue",
+            "updateInterval": 2000
+          }
+        ],
+        "specification": "{\n  \"$schema\": \"https://vega.github.io/schema/vega/v5.json\",\n  \"padding\": {\n    \"top\": 0,\n    \"left\": 12,\n    \"right\": 12,\n    \"bottom\": 12\n  },\n  \"data\": [\n    {\n      \"name\": \"trend\",\n      \"transform\": [\n        {\"type\": \"formula\", \"expr\": \"datetime(datum['time'])\", \"as\": \"time\"},\n        {\"type\": \"collect\", \"sort\": {\"field\": \"time\", \"order\": \"descending\"}}\n      ]\n    }\n  ],\n  \"scales\": [\n    {\n      \"name\": \"xscale\",\n      \"type\": \"time\",\n      \"range\": \"width\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"time\"}\n    },\n    {\n      \"name\": \"yscale\",\n      \"type\": \"linear\",\n      \"range\": \"height\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"value\"},\n      \"nice\": true,\n      \"zero\": true\n    }\n  ],\n  \"marks\": [\n    {\n      \"type\": \"rect\",\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"value\": 0},\n          \"y\": {\"value\": 0},\n          \"width\": {\"signal\": \"width\"},\n          \"height\": {\"signal\": \"height\"},\n          \"fill\": {\"value\": \"#2B3339\"},\n          \"cornerRadius\": {\"value\": 4}\n        }\n      }\n    },\n    {\n      \"type\": \"line\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"stroke\": {\"value\": \"#BD3CA4\"},\n          \"strokeWidth\": {\"signal\": \"datum.value ? 2 : 0\"}\n        }\n      }\n    },\n    {\n      \"type\": \"area\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"y2\": {\"scale\": \"yscale\", \"value\": 0},\n          \"fill\": {\n            \"value\": {\n              \"gradient\": \"linear\",\n              \"stops\": [\n                {\"offset\": 0, \"color\": \"#43244B\"},\n                {\"offset\": 1, \"color\": \"#762B76\"}\n              ]\n            }\n          },\n          \"strokeWidth\": {\"value\": 2},\n          \"opacity\": {\"value\": 0.8}\n        }\n      }\n    },\n    {\n      \"type\": \"group\",\n      \"encode\": {\n        \"enter\": {\n          \"align\": {\"value\": \"center\"},\n          \"baseline\": {\"value\": \"middle\"}\n        },\n        \"update\": {\n          \"x\": {\"signal\": \"width / 2\"},\n          \"y\": {\"signal\": \"height / 2\"}\n        }\n      },\n      \"layout\": {\"padding\": 10, \"columns\": 3, \"align\": \"none\", \"center\": false},\n      \"marks\": [\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"signal\": \"0\"}, \"y\": {\"value\": 0}},\n                \"enter\": {\n                  \"text\": {\"signal\": \"format((datum.value), '.1f')\"},\n                  \"fontSize\": {\"value\": 56},\n                  \"fill\": {\"value\": \"#FFFFFF\"},\n                  \"align\": {\"value\": \"center\"},\n                  \"font\": {\"value\": \"Digital-7\"},\n                  \"baseline\": {\"value\": \"middle\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 1 : 0\"}\n                }\n              }\n            },\n            {\n              \"type\": \"image\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\n                  \"url\": {\n                    \"value\": \"https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/widgets/aaoen/gg--unavailable%20%282%29.svg\"\n                  },\n                  \"align\":{\"value\": \"center\"},\n                  \"y\": {\"signal\": \"-100\"},\n                  \"width\": {\"signal\": \"200\"},\n                  \"height\": {\"signal\": \"200\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 1\"}\n                }\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"value\": 0}, \"y\": {\"value\": -25}},\n                \"enter\": {\n                  \"text\": {\"value\": \"%\"},\n                  \"fontSize\": {\"value\": 14},\n                  \"fill\": {\"value\": \"#CCCCCC\"},\n                  \"align\": {\"value\": \"left\"},\n                  \"baseline\": {\"value\": \"top\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 0\"}\n                }\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
         "appearance": {
           "showActions": false
         },
+        "header": {
+          "stylingCustomization": {
+            "textPlacement": "start",
+            "additionalStyles": {
+              "title": {},
+              "header": {}
+            }
+          },
+          "displayTitle": true,
+          "title": "CPU load [%]",
+          "displayIcon": true,
+          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/9ff60df7-dd49-4020-a943-424dcfbe658f.svg"
+        },
+        "type": "@kaa/vega-chart-widget"
+      },
+      "lastUpdated": 1729251086523,
+      "layout": {
+        "x": 2,
+        "y": 11,
+        "w": 2,
+        "h": 5,
+        "minH": 1,
+        "minW": 2
+      },
+      "order": 14
+    },
+    "7af32ce5-69bf-41ac-a8d5-db20777618ff": {
+      "config": {
+        "datasets": [
+          {
+            "dataFormat": "aggregated",
+            "dataSource": "analytics",
+            "analyticsTimestampField": "@timestamp",
+            "name": "trendData",
+            "analyticsIndex": "{TENANT_ID}-*",
+            "analyticsSplitRows": [
+              {
+                "aggregation": "date-histogram",
+                "columnName": "time",
+                "dateHistogramInterval": 1800000
+              }
+            ],
+            "updateInterval": 120000,
+            "showLast": 86400,
+            "rangeType": "customRange",
+            "rawMetrics": [
+              {
+                "columnName": "rate",
+                "field": "dataSample.charge_rate"
+              }
+            ],
+            "range": {
+              "from": "now-1d",
+              "to": "now"
+            },
+            "analyticsEndpointIds": [
+              "${dashboard.route.id}"
+            ],
+            "analyticsMetrics": [
+              {
+                "aggregation": "avg",
+                "field": "dataSample.cpu_load",
+                "label": "value"
+              }
+            ]
+          },
+          {
+            "dataSource": "last-timeseries",
+            "lastTsAppName": "{APP_NAME}",
+            "lastTsEndpointIds": [
+              "${dashboard.route.id}"
+            ],
+            "lastTsServiceInstanceName": "epts",
+            "lastTsTimeseries": [
+              {
+                "columnName": "value",
+                "timeSeriesName": "auto~ram_free",
+                "timeSeriesValue": "values.value"
+              }
+            ],
+            "name": "currentValue",
+            "updateInterval": 120000
+          }
+        ],
+        "specification": "{\n  \"$schema\": \"https://vega.github.io/schema/vega/v5.json\",\n  \"padding\": {\n    \"top\": 0,\n    \"left\": 12,\n    \"right\": 12,\n    \"bottom\": 12\n  },\n  \"data\": [\n    {\n      \"name\": \"trend\",\n      \"transform\": [\n        {\"type\": \"formula\", \"expr\": \"datetime(datum['time'])\", \"as\": \"time\"},\n        {\"type\": \"collect\", \"sort\": {\"field\": \"time\", \"order\": \"descending\"}}\n      ]\n    }\n  ],\n  \"scales\": [\n    {\n      \"name\": \"xscale\",\n      \"type\": \"time\",\n      \"range\": \"width\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"time\"}\n    },\n    {\n      \"name\": \"yscale\",\n      \"type\": \"linear\",\n      \"range\": \"height\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"value\"},\n      \"nice\": true,\n      \"zero\": true\n    }\n  ],\n  \"marks\": [\n    {\n      \"type\": \"rect\",\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"value\": 0},\n          \"y\": {\"value\": 0},\n          \"width\": {\"signal\": \"width\"},\n          \"height\": {\"signal\": \"height\"},\n          \"fill\": {\"value\": \"#2B3339\"},\n          \"cornerRadius\": {\"value\": 4}\n        }\n      }\n    },\n    {\n      \"type\": \"line\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"stroke\": {\"value\": \"#BD3CA4\"},\n          \"strokeWidth\": {\"signal\": \"datum.value ? 2 : 0\"}\n        }\n      }\n    },\n    {\n      \"type\": \"area\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"y2\": {\"scale\": \"yscale\", \"value\": 0},\n          \"fill\": {\n            \"value\": {\n              \"gradient\": \"linear\",\n              \"stops\": [\n                {\"offset\": 0, \"color\": \"#43244B\"},\n                {\"offset\": 1, \"color\": \"#762B76\"}\n              ]\n            }\n          },\n          \"strokeWidth\": {\"value\": 2},\n          \"opacity\": {\"value\": 0.8}\n        }\n      }\n    },\n    {\n      \"type\": \"group\",\n      \"encode\": {\n        \"enter\": {\n          \"align\": {\"value\": \"center\"},\n          \"baseline\": {\"value\": \"middle\"}\n        },\n        \"update\": {\n          \"x\": {\"signal\": \"width / 2\"},\n          \"y\": {\"signal\": \"height / 2\"}\n        }\n      },\n      \"layout\": {\"padding\": 10, \"columns\": 3, \"align\": \"none\", \"center\": false},\n      \"marks\": [\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"signal\": \"0\"}, \"y\": {\"value\": 0}},\n                \"enter\": {\n                  \"text\": {\"signal\": \"format((datum.value)/1024/1024/1024, '.1f')\"},\n                  \"fontSize\": {\"value\": 56},\n                  \"fill\": {\"value\": \"#FFFFFF\"},\n                  \"align\": {\"value\": \"center\"},\n                  \"font\": {\"value\": \"Digital-7\"},\n                  \"baseline\": {\"value\": \"middle\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 1 : 0\"}\n                }\n              }\n            },\n            {\n              \"type\": \"image\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\n                  \"url\": {\n                    \"value\": \"https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/widgets/aaoen/gg--unavailable%20%282%29.svg\"\n                  },\n                  \"align\":{\"value\": \"center\"},\n                  \"y\": {\"signal\": \"-100\"},\n                  \"width\": {\"signal\": \"200\"},\n                  \"height\": {\"signal\": \"200\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 1\"}\n                }\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"value\": 0}, \"y\": {\"value\": -25}},\n                \"enter\": {\n                  \"text\": {\"value\": \"GB\"},\n                  \"fontSize\": {\"value\": 14},\n                  \"fill\": {\"value\": \"#CCCCCC\"},\n                  \"align\": {\"value\": \"left\"},\n                  \"baseline\": {\"value\": \"top\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 0\"}\n                }\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
+        "appearance": {
+          "showActions": false
+        },
+        "header": {
+          "stylingCustomization": {
+            "textPlacement": "start",
+            "additionalStyles": {
+              "title": {},
+              "header": {}
+            }
+          },
+          "displayTitle": true,
+          "title": "Free RAM [GB]",
+          "displayIcon": true,
+          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/dbac580e-7ec9-46d2-9b12-4b8d82c15e12.svg"
+        },
+        "type": "@kaa/vega-chart-widget"
+      },
+      "lastUpdated": 1729251106442,
+      "layout": {
+        "x": 6,
+        "y": 11,
+        "w": 2,
+        "h": 5,
+        "minH": 1,
+        "minW": 2
+      },
+      "order": 10
+    },
+    "1c50c4cb-aefe-4fb6-9d2d-03960d1524a1": {
+      "config": {
+        "datasets": [
+          {
+            "dataFormat": "aggregated",
+            "dataSource": "analytics",
+            "analyticsTimestampField": "@timestamp",
+            "name": "trendData",
+            "analyticsIndex": "{TENANT_ID}-*",
+            "analyticsSplitRows": [
+              {
+                "aggregation": "date-histogram",
+                "columnName": "time",
+                "dateHistogramInterval": 1800000
+              }
+            ],
+            "updateInterval": 120000,
+            "showLast": 86400,
+            "rangeType": "customRange",
+            "rawMetrics": [
+              {
+                "columnName": "rate",
+                "field": "dataSample.charge_rate"
+              }
+            ],
+            "range": {
+              "from": "now-1d",
+              "to": "now"
+            },
+            "analyticsEndpointIds": [
+              "${dashboard.route.id}"
+            ],
+            "analyticsMetrics": [
+              {
+                "aggregation": "avg",
+                "field": "dataSample.cpu_average_temp",
+                "label": "value"
+              }
+            ]
+          },
+          {
+            "dataSource": "last-timeseries",
+            "lastTsAppName": "{APP_NAME}",
+            "lastTsEndpointIds": [
+              "${dashboard.route.id}"
+            ],
+            "lastTsServiceInstanceName": "epts",
+            "lastTsTimeseries": [
+              {
+                "columnName": "value",
+                "timeSeriesName": "auto~battery_power",
+                "timeSeriesValue": "values.value"
+              }
+            ],
+            "name": "currentValue",
+            "updateInterval": 120000
+          }
+        ],
+        "specification": "{\n  \"$schema\": \"https://vega.github.io/schema/vega/v5.json\",\n  \"padding\": {\n    \"top\": 0,\n    \"left\": 12,\n    \"right\": 12,\n    \"bottom\": 12\n  },\n  \"data\": [\n    {\n      \"name\": \"trend\",\n      \"transform\": [\n        {\"type\": \"formula\", \"expr\": \"datetime(datum['time'])\", \"as\": \"time\"},\n        {\"type\": \"collect\", \"sort\": {\"field\": \"time\", \"order\": \"descending\"}}\n      ]\n    }\n  ],\n  \"scales\": [\n    {\n      \"name\": \"xscale\",\n      \"type\": \"time\",\n      \"range\": \"width\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"time\"}\n    },\n    {\n      \"name\": \"yscale\",\n      \"type\": \"linear\",\n      \"range\": \"height\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"value\"},\n      \"nice\": true,\n      \"zero\": true\n    }\n  ],\n  \"marks\": [\n    {\n      \"type\": \"rect\",\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"value\": 0},\n          \"y\": {\"value\": 0},\n          \"width\": {\"signal\": \"width\"},\n          \"height\": {\"signal\": \"height\"},\n          \"fill\": {\"value\": \"#2B3339\"},\n          \"cornerRadius\": {\"value\": 4}\n        }\n      }\n    },\n    {\n      \"type\": \"line\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"stroke\": {\"value\": \"#BD3CA4\"},\n          \"strokeWidth\": {\"signal\": \"datum.value ? 2 : 0\"}\n        }\n      }\n    },\n    {\n      \"type\": \"area\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"y2\": {\"scale\": \"yscale\", \"value\": 0},\n          \"fill\": {\n            \"value\": {\n              \"gradient\": \"linear\",\n              \"stops\": [\n                {\"offset\": 0, \"color\": \"#43244B\"},\n                {\"offset\": 1, \"color\": \"#762B76\"}\n              ]\n            }\n          },\n          \"strokeWidth\": {\"value\": 2},\n          \"opacity\": {\"value\": 0.8}\n        }\n      }\n    },\n    {\n      \"type\": \"group\",\n      \"encode\": {\n        \"enter\": {\n          \"align\": {\"value\": \"center\"},\n          \"baseline\": {\"value\": \"middle\"}\n        },\n        \"update\": {\n          \"x\": {\"signal\": \"width / 2\"},\n          \"y\": {\"signal\": \"height / 2\"}\n        }\n      },\n      \"layout\": {\"padding\": 10, \"columns\": 3, \"align\": \"none\", \"center\": false},\n      \"marks\": [\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"signal\": \"0\"}, \"y\": {\"value\": 0}},\n                \"enter\": {\n                  \"text\": {\"signal\": \"format((datum.value), '.1f')\"},\n                  \"fontSize\": {\"value\": 56},\n                  \"fill\": {\"value\": \"#FFFFFF\"},\n                  \"align\": {\"value\": \"center\"},\n                  \"font\": {\"value\": \"Digital-7\"},\n                  \"baseline\": {\"value\": \"middle\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 1 : 0\"}\n                }\n              }\n            },\n            {\n              \"type\": \"image\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\n                  \"url\": {\n                    \"value\": \"https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/widgets/aaoen/gg--unavailable%20%282%29.svg\"\n                  },\n                  \"align\":{\"value\": \"center\"},\n                  \"y\": {\"signal\": \"-100\"},\n                  \"width\": {\"signal\": \"200\"},\n                  \"height\": {\"signal\": \"200\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 1\"}\n                }\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"value\": 0}, \"y\": {\"value\": -25}},\n                \"enter\": {\n                  \"text\": {\"value\": \"%\"},\n                  \"fontSize\": {\"value\": 14},\n                  \"fill\": {\"value\": \"#CCCCCC\"},\n                  \"align\": {\"value\": \"left\"},\n                  \"baseline\": {\"value\": \"top\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 0\"}\n                }\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
+        "appearance": {
+          "showActions": false
+        },
+        "header": {
+          "stylingCustomization": {
+            "textPlacement": "start",
+            "additionalStyles": {
+              "title": {},
+              "header": {}
+            }
+          },
+          "securityVisibility": {
+            "effect": "allow",
+            "resourceType": "Endpoint",
+            "type": "Rule"
+          },
+          "enableSecurityVisibility": true,
+          "displayTitle": true,
+          "title": "Overall CPU temperature [%]",
+          "displayIcon": true,
+          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/913eb6f8-03d6-4763-a701-15afd64019e2.svg"
+        },
+        "type": "@kaa/vega-chart-widget"
+      },
+      "lastUpdated": 1729251055817,
+      "layout": {
+        "x": 0,
+        "y": 11,
+        "w": 2,
+        "h": 5,
+        "minH": 1,
+        "minW": 2
+      },
+      "order": 8
+    },
+    "f79bb993-c6ed-4529-b3c6-86a2c1e82bf7": {
+      "config": {
         "datasets": [
           {
             "dataFormat": "aggregated",
@@ -482,23 +656,26 @@
             "updateInterval": 120000
           }
         ],
-        "header": {
-          "displayIcon": true,
-          "displayTitle": true,
-          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/2618d898-1e5c-46f6-ae50-d2f24e113cee.svg",
-          "stylingCustomization": {
-            "additionalStyles": {
-              "header": {},
-              "title": {}
-            },
-            "textPlacement": "start"
-          },
-          "title": "Battery charge [%]"
+        "specification": "{\n  \"$schema\": \"https://vega.github.io/schema/vega/v5.json\",\n  \"padding\": {\n    \"top\": 0,\n    \"left\": 12,\n    \"right\": 12,\n    \"bottom\": 12\n  },\n  \"data\": [\n    {\n      \"name\": \"trend\",\n      \"transform\": [\n        {\"type\": \"formula\", \"expr\": \"datetime(datum['time'])\", \"as\": \"time\"},\n        {\"type\": \"collect\", \"sort\": {\"field\": \"time\", \"order\": \"descending\"}}\n      ]\n    }\n  ],\n  \"scales\": [\n    {\n      \"name\": \"xscale\",\n      \"type\": \"time\",\n      \"range\": \"width\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"time\"}\n    },\n    {\n      \"name\": \"yscale\",\n      \"type\": \"linear\",\n      \"range\": \"height\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"value\"},\n      \"nice\": true,\n      \"zero\": true\n    }\n  ],\n  \"marks\": [\n    {\n      \"type\": \"rect\",\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"value\": 0},\n          \"y\": {\"value\": 0},\n          \"width\": {\"signal\": \"width\"},\n          \"height\": {\"signal\": \"height\"},\n          \"fill\": {\"value\": \"#2B3339\"},\n          \"cornerRadius\": {\"value\": 4}\n        }\n      }\n    },\n    {\n      \"type\": \"line\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"stroke\": {\"value\": \"#BD3CA4\"},\n          \"strokeWidth\": {\"signal\": \"datum.value ? 2 : 0\"}\n        }\n      }\n    },\n    {\n      \"type\": \"area\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"y2\": {\"scale\": \"yscale\", \"value\": 0},\n          \"fill\": {\n            \"value\": {\n              \"gradient\": \"linear\",\n              \"stops\": [\n                {\"offset\": 0, \"color\": \"#43244B\"},\n                {\"offset\": 1, \"color\": \"#762B76\"}\n              ]\n            }\n          },\n          \"strokeWidth\": {\"value\": 2},\n          \"opacity\": {\"value\": 0.8}\n        }\n      }\n    },\n    {\n      \"type\": \"group\",\n      \"encode\": {\n        \"enter\": {\n          \"align\": {\"value\": \"center\"},\n          \"baseline\": {\"value\": \"middle\"}\n        },\n        \"update\": {\n          \"x\": {\"signal\": \"width / 2\"},\n          \"y\": {\"signal\": \"height / 2\"}\n        }\n      },\n      \"layout\": {\"padding\": 10, \"columns\": 3, \"align\": \"none\", \"center\": false},\n      \"marks\": [\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"signal\": \"0\"}, \"y\": {\"value\": 0}},\n                \"enter\": {\n                  \"text\": {\"signal\": \"format((datum.value), '.1f')\"},\n                  \"fontSize\": {\"value\": 56},\n                  \"fill\": {\"value\": \"#FFFFFF\"},\n                  \"align\": {\"value\": \"center\"},\n                  \"font\": {\"value\": \"Digital-7\"},\n                  \"baseline\": {\"value\": \"middle\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 1 : 0\"}\n                }\n              }\n            },\n            {\n              \"type\": \"image\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\n                  \"url\": {\n                    \"value\": \"https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/widgets/aaoen/gg--unavailable%20%282%29.svg\"\n                  },\n                  \"align\":{\"value\": \"center\"},\n                  \"y\": {\"signal\": \"-100\"},\n                  \"width\": {\"signal\": \"200\"},\n                  \"height\": {\"signal\": \"200\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 1\"}\n                }\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"value\": 0}, \"y\": {\"value\": -25}},\n                \"enter\": {\n                  \"text\": {\"value\": \"%\"},\n                  \"fontSize\": {\"value\": 14},\n                  \"fill\": {\"value\": \"#CCCCCC\"},\n                  \"align\": {\"value\": \"left\"},\n                  \"baseline\": {\"value\": \"top\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 0\"}\n                }\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
+        "appearance": {
+          "showActions": false
         },
-        "specification": "{\n  \"$schema\": \"https://vega.github.io/schema/vega/v5.json\",\n  \"padding\": {\n    \"top\": 0,\n    \"left\": 12,\n    \"right\": 12,\n    \"bottom\": 12\n  },\n  \"data\": [\n    {\n      \"name\": \"trend\",\n      \"source\": \"trendData\",\n      \"transform\": [\n        {\"type\": \"formula\", \"expr\": \"datetime(datum['time'])\", \"as\": \"time\"},\n        {\"type\": \"collect\", \"sort\": {\"field\": \"time\", \"order\": \"descending\"}}\n      ]\n    }\n  ],\n  \"scales\": [\n    {\n      \"name\": \"xscale\",\n      \"type\": \"time\",\n      \"range\": \"width\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"time\"}\n    },\n    {\n      \"name\": \"yscale\",\n      \"type\": \"linear\",\n      \"range\": \"height\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"value\"},\n      \"nice\": true,\n      \"zero\": true\n    }\n  ],\n  \"marks\": [\n    {\n      \"type\": \"rect\",\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"value\": 0},\n          \"y\": {\"value\": 0},\n          \"width\": {\"signal\": \"width\"},\n          \"height\": {\"signal\": \"height\"},\n          \"fill\": {\"value\": \"#2B3339\"},\n          \"cornerRadius\": {\"value\": 4}\n        }\n      }\n    },\n    {\n      \"type\": \"line\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"stroke\": {\"value\": \"#BD3CA4\"},\n          \"strokeWidth\": {\"signal\": \"datum.value ? 2 : 0\"}\n        }\n      }\n    },\n    {\n      \"type\": \"area\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"y2\": {\"scale\": \"yscale\", \"value\": 0},\n          \"fill\": {\n            \"value\": {\n              \"gradient\": \"linear\",\n              \"stops\": [\n                {\"offset\": 0, \"color\": \"#43244B\"},\n                {\"offset\": 1, \"color\": \"#762B76\"}\n              ]\n            }\n          },\n          \"strokeWidth\": {\"value\": 2},\n          \"opacity\": {\"value\": 0.8}\n        }\n      }\n    },\n    {\n      \"type\": \"group\",\n      \"encode\": {\n        \"enter\": {\n          \"align\": {\"value\": \"center\"},\n          \"baseline\": {\"value\": \"middle\"}\n        },\n        \"update\": {\n          \"x\": {\"signal\": \"width / 2\"},\n          \"y\": {\"signal\": \"height / 2\"}\n        }\n      },\n      \"layout\": {\"padding\": 10, \"columns\": 3, \"align\": \"none\", \"center\": false},\n      \"marks\": [\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"signal\": \"0\"}, \"y\": {\"value\": 0}},\n                \"enter\": {\n                  \"text\": {\"signal\": \"format((datum.value), '.1f')\"},\n                  \"fontSize\": {\"value\": 56},\n                  \"fill\": {\"value\": \"#FFFFFF\"},\n                  \"align\": {\"value\": \"center\"},\n                  \"font\": {\"value\": \"Digital-7\"},\n                  \"baseline\": {\"value\": \"middle\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 1 : 0\"}\n                }\n              }\n            },\n            {\n              \"type\": \"image\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\n                  \"url\": {\n                    \"value\": \"https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/widgets/aaoen/gg--unavailable%20%282%29.svg\"\n                  },\n                  \"align\":{\"value\": \"center\"},\n                  \"y\": {\"signal\": \"-100\"},\n                  \"width\": {\"signal\": \"200\"},\n                  \"height\": {\"signal\": \"200\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 1\"}\n                }\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"value\": 0}, \"y\": {\"value\": -25}},\n                \"enter\": {\n                  \"text\": {\"value\": \"%\"},\n                  \"fontSize\": {\"value\": 14},\n                  \"fill\": {\"value\": \"#CCCCCC\"},\n                  \"align\": {\"value\": \"left\"},\n                  \"baseline\": {\"value\": \"top\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 0\"}\n                }\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
+        "header": {
+          "stylingCustomization": {
+            "textPlacement": "start",
+            "additionalStyles": {
+              "title": {},
+              "header": {}
+            }
+          },
+          "displayTitle": true,
+          "title": "Battery charge [%]",
+          "displayIcon": true,
+          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/2618d898-1e5c-46f6-ae50-d2f24e113cee.svg"
+        },
         "type": "@kaa/vega-chart-widget"
       },
-      "lastUpdated": 1729237122001,
+      "lastUpdated": 1729251043876,
       "layout": {
         "x": 9,
         "y": 0,
@@ -509,7 +686,7 @@
       },
       "order": 13
     },
-    "a775d6cd-f193-4a87-afc5-4afdbf5641cf": {
+    "942796e4-7f2f-4489-9c50-e83de6e9f61e": {
       "config": {
         "fields": {
           "allowEdit": true,
@@ -550,69 +727,8 @@
       },
       "order": 5
     },
-    "429f9fe6-db19-430e-9322-46e69c7546a3": {
+    "fdb5e0b9-1ec6-4325-9dc9-583c2e41abbd": {
       "config": {
-        "appearance": {
-          "enableScaling": false
-        },
-        "content": "<div style=\"height: 100%; width: 100%; display: flex; align-items: center; justify-content: center;\">\n    <div style=\"background-color: #2B3339; color: #ffffff; font-family: 'Courier New', Courier, monospace; padding: 15px; border-radius: 5px; height: 100%; width: 100%; overflow-y: auto; overflow-x: hidden;\">\n        <pre style=\"white-space: pre-wrap;\"><strong>${console_logs.value}</strong></pre>\n    </div>\n</div>\n",
-        "header": {
-          "displayIcon": true,
-          "displayTitle": true,
-          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/06d38814-f54f-4253-88f1-47f621a06af6.svg",
-          "stylingCustomization": {
-            "additionalStyles": {
-              "header": {},
-              "title": {}
-            },
-            "textPlacement": "start"
-          },
-          "title": "Console output"
-        },
-        "pollingInterval": 5000,
-        "serviceIntegration": [
-          {
-            "fieldName": "console_logs",
-            "systemConfiguration": {
-              "configurationLevel": "tenants"
-            },
-            "appName": "{APP_NAME}",
-            "endpointsCardinality": "single",
-            "endpointId": "${dashboard.id}",
-            "endpoint": "${dashboard.route.id}",
-            "dashboardValues": [],
-            "source": "telemetry",
-            "telemetryValues": [
-              {
-                "timeSeriesName": "auto~console_logs",
-                "valuePath": "values.value",
-                "variableName": "value"
-              }
-            ],
-            "telemetryService": "epts"
-          }
-        ],
-        "type": "rawHTML"
-      },
-      "info": {
-        "version": "1.2.0"
-      },
-      "lastUpdated": 1729237460730,
-      "layout": {
-        "x": 5,
-        "y": 26,
-        "w": 7,
-        "h": 12,
-        "minH": 1,
-        "minW": 2
-      },
-      "order": 2
-    },
-    "2154b98a-cf9d-4ac1-beac-cc444ab71e4e": {
-      "config": {
-        "appearance": {
-          "showActions": false
-        },
         "datasets": [
           {
             "dataFormat": "aggregated",
@@ -649,100 +765,6 @@
                 "field": "dataSample.cpu_load",
                 "label": "value"
               }
-            ],
-            "analyticsApplicationNames": [
-              "{APP_NAME}"
-            ]
-          },
-          {
-            "dataSource": "last-timeseries",
-            "lastTsAppName": "{APP_NAME}",
-            "lastTsEndpointIds": [
-              "${dashboard.route.id}"
-            ],
-            "lastTsServiceInstanceName": "epts",
-            "lastTsTimeseries": [
-              {
-                "columnName": "value",
-                "timeSeriesName": "auto~bytes_sent",
-                "timeSeriesValue": "values.value"
-              }
-            ],
-            "name": "currentValue",
-            "updateInterval": 2000
-          }
-        ],
-        "header": {
-          "displayIcon": true,
-          "displayTitle": true,
-          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/786344ee-72e8-4d08-85ab-3d99143b1f9c.svg",
-          "stylingCustomization": {
-            "additionalStyles": {
-              "header": {},
-              "title": {}
-            },
-            "textPlacement": "start"
-          },
-          "title": "Bytes sent [MB]"
-        },
-        "specification": "{\n  \"$schema\": \"https://vega.github.io/schema/vega/v5.json\",\n  \"padding\": {\n    \"top\": 0,\n    \"left\": 12,\n    \"right\": 12,\n    \"bottom\": 12\n  },\n  \"data\": [\n    {\n      \"name\": \"trend\",\n      \"source\": \"trendData\",\n      \"transform\": [\n        {\"type\": \"formula\", \"expr\": \"datetime(datum['time'])\", \"as\": \"time\"},\n        {\"type\": \"collect\", \"sort\": {\"field\": \"time\", \"order\": \"descending\"}}\n      ]\n    }\n  ],\n  \"scales\": [\n    {\n      \"name\": \"xscale\",\n      \"type\": \"time\",\n      \"range\": \"width\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"time\"}\n    },\n    {\n      \"name\": \"yscale\",\n      \"type\": \"linear\",\n      \"range\": \"height\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"value\"},\n      \"nice\": true,\n      \"zero\": true\n    }\n  ],\n  \"marks\": [\n    {\n      \"type\": \"rect\",\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"value\": 0},\n          \"y\": {\"value\": 0},\n          \"width\": {\"signal\": \"width\"},\n          \"height\": {\"signal\": \"height\"},\n          \"fill\": {\"value\": \"#2B3339\"},\n          \"cornerRadius\": {\"value\": 4}\n        }\n      }\n    },\n    {\n      \"type\": \"line\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"stroke\": {\"value\": \"#BD3CA4\"},\n          \"strokeWidth\": {\"signal\": \"datum.value ? 2 : 0\"}\n        }\n      }\n    },\n    {\n      \"type\": \"area\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"y2\": {\"scale\": \"yscale\", \"value\": 0},\n          \"fill\": {\n            \"value\": {\n              \"gradient\": \"linear\",\n              \"stops\": [\n                {\"offset\": 0, \"color\": \"#43244B\"},\n                {\"offset\": 1, \"color\": \"#762B76\"}\n              ]\n            }\n          },\n          \"strokeWidth\": {\"value\": 2},\n          \"opacity\": {\"value\": 0.8}\n        }\n      }\n    },\n    {\n      \"type\": \"group\",\n      \"encode\": {\n        \"enter\": {\n          \"align\": {\"value\": \"center\"},\n          \"baseline\": {\"value\": \"middle\"}\n        },\n        \"update\": {\n          \"x\": {\"signal\": \"width / 2\"},\n          \"y\": {\"signal\": \"height / 2\"}\n        }\n      },\n      \"layout\": {\"padding\": 10, \"columns\": 3, \"align\": \"none\", \"center\": false},\n      \"marks\": [\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"signal\": \"0\"}, \"y\": {\"value\": 0}},\n                \"enter\": {\n                  \"text\": {\"signal\": \"format((datum.value)/1024/1024, '.1f')\"},\n                  \"fontSize\": {\"value\": 56},\n                  \"fill\": {\"value\": \"#FFFFFF\"},\n                  \"align\": {\"value\": \"center\"},\n                  \"font\": {\"value\": \"Digital-7\"},\n                  \"baseline\": {\"value\": \"middle\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 1 : 0\"}\n                }\n              }\n            },\n            {\n              \"type\": \"image\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\n                  \"url\": {\n                    \"value\": \"https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/widgets/aaoen/gg--unavailable%20%282%29.svg\"\n                  },\n                  \"align\":{\"value\": \"center\"},\n                  \"y\": {\"signal\": \"-100\"},\n                  \"width\": {\"signal\": \"200\"},\n                  \"height\": {\"signal\": \"200\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 1\"}\n                }\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"value\": 0}, \"y\": {\"value\": -25}},\n                \"enter\": {\n                  \"text\": {\"value\": \"MB\"},\n                  \"fontSize\": {\"value\": 14},\n                  \"fill\": {\"value\": \"#CCCCCC\"},\n                  \"align\": {\"value\": \"left\"},\n                  \"baseline\": {\"value\": \"top\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 0\"}\n                }\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
-        "type": "@kaa/vega-chart-widget"
-      },
-      "lastUpdated": 1729237325222,
-      "layout": {
-        "x": 8,
-        "y": 11,
-        "w": 2,
-        "h": 5,
-        "minH": 1,
-        "minW": 2
-      },
-      "order": 9
-    },
-    "982b1e97-1e86-48ee-90f5-ca84c5ade259": {
-      "config": {
-        "appearance": {
-          "showActions": false
-        },
-        "datasets": [
-          {
-            "dataFormat": "aggregated",
-            "dataSource": "analytics",
-            "analyticsTimestampField": "@timestamp",
-            "name": "trendData",
-            "analyticsIndex": "{TENANT_ID}-*",
-            "analyticsSplitRows": [
-              {
-                "aggregation": "date-histogram",
-                "columnName": "time",
-                "dateHistogramInterval": 1800000
-              }
-            ],
-            "updateInterval": 120000,
-            "showLast": 86400,
-            "rangeType": "customRange",
-            "rawMetrics": [
-              {
-                "columnName": "rate",
-                "field": "dataSample.charge_rate"
-              }
-            ],
-            "range": {
-              "from": "now-1d",
-              "to": "now"
-            },
-            "analyticsEndpointIds": [
-              "${dashboard.route.id}"
-            ],
-            "analyticsMetrics": [
-              {
-                "aggregation": "avg",
-                "field": "dataSample.cpu_load",
-                "label": "value"
-              }
-            ],
-            "analyticsApplicationNames": [
-              "{APP_NAME}"
             ]
           },
           {
@@ -764,23 +786,26 @@
             "updateInterval": 2000
           }
         ],
-        "header": {
-          "displayIcon": true,
-          "displayTitle": true,
-          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/46c36921-6b93-42a2-bfcf-e31b31d3cbca.svg",
-          "stylingCustomization": {
-            "additionalStyles": {
-              "header": {},
-              "title": {}
-            },
-            "textPlacement": "start"
-          },
-          "title": "Free disk space [GB]"
+        "specification": "{\n  \"$schema\": \"https://vega.github.io/schema/vega/v5.json\",\n  \"padding\": {\n    \"top\": 0,\n    \"left\": 12,\n    \"right\": 12,\n    \"bottom\": 12\n  },\n  \"data\": [\n    {\n      \"name\": \"trend\",\n      \"transform\": [\n        {\"type\": \"formula\", \"expr\": \"datetime(datum['time'])\", \"as\": \"time\"},\n        {\"type\": \"collect\", \"sort\": {\"field\": \"time\", \"order\": \"descending\"}}\n      ]\n    }\n  ],\n  \"scales\": [\n    {\n      \"name\": \"xscale\",\n      \"type\": \"time\",\n      \"range\": \"width\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"time\"}\n    },\n    {\n      \"name\": \"yscale\",\n      \"type\": \"linear\",\n      \"range\": \"height\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"value\"},\n      \"nice\": true,\n      \"zero\": true\n    }\n  ],\n  \"marks\": [\n    {\n      \"type\": \"rect\",\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"value\": 0},\n          \"y\": {\"value\": 0},\n          \"width\": {\"signal\": \"width\"},\n          \"height\": {\"signal\": \"height\"},\n          \"fill\": {\"value\": \"#2B3339\"},\n          \"cornerRadius\": {\"value\": 4}\n        }\n      }\n    },\n    {\n      \"type\": \"line\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"stroke\": {\"value\": \"#BD3CA4\"},\n          \"strokeWidth\": {\"signal\": \"datum.value ? 2 : 0\"}\n        }\n      }\n    },\n    {\n      \"type\": \"area\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"y2\": {\"scale\": \"yscale\", \"value\": 0},\n          \"fill\": {\n            \"value\": {\n              \"gradient\": \"linear\",\n              \"stops\": [\n                {\"offset\": 0, \"color\": \"#43244B\"},\n                {\"offset\": 1, \"color\": \"#762B76\"}\n              ]\n            }\n          },\n          \"strokeWidth\": {\"value\": 2},\n          \"opacity\": {\"value\": 0.8}\n        }\n      }\n    },\n    {\n      \"type\": \"group\",\n      \"encode\": {\n        \"enter\": {\n          \"align\": {\"value\": \"center\"},\n          \"baseline\": {\"value\": \"middle\"}\n        },\n        \"update\": {\n          \"x\": {\"signal\": \"width / 2\"},\n          \"y\": {\"signal\": \"height / 2\"}\n        }\n      },\n      \"layout\": {\"padding\": 10, \"columns\": 3, \"align\": \"none\", \"center\": false},\n      \"marks\": [\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"signal\": \"0\"}, \"y\": {\"value\": 0}},\n                \"enter\": {\n                  \"text\": {\"signal\": \"format((datum.value)/1024/1024/1024, '.1f')\"},\n                  \"fontSize\": {\"value\": 56},\n                  \"fill\": {\"value\": \"#FFFFFF\"},\n                  \"align\": {\"value\": \"center\"},\n                  \"font\": {\"value\": \"Digital-7\"},\n                  \"baseline\": {\"value\": \"middle\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 1 : 0\"}\n                }\n              }\n            },\n            {\n              \"type\": \"image\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\n                  \"url\": {\n                    \"value\": \"https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/widgets/aaoen/gg--unavailable%20%282%29.svg\"\n                  },\n                  \"align\":{\"value\": \"center\"},\n                  \"y\": {\"signal\": \"-100\"},\n                  \"width\": {\"signal\": \"200\"},\n                  \"height\": {\"signal\": \"200\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 1\"}\n                }\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"value\": 0}, \"y\": {\"value\": -25}},\n                \"enter\": {\n                  \"text\": {\"value\": \"GB\"},\n                  \"fontSize\": {\"value\": 14},\n                  \"fill\": {\"value\": \"#CCCCCC\"},\n                  \"align\": {\"value\": \"left\"},\n                  \"baseline\": {\"value\": \"top\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 0\"}\n                }\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
+        "appearance": {
+          "showActions": false
         },
-        "specification": "{\n  \"$schema\": \"https://vega.github.io/schema/vega/v5.json\",\n  \"padding\": {\n    \"top\": 0,\n    \"left\": 12,\n    \"right\": 12,\n    \"bottom\": 12\n  },\n  \"data\": [\n    {\n      \"name\": \"trend\",\n      \"source\": \"trendData\",\n      \"transform\": [\n        {\"type\": \"formula\", \"expr\": \"datetime(datum['time'])\", \"as\": \"time\"},\n        {\"type\": \"collect\", \"sort\": {\"field\": \"time\", \"order\": \"descending\"}}\n      ]\n    }\n  ],\n  \"scales\": [\n    {\n      \"name\": \"xscale\",\n      \"type\": \"time\",\n      \"range\": \"width\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"time\"}\n    },\n    {\n      \"name\": \"yscale\",\n      \"type\": \"linear\",\n      \"range\": \"height\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"value\"},\n      \"nice\": true,\n      \"zero\": true\n    }\n  ],\n  \"marks\": [\n    {\n      \"type\": \"rect\",\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"value\": 0},\n          \"y\": {\"value\": 0},\n          \"width\": {\"signal\": \"width\"},\n          \"height\": {\"signal\": \"height\"},\n          \"fill\": {\"value\": \"#2B3339\"},\n          \"cornerRadius\": {\"value\": 4}\n        }\n      }\n    },\n    {\n      \"type\": \"line\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"stroke\": {\"value\": \"#BD3CA4\"},\n          \"strokeWidth\": {\"signal\": \"datum.value ? 2 : 0\"}\n        }\n      }\n    },\n    {\n      \"type\": \"area\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"y2\": {\"scale\": \"yscale\", \"value\": 0},\n          \"fill\": {\n            \"value\": {\n              \"gradient\": \"linear\",\n              \"stops\": [\n                {\"offset\": 0, \"color\": \"#43244B\"},\n                {\"offset\": 1, \"color\": \"#762B76\"}\n              ]\n            }\n          },\n          \"strokeWidth\": {\"value\": 2},\n          \"opacity\": {\"value\": 0.8}\n        }\n      }\n    },\n    {\n      \"type\": \"group\",\n      \"encode\": {\n        \"enter\": {\n          \"align\": {\"value\": \"center\"},\n          \"baseline\": {\"value\": \"middle\"}\n        },\n        \"update\": {\n          \"x\": {\"signal\": \"width / 2\"},\n          \"y\": {\"signal\": \"height / 2\"}\n        }\n      },\n      \"layout\": {\"padding\": 10, \"columns\": 3, \"align\": \"none\", \"center\": false},\n      \"marks\": [\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"signal\": \"0\"}, \"y\": {\"value\": 0}},\n                \"enter\": {\n                  \"text\": {\"signal\": \"format((datum.value)/1024/1024/1024, '.1f')\"},\n                  \"fontSize\": {\"value\": 56},\n                  \"fill\": {\"value\": \"#FFFFFF\"},\n                  \"align\": {\"value\": \"center\"},\n                  \"font\": {\"value\": \"Digital-7\"},\n                  \"baseline\": {\"value\": \"middle\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 1 : 0\"}\n                }\n              }\n            },\n            {\n              \"type\": \"image\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\n                  \"url\": {\n                    \"value\": \"https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/widgets/aaoen/gg--unavailable%20%282%29.svg\"\n                  },\n                  \"align\":{\"value\": \"center\"},\n                  \"y\": {\"signal\": \"-100\"},\n                  \"width\": {\"signal\": \"200\"},\n                  \"height\": {\"signal\": \"200\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 1\"}\n                }\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"value\": 0}, \"y\": {\"value\": -25}},\n                \"enter\": {\n                  \"text\": {\"value\": \"GB\"},\n                  \"fontSize\": {\"value\": 14},\n                  \"fill\": {\"value\": \"#CCCCCC\"},\n                  \"align\": {\"value\": \"left\"},\n                  \"baseline\": {\"value\": \"top\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 0\"}\n                }\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
+        "header": {
+          "stylingCustomization": {
+            "textPlacement": "start",
+            "additionalStyles": {
+              "title": {},
+              "header": {}
+            }
+          },
+          "displayTitle": true,
+          "title": "Free disk space [GB]",
+          "displayIcon": true,
+          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/46c36921-6b93-42a2-bfcf-e31b31d3cbca.svg"
+        },
         "type": "@kaa/vega-chart-widget"
       },
-      "lastUpdated": 1729237245799,
+      "lastUpdated": 1729251097678,
       "layout": {
         "x": 4,
         "y": 11,
@@ -791,11 +816,8 @@
       },
       "order": 11
     },
-    "0d482622-67d5-48b9-a0b8-bae57feb550b": {
+    "a0c0f35b-9514-4fd6-9055-ca63366e2b0c": {
       "config": {
-        "appearance": {
-          "showActions": false
-        },
         "datasets": [
           {
             "dataFormat": "aggregated",
@@ -832,9 +854,6 @@
                 "field": "dataSample.cpu_load",
                 "label": "value"
               }
-            ],
-            "analyticsApplicationNames": [
-              "{APP_NAME}"
             ]
           },
           {
@@ -856,23 +875,26 @@
             "updateInterval": 120000
           }
         ],
-        "header": {
-          "displayIcon": true,
-          "displayTitle": true,
-          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/aa15f9ff-5213-42aa-bbb8-79756e3db798.svg",
-          "stylingCustomization": {
-            "additionalStyles": {
-              "header": {},
-              "title": {}
-            },
-            "textPlacement": "start"
-          },
-          "title": "Bytes received [MB]"
+        "specification": "{\n  \"$schema\": \"https://vega.github.io/schema/vega/v5.json\",\n  \"padding\": {\n    \"top\": 0,\n    \"left\": 12,\n    \"right\": 12,\n    \"bottom\": 12\n  },\n  \"data\": [\n    {\n      \"name\": \"trend\",\n      \"transform\": [\n        {\"type\": \"formula\", \"expr\": \"datetime(datum['time'])\", \"as\": \"time\"},\n        {\"type\": \"collect\", \"sort\": {\"field\": \"time\", \"order\": \"descending\"}}\n      ]\n    }\n  ],\n  \"scales\": [\n    {\n      \"name\": \"xscale\",\n      \"type\": \"time\",\n      \"range\": \"width\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"time\"}\n    },\n    {\n      \"name\": \"yscale\",\n      \"type\": \"linear\",\n      \"range\": \"height\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"value\"},\n      \"nice\": true,\n      \"zero\": true\n    }\n  ],\n  \"marks\": [\n    {\n      \"type\": \"rect\",\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"value\": 0},\n          \"y\": {\"value\": 0},\n          \"width\": {\"signal\": \"width\"},\n          \"height\": {\"signal\": \"height\"},\n          \"fill\": {\"value\": \"#2B3339\"},\n          \"cornerRadius\": {\"value\": 4}\n        }\n      }\n    },\n    {\n      \"type\": \"line\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"stroke\": {\"value\": \"#BD3CA4\"},\n          \"strokeWidth\": {\"signal\": \"datum.value ? 2 : 0\"}\n        }\n      }\n    },\n    {\n      \"type\": \"area\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"y2\": {\"scale\": \"yscale\", \"value\": 0},\n          \"fill\": {\n            \"value\": {\n              \"gradient\": \"linear\",\n              \"stops\": [\n                {\"offset\": 0, \"color\": \"#43244B\"},\n                {\"offset\": 1, \"color\": \"#762B76\"}\n              ]\n            }\n          },\n          \"strokeWidth\": {\"value\": 2},\n          \"opacity\": {\"value\": 0.8}\n        }\n      }\n    },\n    {\n      \"type\": \"group\",\n      \"encode\": {\n        \"enter\": {\n          \"align\": {\"value\": \"center\"},\n          \"baseline\": {\"value\": \"middle\"}\n        },\n        \"update\": {\n          \"x\": {\"signal\": \"width / 2\"},\n          \"y\": {\"signal\": \"height / 2\"}\n        }\n      },\n      \"layout\": {\"padding\": 10, \"columns\": 3, \"align\": \"none\", \"center\": false},\n      \"marks\": [\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"signal\": \"0\"}, \"y\": {\"value\": 0}},\n                \"enter\": {\n                  \"text\": {\"signal\": \"format((datum.value)/1024/1024, '.1f')\"},\n                  \"fontSize\": {\"value\": 56},\n                  \"fill\": {\"value\": \"#FFFFFF\"},\n                  \"align\": {\"value\": \"center\"},\n                  \"font\": {\"value\": \"Digital-7\"},\n                  \"baseline\": {\"value\": \"middle\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 1 : 0\"}\n                }\n              }\n            },\n            {\n              \"type\": \"image\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\n                  \"url\": {\n                    \"value\": \"https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/widgets/aaoen/gg--unavailable%20%282%29.svg\"\n                  },\n                  \"align\":{\"value\": \"center\"},\n                  \"y\": {\"signal\": \"-100\"},\n                  \"width\": {\"signal\": \"200\"},\n                  \"height\": {\"signal\": \"200\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 1\"}\n                }\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"value\": 0}, \"y\": {\"value\": -25}},\n                \"enter\": {\n                  \"text\": {\"value\": \"MB\"},\n                  \"fontSize\": {\"value\": 14},\n                  \"fill\": {\"value\": \"#CCCCCC\"},\n                  \"align\": {\"value\": \"left\"},\n                  \"baseline\": {\"value\": \"top\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 0\"}\n                }\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
+        "appearance": {
+          "showActions": false
         },
-        "specification": "{\n  \"$schema\": \"https://vega.github.io/schema/vega/v5.json\",\n  \"padding\": {\n    \"top\": 0,\n    \"left\": 12,\n    \"right\": 12,\n    \"bottom\": 12\n  },\n  \"data\": [\n    {\n      \"name\": \"trend\",\n      \"source\": \"trendData\",\n      \"transform\": [\n        {\"type\": \"formula\", \"expr\": \"datetime(datum['time'])\", \"as\": \"time\"},\n        {\"type\": \"collect\", \"sort\": {\"field\": \"time\", \"order\": \"descending\"}}\n      ]\n    }\n  ],\n  \"scales\": [\n    {\n      \"name\": \"xscale\",\n      \"type\": \"time\",\n      \"range\": \"width\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"time\"}\n    },\n    {\n      \"name\": \"yscale\",\n      \"type\": \"linear\",\n      \"range\": \"height\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"value\"},\n      \"nice\": true,\n      \"zero\": true\n    }\n  ],\n  \"marks\": [\n    {\n      \"type\": \"rect\",\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"value\": 0},\n          \"y\": {\"value\": 0},\n          \"width\": {\"signal\": \"width\"},\n          \"height\": {\"signal\": \"height\"},\n          \"fill\": {\"value\": \"#2B3339\"},\n          \"cornerRadius\": {\"value\": 4}\n        }\n      }\n    },\n    {\n      \"type\": \"line\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"stroke\": {\"value\": \"#BD3CA4\"},\n          \"strokeWidth\": {\"signal\": \"datum.value ? 2 : 0\"}\n        }\n      }\n    },\n    {\n      \"type\": \"area\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"y2\": {\"scale\": \"yscale\", \"value\": 0},\n          \"fill\": {\n            \"value\": {\n              \"gradient\": \"linear\",\n              \"stops\": [\n                {\"offset\": 0, \"color\": \"#43244B\"},\n                {\"offset\": 1, \"color\": \"#762B76\"}\n              ]\n            }\n          },\n          \"strokeWidth\": {\"value\": 2},\n          \"opacity\": {\"value\": 0.8}\n        }\n      }\n    },\n    {\n      \"type\": \"group\",\n      \"encode\": {\n        \"enter\": {\n          \"align\": {\"value\": \"center\"},\n          \"baseline\": {\"value\": \"middle\"}\n        },\n        \"update\": {\n          \"x\": {\"signal\": \"width / 2\"},\n          \"y\": {\"signal\": \"height / 2\"}\n        }\n      },\n      \"layout\": {\"padding\": 10, \"columns\": 3, \"align\": \"none\", \"center\": false},\n      \"marks\": [\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"signal\": \"0\"}, \"y\": {\"value\": 0}},\n                \"enter\": {\n                  \"text\": {\"signal\": \"format((datum.value)/1024/1024, '.1f')\"},\n                  \"fontSize\": {\"value\": 56},\n                  \"fill\": {\"value\": \"#FFFFFF\"},\n                  \"align\": {\"value\": \"center\"},\n                  \"font\": {\"value\": \"Digital-7\"},\n                  \"baseline\": {\"value\": \"middle\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 1 : 0\"}\n                }\n              }\n            },\n            {\n              \"type\": \"image\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\n                  \"url\": {\n                    \"value\": \"https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/widgets/aaoen/gg--unavailable%20%282%29.svg\"\n                  },\n                  \"align\":{\"value\": \"center\"},\n                  \"y\": {\"signal\": \"-100\"},\n                  \"width\": {\"signal\": \"200\"},\n                  \"height\": {\"signal\": \"200\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 1\"}\n                }\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"value\": 0}, \"y\": {\"value\": -25}},\n                \"enter\": {\n                  \"text\": {\"value\": \"MB\"},\n                  \"fontSize\": {\"value\": 14},\n                  \"fill\": {\"value\": \"#CCCCCC\"},\n                  \"align\": {\"value\": \"left\"},\n                  \"baseline\": {\"value\": \"top\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 0\"}\n                }\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
+        "header": {
+          "stylingCustomization": {
+            "textPlacement": "start",
+            "additionalStyles": {
+              "title": {},
+              "header": {}
+            }
+          },
+          "displayTitle": true,
+          "title": "Bytes received [MB]",
+          "displayIcon": true,
+          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/aa15f9ff-5213-42aa-bbb8-79756e3db798.svg"
+        },
         "type": "@kaa/vega-chart-widget"
       },
-      "lastUpdated": 1729237371701,
+      "lastUpdated": 1729251129482,
       "layout": {
         "x": 10,
         "y": 11,
@@ -883,86 +905,7 @@
       },
       "order": 12
     },
-    "3ae4b84d-6f27-4367-aa9a-37c7d11759ed": {
-      "config": {
-        "columns": [
-          {
-            "columnName": "commandType",
-            "columnOrder": 0,
-            "columnTemplate": "${params.value}",
-            "columnWidth": "auto",
-            "display": "Type"
-          },
-          {
-            "columnName": "status",
-            "columnOrder": 2,
-            "columnTemplate": "${params.value}",
-            "columnWidth": "auto",
-            "display": "Status"
-          },
-          {
-            "columnName": "responsePayload",
-            "columnOrder": 3,
-            "columnTemplate": "${params.value}",
-            "columnWidth": "auto"
-          },
-          {
-            "columnName": "statusCode",
-            "columnOrder": 2,
-            "columnTemplate": "${params.value}",
-            "columnWidth": "auto",
-            "display": "Status code"
-          },
-          {
-            "columnName": "requestPayload",
-            "columnOrder": 3,
-            "columnTemplate": "${params.value}",
-            "columnWidth": "auto",
-            "display": "Request payload"
-          },
-          {
-            "columnName": "createdAt",
-            "columnOrder": 4,
-            "columnTemplate": "${params.value}",
-            "columnWidth": "auto",
-            "display": "Executed at"
-          }
-        ],
-        "dataSource": {
-          "applicationName": "{APP_NAME}",
-          "commandTypes": [],
-          "endpoints": "${dashboard.id}",
-          "endpointsService": "epr",
-          "service": "cex",
-          "updateInterval": 5000
-        },
-        "header": {
-          "displayIcon": true,
-          "displayTitle": true,
-          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/d7d9b1b6-ff05-4c29-b3d4-990fdfd59923.svg",
-          "stylingCustomization": {
-            "additionalStyles": {
-              "header": {},
-              "title": {}
-            },
-            "textPlacement": "start"
-          },
-          "title": "Commands history"
-        },
-        "type": "commandsHistory"
-      },
-      "lastUpdated": 1729162858518,
-      "layout": {
-        "x": 5,
-        "y": 21,
-        "w": 7,
-        "h": 5,
-        "minH": 3.5,
-        "minW": 2
-      },
-      "order": 4
-    },
-    "dae473ec-0855-4330-9d01-8effbd9e4f32": {
+    "af9361b3-b62e-473f-9723-0963ed960c39": {
       "lastUpdated": 1729242599629,
       "config": {
         "dataSource": {
@@ -1052,7 +995,86 @@
       },
       "order": 1
     },
-    "e487191d-535c-4ac9-b39a-1d7c281ce89c": {
+    "66c34df9-814e-42e1-8943-7e155446046c": {
+      "config": {
+        "columns": [
+          {
+            "columnName": "commandType",
+            "columnOrder": 0,
+            "columnTemplate": "${params.value}",
+            "columnWidth": "auto",
+            "display": "Type"
+          },
+          {
+            "columnName": "status",
+            "columnOrder": 2,
+            "columnTemplate": "${params.value}",
+            "columnWidth": "auto",
+            "display": "Status"
+          },
+          {
+            "columnName": "responsePayload",
+            "columnOrder": 3,
+            "columnTemplate": "${params.value}",
+            "columnWidth": "auto"
+          },
+          {
+            "columnName": "statusCode",
+            "columnOrder": 2,
+            "columnTemplate": "${params.value}",
+            "columnWidth": "auto",
+            "display": "Status code"
+          },
+          {
+            "columnName": "requestPayload",
+            "columnOrder": 3,
+            "columnTemplate": "${params.value}",
+            "columnWidth": "auto",
+            "display": "Request payload"
+          },
+          {
+            "columnName": "createdAt",
+            "columnOrder": 4,
+            "columnTemplate": "${params.value}",
+            "columnWidth": "auto",
+            "display": "Executed at"
+          }
+        ],
+        "dataSource": {
+          "applicationName": "{APP_NAME}",
+          "commandTypes": [],
+          "endpoints": "${dashboard.id}",
+          "endpointsService": "epr",
+          "service": "cex",
+          "updateInterval": 5000
+        },
+        "header": {
+          "displayIcon": true,
+          "displayTitle": true,
+          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/d7d9b1b6-ff05-4c29-b3d4-990fdfd59923.svg",
+          "stylingCustomization": {
+            "additionalStyles": {
+              "header": {},
+              "title": {}
+            },
+            "textPlacement": "start"
+          },
+          "title": "Commands history"
+        },
+        "type": "commandsHistory"
+      },
+      "lastUpdated": 1729162858518,
+      "layout": {
+        "x": 5,
+        "y": 21,
+        "w": 7,
+        "h": 5,
+        "minH": 3.5,
+        "minW": 2
+      },
+      "order": 4
+    },
+    "3cde634c-c19f-4fc5-8d44-3c95700b817f": {
       "config": {
         "commandsDefinition": {
           "tsServiceName": "epts",
@@ -1148,72 +1170,16 @@
       },
       "order": 6
     },
-    "7b21c212-4512-41fe-873b-10ee203527c8": {
+    "086ce1a8-a75a-4376-9416-7cd7788da58a": {
       "config": {
         "appearance": {
-          "showActions": false
+          "enableScaling": false
         },
-        "datasets": [
-          {
-            "dataFormat": "aggregated",
-            "dataSource": "analytics",
-            "analyticsTimestampField": "@timestamp",
-            "name": "trendData",
-            "analyticsIndex": "{TENANT_ID}-*",
-            "analyticsSplitRows": [
-              {
-                "aggregation": "date-histogram",
-                "columnName": "time",
-                "dateHistogramInterval": 1800000
-              }
-            ],
-            "updateInterval": 120000,
-            "showLast": 86400,
-            "rangeType": "customRange",
-            "rawMetrics": [
-              {
-                "columnName": "rate",
-                "field": "dataSample.charge_rate"
-              }
-            ],
-            "range": {
-              "from": "now-1d",
-              "to": "now"
-            },
-            "analyticsEndpointIds": [
-              "${dashboard.route.id}"
-            ],
-            "analyticsMetrics": [
-              {
-                "aggregation": "avg",
-                "field": "dataSample.cpu_load",
-                "label": "value"
-              }
-            ]
-          },
-          {
-            "beforeDate": "",
-            "dataSource": "last-timeseries",
-            "lastTsAppName": "{APP_NAME}",
-            "lastTsEndpointIds": [
-              "${dashboard.route.id}"
-            ],
-            "lastTsServiceInstanceName": "epts",
-            "lastTsTimeseries": [
-              {
-                "columnName": "value",
-                "timeSeriesName": "auto~cpu_load",
-                "timeSeriesValue": "values.value"
-              }
-            ],
-            "name": "currentValue",
-            "updateInterval": 2000
-          }
-        ],
+        "content": "<div style=\"height: 100%; width: 100%; display: flex; align-items: center; justify-content: center;\">\n    <div style=\"background-color: #2B3339; color: #ffffff; font-family: 'Courier New', Courier, monospace; padding: 15px; border-radius: 5px; height: 100%; width: 100%; overflow-y: auto; overflow-x: hidden;\">\n        <pre style=\"white-space: pre-wrap;\"><strong>${console_logs.value}</strong></pre>\n    </div>\n</div>\n",
         "header": {
           "displayIcon": true,
           "displayTitle": true,
-          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/9ff60df7-dd49-4020-a943-424dcfbe658f.svg",
+          "iconPath": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/06d38814-f54f-4253-88f1-47f621a06af6.svg",
           "stylingCustomization": {
             "additionalStyles": {
               "header": {},
@@ -1221,21 +1187,46 @@
             },
             "textPlacement": "start"
           },
-          "title": "CPU load [%]"
+          "title": "Console output"
         },
-        "specification": "{\n  \"$schema\": \"https://vega.github.io/schema/vega/v5.json\",\n  \"padding\": {\n    \"top\": 0,\n    \"left\": 12,\n    \"right\": 12,\n    \"bottom\": 12\n  },\n  \"data\": [\n    {\n      \"name\": \"trend\",\n      \"source\": \"trendData\",\n      \"transform\": [\n        {\"type\": \"formula\", \"expr\": \"datetime(datum['time'])\", \"as\": \"time\"},\n        {\"type\": \"collect\", \"sort\": {\"field\": \"time\", \"order\": \"descending\"}}\n      ]\n    }\n  ],\n  \"scales\": [\n    {\n      \"name\": \"xscale\",\n      \"type\": \"time\",\n      \"range\": \"width\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"time\"}\n    },\n    {\n      \"name\": \"yscale\",\n      \"type\": \"linear\",\n      \"range\": \"height\",\n      \"domain\": {\"data\": \"trend\", \"field\": \"value\"},\n      \"nice\": true,\n      \"zero\": true\n    }\n  ],\n  \"marks\": [\n    {\n      \"type\": \"rect\",\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"value\": 0},\n          \"y\": {\"value\": 0},\n          \"width\": {\"signal\": \"width\"},\n          \"height\": {\"signal\": \"height\"},\n          \"fill\": {\"value\": \"#2B3339\"},\n          \"cornerRadius\": {\"value\": 4}\n        }\n      }\n    },\n    {\n      \"type\": \"line\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"stroke\": {\"value\": \"#BD3CA4\"},\n          \"strokeWidth\": {\"signal\": \"datum.value ? 2 : 0\"}\n        }\n      }\n    },\n    {\n      \"type\": \"area\",\n      \"from\": {\"data\": \"trend\"},\n      \"encode\": {\n        \"enter\": {\n          \"x\": {\"scale\": \"xscale\", \"field\": \"time\"},\n          \"y\": {\"scale\": \"yscale\", \"field\": \"value\"},\n          \"y2\": {\"scale\": \"yscale\", \"value\": 0},\n          \"fill\": {\n            \"value\": {\n              \"gradient\": \"linear\",\n              \"stops\": [\n                {\"offset\": 0, \"color\": \"#43244B\"},\n                {\"offset\": 1, \"color\": \"#762B76\"}\n              ]\n            }\n          },\n          \"strokeWidth\": {\"value\": 2},\n          \"opacity\": {\"value\": 0.8}\n        }\n      }\n    },\n    {\n      \"type\": \"group\",\n      \"encode\": {\n        \"enter\": {\n          \"align\": {\"value\": \"center\"},\n          \"baseline\": {\"value\": \"middle\"}\n        },\n        \"update\": {\n          \"x\": {\"signal\": \"width / 2\"},\n          \"y\": {\"signal\": \"height / 2\"}\n        }\n      },\n      \"layout\": {\"padding\": 10, \"columns\": 3, \"align\": \"none\", \"center\": false},\n      \"marks\": [\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"signal\": \"0\"}, \"y\": {\"value\": 0}},\n                \"enter\": {\n                  \"text\": {\"signal\": \"format((datum.value), '.1f')\"},\n                  \"fontSize\": {\"value\": 56},\n                  \"fill\": {\"value\": \"#FFFFFF\"},\n                  \"align\": {\"value\": \"center\"},\n                  \"font\": {\"value\": \"Digital-7\"},\n                  \"baseline\": {\"value\": \"middle\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 1 : 0\"}\n                }\n              }\n            },\n            {\n              \"type\": \"image\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\n                  \"url\": {\n                    \"value\": \"https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/widgets/aaoen/gg--unavailable%20%282%29.svg\"\n                  },\n                  \"align\":{\"value\": \"center\"},\n                  \"y\": {\"signal\": \"-100\"},\n                  \"width\": {\"signal\": \"200\"},\n                  \"height\": {\"signal\": \"200\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 1\"}\n                }\n              }\n            }\n          ]\n        },\n        {\n          \"type\": \"group\",\n          \"marks\": [\n            {\n              \"type\": \"text\",\n              \"from\": {\"data\": \"currentValue\"},\n              \"encode\": {\n                \"update\": {\"x\": {\"value\": 0}, \"y\": {\"value\": -25}},\n                \"enter\": {\n                  \"text\": {\"value\": \"%\"},\n                  \"fontSize\": {\"value\": 14},\n                  \"fill\": {\"value\": \"#CCCCCC\"},\n                  \"align\": {\"value\": \"left\"},\n                  \"baseline\": {\"value\": \"top\"},\n                  \"opacity\": {\"signal\": \"datum.value ? 0 : 0\"}\n                }\n              }\n            }\n          ]\n        }\n      ]\n    }\n  ]\n}\n",
-        "type": "@kaa/vega-chart-widget"
+        "pollingInterval": 5000,
+        "serviceIntegration": [
+          {
+            "fieldName": "console_logs",
+            "systemConfiguration": {
+              "configurationLevel": "tenants"
+            },
+            "appName": "{APP_NAME}",
+            "endpointsCardinality": "single",
+            "endpointId": "${dashboard.id}",
+            "endpoint": "${dashboard.route.id}",
+            "dashboardValues": [],
+            "source": "telemetry",
+            "telemetryValues": [
+              {
+                "timeSeriesName": "auto~console_logs",
+                "valuePath": "values.value",
+                "variableName": "value"
+              }
+            ],
+            "telemetryService": "epts"
+          }
+        ],
+        "type": "rawHTML"
       },
-      "lastUpdated": 1729237208745,
+      "info": {
+        "version": "1.2.0"
+      },
+      "lastUpdated": 1729237460730,
       "layout": {
-        "x": 2,
-        "y": 11,
-        "w": 2,
-        "h": 5,
+        "x": 5,
+        "y": 26,
+        "w": 7,
+        "h": 12,
         "minH": 1,
         "minW": 2
       },
-      "order": 14
+      "order": 2
     }
   },
   "configuration": {},
@@ -1260,10 +1251,8 @@
     }
   },
   "titleConfig": {
-    "metadataService": "epr",
-    "template": "<div>Device ${params.name}</div>",
     "templateType": "Advanced",
-    "title": "New dashboard",
+    "metadataService": "epr",
     "variables": [
       {
         "assetField": "name",
@@ -1271,13 +1260,15 @@
         "metadataAttribute": "metadata.node_name",
         "name": "name"
       }
-    ]
+    ],
+    "template": "<div>Device ${params.name}</div>",
+    "title": "New dashboard"
   },
   "applicationName": "{APP_NAME}",
   "sidebarTitle": "New dashboard",
   "description": "Shows a detailed overview of a target machine",
   "entityType": "endpointId",
-  "dashboardResourceId": "dashboard:c3655bdb-7c4c-41db-ad3e-4c98872c4a9a",
+  "dashboardResourceId": "dashboard-d33fbf1b-06d4-43ab-840f-b8bb1155371a",
   "variablesConfiguration": {
     "variables": [
       {
