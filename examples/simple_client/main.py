@@ -3,10 +3,15 @@ import logging
 import os
 import time
 import uuid
+import subprocess
 
 from kaa_mqtt_client import KaaMqttClient, Command, CommandResponse, Configuration, ConfigurationResponse
 
+
+SW_VERSION = "0.0.1"
+
 logger = logging.getLogger(__name__)
+
 
 
 class SimpleCounterClient:
@@ -25,18 +30,44 @@ class SimpleCounterClient:
         def update_config(c: Configuration) -> ConfigurationResponse:
             for k, v in c.config.items():
                 self.config[k] = v
+            logger.info(f"Get new config: {self.config}")
+            return ConfigurationResponse(c.config_id, 200, "applied")
+
+        @self.kaa_client.ota_handler()
+        def update_config(c: Configuration) -> ConfigurationResponse:
+            for k, v in c.config.items():
+                self.config[k] = v
+            logger.info(f"Get new config: {self.config}")
             return ConfigurationResponse(c.config_id, 200, "applied")
 
         @self.kaa_client.command_handler("inc")
         def increment(command: Command) -> CommandResponse:
             inc = command.payload.get("increment")
             self.increment(inc)
-            return CommandResponse(command, status_code=200)
+            return CommandResponse(command, status_code=200, reason_phrase="DONE",
+                                   payload={"current_inc": self.counter})
 
         @self.kaa_client.command_handler("reset")
         def reset(command: Command) -> CommandResponse:
             self.counter = 0
             return CommandResponse(command, status_code=200, reason_phrase="DONE")
+
+        @self.kaa_client.command_handler("shell")
+        def shell(command: Command) -> CommandResponse:
+            result = subprocess.run(["bash", '-c', command.payload.get('cmd')], stdout=subprocess.PIPE)
+            return CommandResponse(command, status_code=200, reason_phrase="DONE",
+                                   payload=result.stdout.decode('utf-8')
+                                   )
+
+        @self.kaa_client.command_handler("upload_file")
+        def handle_file_upload(command: Command) -> CommandResponse:
+            return CommandResponse(command, status_code=200, reason_phrase="DONE",
+                                   payload=f"file uploaded {command.payload}")
+
+        @self.kaa_client.command_handler("get_config")
+        def reset(command: Command) -> CommandResponse:
+            self.counter = 0
+            return CommandResponse(command, status_code=200, reason_phrase="DONE", payload=self.config)
 
         @self.kaa_client.command_handler("fail")
         def fail(command: Command) -> CommandResponse:
@@ -95,9 +126,10 @@ class SimpleCounterClient:
         time.sleep(self.update_interval)
 
 
-def run_endpoint(kpc_host, kpc_port, app_version, token, metadata, update_interval):
+def run_endpoint(kpc_host, kpc_port, app_version, token, metadata, update_interval, path_to_bin_file = None):
     kaa_client = KaaMqttClient(host=kpc_host, port=kpc_port, application_version=app_version, token=token,
                                client_id='counter')
+
     kaa_client.connect()
     simple_counter_client = SimpleCounterClient(kaa_client, metadata, update_interval)
     logger.info(
@@ -111,6 +143,15 @@ def run_endpoint(kpc_host, kpc_port, app_version, token, metadata, update_interv
     )
     # logger.info(f"Send device metadata [{simple_counter_client.metadata}]")
     # kaa_client.publish_metadata(simple_counter_client.metadata)
+    ota_config = Configuration(configId=SW_VERSION)
+    kaa_client.publish_ota_config(ota_config)
+    
+    while kaa_client.bcx_token is None:
+        time.sleep(1)
+
+    if path_to_bin_file is not None:
+        kaa_client.publish_binary_file(path_to_bin_file, kpc_host)
+
     while simple_counter_client.is_running:
         simple_counter_client.step()
 

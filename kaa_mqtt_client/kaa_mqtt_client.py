@@ -1,6 +1,7 @@
 import json
 import logging
 import uuid
+import requests
 from functools import wraps
 from typing import Callable, Any
 
@@ -15,7 +16,9 @@ logger = logging.getLogger(__name__)
 
 
 class KaaMqttClient(object):
-    def __init__(self, host, port, application_version, token, client_id = None,
+    bcx_token: str = None
+
+    def __init__(self, host, port, application_version, token, client_id=None,
                  on_message: Callable[[mqtt.Client, Any, MQTTMessage], None] = None):
         self.topics = KaaClientTopicsConfig(application_version, token)
         self.host = host
@@ -36,6 +39,42 @@ class KaaMqttClient(object):
         result = self.client.publish(topic=self.topics.get_metadata_topic(), payload=payload)
         self._check_send_result(result)
 
+    def publish_ota_config(self, config: Configuration) -> None:
+        if not isinstance(config, Configuration):
+            raise TypeError(f"{type(config)} in not type of Configuration")
+        logger.info(f"Publish version {config.to_json()}")
+        result = self.client.publish(topic=self.topics.get_ota_configuration_status_reply_topic(),
+                                     payload=config.to_json())
+        self._check_send_result(result)
+
+    def get_binary_upload_token(self):
+        self.client.publish(topic=self.topics.get_binary_token_topic(),
+                            payload=None)
+
+    def add_bcx_token_handler(self, client: MqttClient, userdata: Any, message: MQTTMessage):
+        token = json.loads(message.payload.decode('utf-8'))
+        self.bcx_token = token.get('token')
+
+    def publish_binary_file(self, file_name: str, kpc_host="cloud.kaaiot.com"):
+        with open(file_name, 'rb') as f:
+            data = f.read()
+
+        logger.info(f"Uploading file {file_name}")
+
+        binary_data_url = f"https://{kpc_host}/bcx/api/v1/binary-data"
+        res = requests.post(
+            url=binary_data_url,
+            headers={
+                "X-Auth-Token": self.bcx_token,
+                "Content-Type": 'application/octet-stream'
+            },
+            params={
+                "name": file_name.replace("/", "_")
+            },
+            data=data
+        )
+
+
     def publish_data_collection(self, payload: dict) -> None:
         if isinstance(payload, dict):
             payload = json.dumps(payload)
@@ -53,6 +92,8 @@ class KaaMqttClient(object):
 
     def connect(self):
         self.client.connect(self.host, self.port, 60)
+        self.get_binary_upload_token()
+        self.client.message_callback_add(self.topics.get_binary_token_status_topic(), self.add_bcx_token_handler)
         self.client.on_message = self.on_message
         self.client.loop_start()
 
@@ -75,6 +116,22 @@ class KaaMqttClient(object):
             self.add_configuration_handler(_handle_inner)
             return _handle_inner
         return decorator
+
+    def ota_handler(self):
+        def decorator(func: Callable[[Configuration], ConfigurationResponse]):
+            @wraps(func)
+            def _handle_inner(client: MqttClient, userdata: Any, message: MQTTMessage):
+                logger.info(f"Received ota configuration: [{message.topic}] []")
+                configuration_str = message.payload.decode('utf-8')
+                configuration = Configuration(**json.loads(configuration_str))
+                configuration_response = func(configuration)
+                logger.info(f"Processed configuration request: {configuration_response.to_dict()}")
+                response_topic = self.topics.get_ota_configuration_status_reply_topic()
+                client.publish(response_topic, configuration_response.to_json())
+            self.add_configuration_handler(_handle_inner)
+            return _handle_inner
+        return decorator
+
 
     def command_handler(self, command_name: str):
         def decorator(func: Callable[[Command], CommandResponse]):

@@ -26,10 +26,10 @@ class CommandResponse:
     reason_phrase: str = None
     payload: Dict[str, Any] = None
 
-    def __init__(self, command: Command, status_code: int, reason_phrase: str = None):
+    def __init__(self, command: Command, status_code: int, reason_phrase: str = None, payload: str = None):
         self.command_id = command.command_id
         self.status_code = status_code
-        self.payload = command.payload
+        self.payload = payload
         self.reason_phrase = reason_phrase
 
     def to_dict(self) -> dict:

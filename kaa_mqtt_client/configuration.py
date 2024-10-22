@@ -14,10 +14,11 @@ class Configuration:
         self.config = kwargs.get("config")
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        config = {
             "configId": self.config_id,
             "config": self.config
         }
+        return {k: v for k, v in config.items() if v}
 
     def to_json(self):
         return json.dumps(self.to_dict())

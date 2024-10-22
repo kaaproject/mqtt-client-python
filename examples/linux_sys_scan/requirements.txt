@@ -1,0 +1,14 @@
+certifi==2024.8.30
+charset-normalizer==3.4.0
+docker==7.1.0
+getmac==0.9.5
+GPUtil==1.4.0
+idna==3.10
+paho-mqtt==1.5.1
+psutil==6.0.0
+py-cpuinfo==9.0.0
+requests==2.32.3
+urllib3==2.2.3
+# mqtt-client-python
+# git+https://github.com/kaaproject/mqtt-client-python.git
+../..
