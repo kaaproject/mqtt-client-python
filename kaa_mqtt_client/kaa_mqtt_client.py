@@ -55,13 +55,15 @@ class KaaMqttClient(object):
         token = json.loads(message.payload.decode('utf-8'))
         self.bcx_token = token.get('token')
 
-    def publish_binary_file(self, file_name: str):
+    def publish_binary_file(self, file_name: str, kpc_host="cloud.kaaiot.com"):
         with open(file_name, 'rb') as f:
             data = f.read()
 
         logger.info(f"Uploading file {file_name}")
+
+        binary_data_url = f"https://{kpc_host}/bcx/api/v1/binary-data"
         res = requests.post(
-            url=f"https://next.kaaiot.com/bcx/api/v1/binary-data",
+            url=binary_data_url,
             headers={
                 "X-Auth-Token": self.bcx_token,
                 "Content-Type": 'application/octet-stream'
