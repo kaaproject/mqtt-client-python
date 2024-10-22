@@ -19,7 +19,7 @@ To get started with the project, follow these steps:
 2. Install the project using the following commands:
 
    ```bash
-   git clone -b AGILE-5592 https://github.com/vnpmgit/mqtt-client-python.git
+   git clone https://github.com/kaaproject/mqtt-client-python
    cd mqtt-client-python
    python3 -m venv env
    source env/bin/activate
