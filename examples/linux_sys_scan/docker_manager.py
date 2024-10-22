@@ -138,10 +138,8 @@ class DockerManager:
         for cont_key, new_cont in new_containers.items():
             if cont_key not in old_containers:
                 changes['added_containers'].append(new_cont)
-            else:
-                old_cont = old_containers[cont_key]
-                if old_cont['image'] != new_cont['image'] or old_cont['ports'] != new_cont['ports']:
-                    changes['removed_containers'].append(old_cont)
+            elif old_containers[cont_key]["container_name"] == new_cont["container_name"]:
+                    changes['removed_containers'].append(old_containers[cont_key])
                     changes['added_containers'].append(new_cont)
 
         for cont_key in old_containers.keys():
