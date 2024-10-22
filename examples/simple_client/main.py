@@ -126,7 +126,7 @@ class SimpleCounterClient:
         time.sleep(self.update_interval)
 
 
-def run_endpoint(kpc_host, kpc_port, app_version, token, metadata, update_interval):
+def run_endpoint(kpc_host, kpc_port, app_version, token, metadata, update_interval, path_to_bin_file = None):
     kaa_client = KaaMqttClient(host=kpc_host, port=kpc_port, application_version=app_version, token=token,
                                client_id='counter')
 
@@ -145,9 +145,13 @@ def run_endpoint(kpc_host, kpc_port, app_version, token, metadata, update_interv
     # kaa_client.publish_metadata(simple_counter_client.metadata)
     ota_config = Configuration(configId=SW_VERSION)
     kaa_client.publish_ota_config(ota_config)
+    
     while kaa_client.bcx_token is None:
         time.sleep(1)
-    kaa_client.publish_binary_file('/Users/nikolayborisenko/Desktop/image-for-send.png')
+
+    if path_to_bin_file is not None:
+        kaa_client.publish_binary_file(path_to_bin_file)
+
     while simple_counter_client.is_running:
         simple_counter_client.step()
 
