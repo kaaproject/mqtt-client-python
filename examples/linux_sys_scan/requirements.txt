@@ -1,6 +1,7 @@
 certifi==2024.8.30
 charset-normalizer==3.4.0
 docker==7.1.0
+getmac==0.9.5
 GPUtil==1.4.0
 idna==3.10
 paho-mqtt==1.5.1

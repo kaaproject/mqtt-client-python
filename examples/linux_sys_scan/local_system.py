@@ -4,6 +4,7 @@ import psutil
 import GPUtil
 import subprocess
 
+from getmac import get_mac_address 
 from constants import logger
 
 def bytes_to_gbs(bytes):
@@ -77,6 +78,7 @@ def get_machine_metadata():
     memory_info = psutil.virtual_memory()
     
     result = {
+        "mac_address": get_mac_address(),
         "system": platform.system(),
         "release": platform.release(),
         "node_name": platform.node(),
