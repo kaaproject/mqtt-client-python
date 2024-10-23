@@ -2,7 +2,7 @@
 
 This project implements the Kaaiot API to provide remote access and system scanning for your Linux machine. The code utilizes tools like `cpuinfo`, `psutil`, `GPUtil`, and `subprocess`, continuously scanning your Linux system and sending the data to Kaaiot via MQTT. From Kaaiot, you can view the data as an endpoint and execute console commands without the need for a static IP.
 
-![running endpoint](./imgs/running_endpoint.jpg)
+![running endpoint](./img/running_endpoint.jpg)
 
 
 ## Installation
@@ -38,7 +38,7 @@ python3 main.py
 
 Upon your first launch, you may encounter a several errors:
 
-![error picture](./attach/img/env_vars_not_found.jpg)
+![error picture](./img/env_vars_not_found.jpg)
 
 The program scans your system and attempts to send the data, but it doesn't know where to send it due to missing environment variables such as `DEFAULT_KPC_HOST`, `APPLICATION_VERSION`, `APPLICATION_NAME`, `TENANT_ID` and `ENDPOINT_TOKEN`. 
 Here’s how to get them.
@@ -51,22 +51,22 @@ To resolve the issue, you need to create a new application and an endpoint. The 
 ### Steps to Create an Application
 
 1. **Open Kaa console**: Navigate to the Applications tab, choose a name for your application, and create it.
-   ![create application picture](./attach/img/add_app.jpg)
+   ![create application picture](./img/add_app.jpg)
 
 2. **Add a Device**: In the Devices tab, select your application from the dropdown and click "Add device". Choose a name for the device and create it.
-   ![creating device picture](./attach/img/add_device.jpg)
+   ![creating device picture](./img/add_device.jpg)
 
 3. **Copy the Token**: You will be greeted with a token. Copy it. That is `ENDPOINT_TOKEN`, 1 out of the 5 required variables.
-   ![commands](./attach/img/token.jpg)
+   ![commands](./img/token.jpg)
 
 4. **Get Application Version**: Open your newly created device and copy the `appVersion.name` and `appName`. This will be `APPLICATION_VERSION` and `APPLICATION_NAME`, which are the 3 out of 5 variables.
-   ![app name and version picture](./attach/img/app_name_version.jpg)
+   ![app name and version picture](./img/app_name_version.jpg)
 
 5. **Get Tenant ID**: In the top right corner, click on `profile icon` and copy `Tenant ID`. That's 4 out of 5.
-   ![tenant id picture](./attach/img/tenant_id.jpg)
+   ![tenant id picture](./img/tenant_id.jpg)
 
 6. **Get Default KPC Host**: Finally, on the device page, navigate to "Data Publish", check the MQTT option, and copy the resulting URL. This is the `DEFAULT_KPC_HOST`, the last variable.
-   ![KPC host picture](./attach/img/kpc_host.jpg)
+   ![KPC host picture](./img/kpc_host.jpg)
 
 
 ## Provisioning Your Python Script
@@ -96,7 +96,7 @@ In your device page, navigate to the Commands section. You can execute terminal 
 {"command": "ls"}
 ```
 
-![commands](./attach/img/commands.jpg)
+![commands](./img/commands.jpg)
 
 
 ## Viewing Your Data with Kaa Dashboard (Optional)
@@ -106,7 +106,7 @@ You can use the Kaa dashboard to create a custom UI to view your data and go bey
 ### Creating a Dashboard
 
 Open the **Solutions** tab. A solution is automatically created for each application, but you can create a new one if needed.  
-   ![Open Dashboard](./attach/img/open_dashboard.jpg)
+   ![Open Dashboard](./img/open_dashboard.jpg)
 
     
 ### Quick Start
@@ -119,7 +119,7 @@ To keep things simple, here’s a quick example. After running the python3 main.
 4. (OPTIONAL) This dashboard can execute Docker commands. To use this feature, you need to install Docker on your machine. Follow the instructions [here](https://github.com/docker/docker-install).
 
 You should now see a dashboard similar to the one shown below:  
-![Dashboard](./attach/img/dashboard.jpg)
+![Dashboard](./img/dashboard.jpg)
 
 
 ## Conclusion
