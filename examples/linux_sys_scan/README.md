@@ -76,10 +76,10 @@ Here's an example of the credentials you should provide. Replace the placeholder
 ```bash
 export DEFAULT_KPC_HOST="mqtt://mqtt.cloud.kaaiot.com"
 export DEFAULT_KPC_PORT="1883"
-export APPLICATION_NAME="crojeaql2kqs738mpoq0"
-export APPLICATION_VERSION="crojeaql2kqs738mpoq0-v1"
-export ENDPOINT_TOKEN="ACvOGU7pQE"
-export TENANT_ID="d6312fc1-4c5d-4d1d-8c8c-8ab16435b560"
+export APPLICATION_NAME="{your-application-name}"
+export APPLICATION_VERSION="{your-application-version}"
+export ENDPOINT_TOKEN="{your-endpoint-token}"
+export TENANT_ID="{your-tenant-id}"
 ```
 
 Now you can launch the program with `python3 main.py`, and hopefully, you will start receiving data.
