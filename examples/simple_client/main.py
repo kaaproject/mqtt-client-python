@@ -150,7 +150,8 @@ def run_endpoint(kpc_host, kpc_port, app_version, token, metadata, update_interv
         time.sleep(1)
 
     if path_to_bin_file is not None:
-        kaa_client.publish_binary_file(path_to_bin_file, kpc_host)
+        kaa_domain_url = kpc_host[len("mqtt."):]
+        kaa_client.publish_binary_file(path_to_bin_file, kaa_domain_url)
 
     while simple_counter_client.is_running:
         simple_counter_client.step()
