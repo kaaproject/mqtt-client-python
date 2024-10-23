@@ -23,7 +23,7 @@ To get started with the project, follow these steps:
    cd mqtt-client-python
    python3 -m venv env
    source env/bin/activate
-   cd examples/sys_scan/
+   cd examples/linux_sys_scan/
    pip install -r requirements.txt
    ```
 
