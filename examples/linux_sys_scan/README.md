@@ -65,8 +65,16 @@ To resolve the issue, you need to create a new application and an endpoint. The 
 5. **Get Tenant ID**: In the top right corner, click on `profile icon` and copy `Tenant ID`. That's 4 out of 5.
    ![tenant id picture](./img/tenant_id.jpg)
 
-6. **Get Default KPC Host**: Finally, on the device page, navigate to "Data Publish", check the MQTT option, and copy the resulting URL. This is the `DEFAULT_KPC_HOST`, the last variable.
-   ![KPC host picture](./img/kpc_host.jpg)
+6. **Get Default KPC Host**: 
+   On the device page, follow these steps:
+
+   1. Navigate to **Data Publish**.
+   2. Check the **MQTT** option.
+   3. Copy the resulting URL.
+
+   Next, remove `mqtt://` from the URL. You should end up with something like this: `mqtt.cloud.kaaiot.com`. 
+
+   This value is your `DEFAULT_KPC_HOST`, which is the last variable.
 
 
 ## Provisioning Your Python Script
@@ -74,7 +82,7 @@ To resolve the issue, you need to create a new application and an endpoint. The 
 Here's an example of the credentials you should provide. Replace the placeholder values with your own and copy the result into your terminal:
 
 ```bash
-export DEFAULT_KPC_HOST="mqtt://mqtt.cloud.kaaiot.com"
+export DEFAULT_KPC_HOST="mqtt.cloud.kaaiot.com"
 export DEFAULT_KPC_PORT="1883"
 export APPLICATION_NAME="{your-application-name}"
 export APPLICATION_VERSION="{your-application-version}"
