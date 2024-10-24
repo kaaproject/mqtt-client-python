@@ -68,9 +68,9 @@ To resolve the issue, you need to create a new application and an endpoint. The 
 6. **Get Default KPC Host**: 
    On the device page, follow these steps:
 
-   1. Navigate to **Data Publish**.
-   2. Check the **MQTT** option.
-   3. Copy the resulting URL.
+   - Navigate to **Data Publish**.
+   - Check the **MQTT** option.
+   - Copy the resulting URL.
 
    Next, remove `mqtt://` from the URL. You should end up with something like this: `mqtt.cloud.kaaiot.com`. 
 
