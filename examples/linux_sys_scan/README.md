@@ -51,13 +51,13 @@ To resolve the issue, you need to create a new application and an endpoint. The 
 ### Steps to Create an Application
 
 1. **Open Kaa console**: Navigate to the Applications tab, choose a name for your application, and create it.
-   ![create application picture](../../img/add_app.jpg)
+   ![create application picture](../img/add_app.jpg)
 
 2. **Add a Device**: In the Devices tab, select your application from the dropdown and click "Add device". Choose a name for the device and create it.
-   ![creating device picture](../../img/add_device.jpg)
+   ![creating device picture](../img/add_device.jpg)
 
 3. **Copy the Token**: You will be greeted with a token. Copy it. That is `ENDPOINT_TOKEN`, 1 out of the 5 required variables.
-   ![commands](../../img/token.jpg)
+   ![commands](../img/token.jpg)
 
 4. **Get Application Version**: Open your newly created device and copy the `appVersion.name` and `appName`. This will be `APPLICATION_VERSION` and `APPLICATION_NAME`, which are the 3 out of 5 variables.
    ![app name and version picture](./img/app_name_version.jpg)

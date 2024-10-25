@@ -27,20 +27,20 @@ To obtain environment variables, we first need to create an **application**. The
 1. **Open the Kaa Console**: 
    - Navigate to the **Applications** tab.
    - Choose a name for your application and create it.
-   ![Create application picture](../../img/add_app.jpg)
+   ![Create application picture](../img/add_app.jpg)
 
 2. **Add a Device**: 
    - In the **Devices** tab, select your application from the dropdown menu.
    - Click **Add Device**, choose a name for the device, and create it.
-   ![Creating device picture](../../img/add_device.jpg)
+   ![Creating device picture](../img/add_device.jpg)
 
 3. **Copy the Token**: 
    - You will be presented with a token. Copy this token, as it is the `ENDPOINT_TOKEN`.
-   ![Token](../../img/token.jpg)
+   ![Token](../img/token.jpg)
 
 4. **Get Application Version**: 
     - Open your newly created device and copy the `appVersion.name`. This will be `APPLICATION_VERSION`.
-   ![app name and version picture](../../img/app_version.jpg)
+   ![app name and version picture](../img/app_version.jpg)
 
 5. **Get Default KPC Host**: 
    On the device page, follow these steps:
