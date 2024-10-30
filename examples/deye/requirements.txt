@@ -1,0 +1,14 @@
+certifi==2024.8.30
+charset-normalizer==3.4.0
+deye-controller==0.2.0
+idna==3.10
+paho-mqtt==1.5.1
+pyserial==3.5
+pysolarmanv5==3.0.4
+PyYAML==6.0.1
+requests==2.32.3
+uModbus==1.0.4
+urllib3==2.2.3
+# mqtt-client-python
+# git+https://github.com/kaaproject/mqtt-client-python.git
+../..
