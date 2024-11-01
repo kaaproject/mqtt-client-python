@@ -65,18 +65,16 @@ def read_data(selection, excluded_selection):
 
 
 metadata_selection = [
-        'DeviceType', 'CommProtocol', 'CommAddress', 'BatteryControl', 
-        'BattCapacity', 'BattEqualization', 'BattAbsorbtion', 'BattFloat', 
-        'BattShutDownCapacity', 'BattRestartCapacity', 'BattLowCapacity', 
-        'BattShutDownVoltage', 'BattRestartVoltage', 'GridFrequency', 
-        'MaxAmpCharge'
+    'DeviceType', 'CommProtocol', 'CommAddress', 'BatteryControl', 
+    'BattCapacity', 'BattEqualization', 'BattAbsorbtion', 'BattFloat', 
+    'BattShutDownCapacity', 'BattRestartCapacity', 'BattLowCapacity', 
+    'BattShutDownVoltage', 'BattRestartVoltage', 'GridFrequency', 
+    'MaxAmpCharge'
 ]
 
 def get_timestamp():
-    excluded_selection = metadata_selection
-    return read_data([], excluded_selection)
+    return read_data([], metadata_selection)
 
 
 def get_metadata():
-    selection = metadata_selection
-    return read_data(selection, [])
+    return read_data(metadata_selection, [])
