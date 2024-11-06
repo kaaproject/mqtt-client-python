@@ -1,0 +1,1175 @@
+{
+    "path": "/inverter/:endpointId",
+    "displayName": "Inverter overview",
+    "order": 1,
+    "dashboardType": "entityRelated",
+    "widgets": {
+      "89caec46-c5fd-4a0e-a73d-178f50f7370b": {
+        "config": {
+          "appearance": {
+            "enableScaling": false
+          },
+          "content": "<div style=\"margin:0; padding:0; margin-left: 15px; min-width:100px; min-width:100px;\">\n  <span style=\"color: #3E4343; font-size: 2em; display: inline;\">${value[\"value\"]}</span>\n  <span style=\"margin-left:5px;\"/>\n  <span style=\"color: #C4C4C4; font-size: 1.5em; display: inline;\"> kWh</span>\n</div>",
+          "header": {
+            "displayIcon": false,
+            "displayTitle": true,
+            "stylingCustomization": {
+              "additionalStyles": {
+                "header": {},
+                "title": {
+                  "overflow": "hidden"
+                }
+              },
+              "textPlacement": "start",
+              "titleTextColor": "#5a6062"
+            },
+            "title": "Battery charge today"
+          },
+          "pollingInterval": 300000,
+          "serviceIntegration": [
+            {
+              "fieldName": "value",
+              "appName": "{APP_NAME}",
+              "endpointsCardinality": "single",
+              "endpointId": "${dashboard.id}",
+              "relatedEndpoints": false,
+              "endpoint": "${dashboard.route.id}",
+              "service": "epr",
+              "endpointValues": [
+                {
+                  "path": ""
+                }
+              ],
+              "source": "telemetry",
+              "telemetryValues": [
+                {
+                  "timeSeriesName": "auto~Battery_Charge_Today",
+                  "valuePath": "values.value",
+                  "variableName": "value"
+                }
+              ],
+              "telemetryService": "epts"
+            }
+          ],
+          "type": "rawHTML"
+        },
+        "info": {
+          "version": "1.2.0"
+        },
+        "lastUpdated": 1730219563876,
+        "layout": {
+          "h": 2,
+          "minH": 1,
+          "minW": 2,
+          "w": 3,
+          "x": 0,
+          "y": 0
+        },
+        "order": 3
+      },
+      "a8ff5da2-2dc9-4f54-b380-17a7797651b2": {
+        "config": {
+          "appearance": {
+            "advanced": {}
+          },
+          "dataSource": {
+            "timestampField": "@timestamp",
+            "groupByEndpointDisplayAttribute": "${metadata.name}",
+            "groupByEndpointApplication": "{APP_NAME}",
+            "advancedQuery": {
+              "filterJSON": ""
+            },
+            "groupByApplicationEndpointFilter": "${dashboard.route.id}",
+            "groupByEndpoint": "${dashboard.route.id}",
+            "updateInterval": 5000,
+            "enableEndpointFilter": true,
+            "showLast": 86400,
+            "groupBy": "endpoint",
+            "rangeType": "customRange",
+            "groupByApplication": [
+              "{APP_NAME}"
+            ],
+            "showRelatedEndpointsData": false,
+            "source": "{TENANT_ID}-*",
+            "range": {
+              "from": "${dashboard.range.from}",
+              "to": "${dashboard.range.to}"
+            }
+          },
+          "header": {
+            "displayIcon": false,
+            "displayTitle": true,
+            "stylingCustomization": {
+              "additionalStyles": {
+                "header": {},
+                "title": {}
+              },
+              "textPlacement": "start"
+            },
+            "title": "POWER"
+          },
+          "metricsConfiguration": {
+            "aggregationMetrics": [
+              {
+                "advanced": {
+                  "filterJSON": ""
+                },
+                "aggregation": "avg",
+                "appearance": {
+                  "connectNulls": false,
+                  "postfix": "W",
+                  "precision": 1
+                },
+                "field": "dataSample.Inverter_Total_Out_Power",
+                "label": "Inverter Out Power",
+                "seriesType": "line",
+                "yAxis": "default"
+              },
+              {
+                "advanced": {
+                  "filterJSON": ""
+                },
+                "aggregation": "avg",
+                "appearance": {
+                  "connectNulls": false,
+                  "postfix": "W",
+                  "precision": 1
+                },
+                "field": "dataSample.Grid_Total_Power",
+                "label": "Grid Total Power",
+                "seriesType": "line",
+                "yAxis": "default"
+              },
+              {
+                "advanced": {
+                  "filterJSON": ""
+                },
+                "aggregation": "avg",
+                "appearance": {
+                  "connectNulls": false,
+                  "postfix": "W",
+                  "precision": 1
+                },
+                "field": "dataSample.Load_Total_Power",
+                "label": "Load Total Power",
+                "seriesType": "line",
+                "yAxis": "default"
+              }
+            ],
+            "dataCollection": "aggregation",
+            "histogramInterval": 1800000,
+            "histogramIntervalType": "auto"
+          },
+          "type": "@kaa/analytics-time-series-chart",
+          "yAxisSettings": {
+            "defaultYAxis": {
+              "position": "left",
+              "scale": true
+            }
+          }
+        },
+        "lastUpdated": 1730713108374,
+        "layout": {
+          "h": 6,
+          "minH": 1,
+          "minW": 2,
+          "w": 7,
+          "x": 5,
+          "y": 2
+        },
+        "order": 9
+      },
+      "61d0409f-b128-4ae8-a2d6-78f112749914": {
+        "config": {
+          "appearance": {
+            "advanced": {}
+          },
+          "dataSource": {
+            "timestampField": "@timestamp",
+            "groupByEndpointDisplayAttribute": "${metadata.name}",
+            "groupByEndpointApplication": "{APP_NAME}",
+            "advancedQuery": {
+              "filterJSON": ""
+            },
+            "groupByApplicationEndpointFilter": "${dashboard.route.id}",
+            "groupByEndpoint": "${dashboard.route.id}",
+            "updateInterval": 5000,
+            "enableEndpointFilter": true,
+            "showLast": 86400,
+            "groupBy": "endpoint",
+            "rangeType": "customRange",
+            "groupByApplication": [
+              "{APP_NAME}"
+            ],
+            "showRelatedEndpointsData": false,
+            "source": "{TENANT_ID}-*",
+            "range": {
+              "from": "${dashboard.range.from}",
+              "to": "${dashboard.range.to}"
+            }
+          },
+          "header": {
+            "displayIcon": false,
+            "displayTitle": true,
+            "stylingCustomization": {
+              "additionalStyles": {
+                "header": {},
+                "title": {}
+              },
+              "textPlacement": "start"
+            },
+            "title": "Yield Daily"
+          },
+          "metricsConfiguration": {
+            "aggregationMetrics": [
+              {
+                "advanced": {
+                  "filterJSON": ""
+                },
+                "aggregation": "avg",
+                "appearance": {
+                  "connectNulls": false,
+                  "postfix": "kWh",
+                  "precision": 1
+                },
+                "field": "dataSample.Active_Power_Today",
+                "label": "Yield Daily",
+                "seriesType": "bar",
+                "yAxis": "default"
+              }
+            ],
+            "dataCollection": "raw",
+            "histogramInterval": 1800000,
+            "histogramIntervalType": "auto",
+            "rawMetrics": [
+              {
+                "advanced": {},
+                "appearance": {
+                  "connectNulls": false,
+                  "postfix": "kWh",
+                  "precision": 1
+                },
+                "field": "dataSample.Active_Power_Today",
+                "label": "Daily Yield",
+                "seriesType": "bar",
+                "transformValue": {
+                  "script": "params.value"
+                },
+                "yAxis": "default"
+              },
+              {
+                "advanced": {},
+                "appearance": {
+                  "connectNulls": false,
+                  "postfix": "kWh",
+                  "precision": 1
+                },
+                "field": "dataSample.Today_Sold_To_Grid",
+                "label": "Exported Energy",
+                "seriesType": "bar",
+                "transformValue": {
+                  "script": "params.value"
+                },
+                "yAxis": "default"
+              },
+              {
+                "advanced": {},
+                "appearance": {
+                  "connectNulls": false,
+                  "postfix": "kWh",
+                  "precision": 1
+                },
+                "field": "dataSample.Active_Power_Today",
+                "label": "Self-consumption",
+                "seriesType": "bar",
+                "transformValue": {
+                  "mathMetrics": [
+                    {
+                      "field": "dataSample.Today_Sold_To_Grid",
+                      "name": "power_consumed"
+                    }
+                  ],
+                  "script": "params.value - params.power_consumed"
+                },
+                "yAxis": "default"
+              },
+              {
+                "advanced": {},
+                "appearance": {
+                  "connectNulls": false,
+                  "postfix": "kWh",
+                  "precision": 1
+                },
+                "field": "dataSample.Today_Bought_From_Grid",
+                "label": "Imported Energy From Grid",
+                "seriesType": "bar",
+                "transformValue": {
+                  "script": "params.value"
+                },
+                "yAxis": "default"
+              }
+            ]
+          },
+          "type": "@kaa/analytics-time-series-chart",
+          "yAxisSettings": {
+            "defaultYAxis": {
+              "position": "left",
+              "scale": true
+            }
+          }
+        },
+        "lastUpdated": 1730713141864,
+        "layout": {
+          "h": 5,
+          "minH": 1,
+          "minW": 2,
+          "w": 7,
+          "x": 5,
+          "y": 8
+        },
+        "order": 10
+      },
+      "dbfdeef4-a2e3-4837-8b38-b934e43c43e4": {
+        "config": {
+          "appearance": {
+            "enableScaling": false
+          },
+          "content": "<div style=\"margin:0; padding:0; margin-left: 15px; min-width:100px; min-width:100px;\">\n  <span style=\"color: #3E4343; font-size: 2em; display: inline;\">${value[\"value\"]}</span>\n  <span style=\"margin-left:5px;\"/>\n  <span style=\"color: #C4C4C4; font-size: 1.5em; display: inline;\"> kWh</span>\n</div>",
+          "header": {
+            "displayIcon": false,
+            "displayTitle": true,
+            "stylingCustomization": {
+              "additionalStyles": {
+                "header": {},
+                "title": {
+                  "overflow": "hidden"
+                }
+              },
+              "textPlacement": "start",
+              "titleTextColor": "#5a6062"
+            },
+            "title": "Today bought from grid"
+          },
+          "pollingInterval": 300000,
+          "serviceIntegration": [
+            {
+              "fieldName": "value",
+              "appName": "{APP_NAME}",
+              "endpointsCardinality": "single",
+              "endpointId": "${dashboard.id}",
+              "relatedEndpoints": false,
+              "endpoint": "${dashboard.route.id}",
+              "service": "epr",
+              "endpointValues": [
+                {
+                  "path": ""
+                }
+              ],
+              "source": "telemetry",
+              "telemetryValues": [
+                {
+                  "timeSeriesName": "auto~Today_Bought_From_Grid",
+                  "valuePath": "values.value",
+                  "variableName": "value"
+                }
+              ],
+              "telemetryService": "epts"
+            }
+          ],
+          "type": "rawHTML"
+        },
+        "info": {
+          "version": "1.2.0"
+        },
+        "lastUpdated": 1730219598013,
+        "layout": {
+          "h": 2,
+          "minH": 1,
+          "minW": 2,
+          "w": 3,
+          "x": 6,
+          "y": 0
+        },
+        "order": 5
+      },
+      "46b7ef42-65fe-41c6-84f5-ebb6db0d0207": {
+        "config": {
+          "columns": [
+            {
+              "columnName": "commandType",
+              "columnOrder": -1,
+              "columnTemplate": "${params.value}",
+              "columnWidth": "auto",
+              "display": "Type"
+            },
+            {
+              "columnName": "status",
+              "columnOrder": 0,
+              "columnTemplate": "<div style=\"width: 100px;\n  height: 20px;\n  font-size: 14px;\n  position: relative;\n  text-transform: capitalize;\n  color: white;\n  font-weight: bold;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background-color: ${\n    params.value === 'EXPIRED' ? params.uiTheme.textColors.colorWarning :\n    params.uiTheme.elementColors.colorSuccess\n  }; ${\n  params.value !== undefined ? '' : 'display: none;'\n}; border-radius:50px;\">\n  ${params.value.toLowerCase()}\n  </div>",
+              "columnWidth": "auto",
+              "display": "Status"
+            },
+            {
+              "columnName": "requestPayload",
+              "columnOrder": 0,
+              "columnTemplate": "${params.value}",
+              "columnWidth": "auto",
+              "display": "request"
+            },
+            {
+              "columnName": "responsePayload",
+              "columnOrder": 1,
+              "columnTemplate": "${params.value}",
+              "columnWidth": "auto",
+              "display": "response"
+            }
+          ],
+          "dataSource": {
+            "applicationName": "{APP_NAME}",
+            "commandTypes": [],
+            "endpoints": "${dashboard.id}",
+            "endpointsService": "epr",
+            "service": "cex",
+            "updateInterval": 5000
+          },
+          "header": {
+            "displayIcon": true,
+            "displayTitle": true,
+            "stylingCustomization": {
+              "additionalStyles": {
+                "header": {},
+                "title": {}
+              },
+              "textPlacement": "start"
+            },
+            "title": "Commands history"
+          },
+          "type": "commandsHistory"
+        },
+        "lastUpdated": 1730713254618,
+        "layout": {
+          "h": 9,
+          "minH": 3.5,
+          "minW": 2,
+          "w": 7,
+          "x": 5,
+          "y": 21
+        },
+        "order": 2
+      },
+      "b941f622-0216-4855-a59f-03c2a7f625f7": {
+        "config": {
+          "fields": {
+            "allowEdit": true,
+            "selectFields": "allFields",
+            "specificFieldsList": [],
+            "view": "list"
+          },
+          "header": {
+            "displayIcon": false,
+            "displayTitle": true,
+            "stylingCustomization": {
+              "additionalStyles": {
+                "header": {},
+                "title": {}
+              },
+              "textPlacement": "start"
+            },
+            "title": "Inverter's metadata"
+          },
+          "serviceIntegration": {
+            "endpointId": "${dashboard.id}",
+            "service": "epr"
+          },
+          "type": "metadata"
+        },
+        "info": {
+          "version": "1.1.0"
+        },
+        "lastUpdated": 1730200458761,
+        "layout": {
+          "h": 9,
+          "minH": 3.5,
+          "minW": 2,
+          "w": 5,
+          "x": 0,
+          "y": 21
+        },
+        "order": 4
+      },
+      "d1285391-4c65-4afd-90cf-3ef7216b550b": {
+        "config": {
+          "header": {
+            "stylingCustomization": {
+              "textPlacement": "start",
+              "additionalStyles": {
+                "title": {},
+                "header": {}
+              }
+            },
+            "displayTitle": true,
+            "title": "Inverter read command form",
+            "displayIcon": true
+          },
+          "dataSource": {
+            "enablePolling": false,
+            "showCommandStatus": false,
+            "metadataService": "epr",
+            "applicationVersion": "{APP_VERSION}",
+            "pollingInterval": 5000,
+            "commandService": "cex",
+            "resultRetentionTtl": 60000,
+            "waitTimeout": 5,
+            "application": "{APP_NAME}",
+            "timeseriesService": "epts",
+            "executionType": "endpoint",
+            "endpoint": "${dashboard.id}",
+            "commandStatusTemplate": "<div>Status: ${params.status}</div>\n<div>Time: ${params.updatedAt | formatDate}</div>",
+            "enableConfirmation": false
+          },
+          "commandsDefinition": {
+            "configuration": "custom",
+            "commandField": "deye_read",
+            "commandSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"settings\": {\n      \"default\": [\n        {}\n      ],\n      \"title\": \"\",\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"register\": {\n            \"type\": \"string\",\n            \"enum\": [\"62\",    \"74\",    \"80\",    \"99\",    \"100\",    \"101\",    \"102\",    \"103\",    \"104\",    \"107\",    \"108\",    \"109\",    \"111\",    \"112\",    \"113\",    \"114\",    \"115\",    \"116\",    \"117\",    \"118\",    \"119\",    \"120\", \"121\",    \"122\",    \"123\",    \"124\",    \"125\",    \"126\",    \"127\",    \"128\",    \"143\",    \"145\",    \"148\",    \"149\",    \"150\",    \"151\",    \"152\",    \"153\",    \"154\",    \"155\",    \"156\",    \"157\",    \"158\",    \"159\",    \"160\",    \"161\",    \"162\",    \"163\",    \"164\",    \"165\",    \"166\",    \"167\",    \"168\",    \"169\",    \"170\",    \"171\",    \"172\",    \"173\",    \"174\",    \"175\",    \"176\",    \"177\", \"185\",    \"186\",    \"187\",    \"188\",    \"189\",    \"190\",    \"191\",    \"192\",    \"193\",    \"210\",    \"211\",    \"212\",    \"213\",    \"214\",    \"215\",    \"216\",    \"218\",    \"219\",    \"220\",    \"221\",    \"222\",    \"224\",    \"340\", \"501\",    \"502\",    \"503\",    \"514\",    \"515\",    \"516\",    \"518\",    \"520\",    \"521\",    \"522\",    \"524\",    \"526\",    \"527\",    \"529\",    \"530\",    \"531\",    \"532\",    \"533\",    \"534\",    \"536\",    \"537\",    \"539\",    \"540\",    \"541\",    \"545\",    \"586\",    \"587\",    \"588\",    \"590\",    \"591\",    \"592\",    \"598\",    \"599\",    \"600\",    \"601\",    \"602\",    \"603\",    \"604\",    \"605\",    \"606\",    \"607\",    \"608\", \"609\", \"610\", \"611\", \"612\", \"613\", \"614\", \"615\", \"616\", \"617\", \"618\", \"619\",    \"620\", \"622\", \"623\", \"624\", \"625\", \"627\", \"628\", \"629\", \"630\", \"631\", \"632\",    \"633\", \"634\", \"635\", \"636\", \"637\", \"638\", \"640\", \"641\", \"642\", \"643\", \"644\",    \"645\", \"646\", \"647\", \"648\", \"649\", \"650\", \"651\", \"652\", \"653\", \"661\", \"662\",    \"663\", \"664\", \"665\", \"666\", \"667\", \"672\", \"673\", \"674\", \"675\", \"676\", \"677\",    \"678\", \"679\", \"680\", \"681\", \"682\", \"683\"],\n            \"enumNames\": [    \"DeviceTime (id[62])\",    \"CommAddress (id[74])\",    \"SwitchOnOff (id[80])\",    \"BattEqualization (id[99])\",    \"BattAbsorbtion (id[100])\",    \"BattFloat (id[101])\",    \"BattCapacity (id[102])\",    \"BattEmptyVoltage (id[103])\",    \"ZeroExportPower (id[104])\",    \"TEMPCO (id[107])\",    \"MaxAmpCharge (id[108])\",    \"MaxAmpDischarge (id[109])\",    \"BatteryControl (id[111])\",    \"BattWakeUp (id[112])\",    \"BattResistance (id[113])\",    \"BattChargingEff (id[114])\",    \"BattShutDownCapacity (id[115])\",    \"BattRestartCapacity (id[116])\",    \"BattLowCapacity (id[117])\",    \"BattShutDownVoltage (id[118])\",    \"BattRestartVoltage (id[119])\",    \"BattLowVoltage (id[120])\", \"GeneratorWorkingTime (id[121])\",    \"GeneratorCoolingTime (id[122])\",    \"GeneratorStartVoltage (id[123])\",    \"GeneratorStartCapacity (id[124])\",    \"GeneratorChargeCurrent (id[125])\",    \"GridChargeStartVolts (id[126])\",    \"GridChargeStartCapacity (id[127])\",    \"GridChargeCurrent (id[128])\",    \"GridExportLimit (id[143])\",    \"SolarSell (id[145])\",    \"SellTimeOfUse (id[148])\",    \"SellTimePoint1 (id[149])\",    \"SellTimePoint2 (id[150])\",    \"SellTimePoint3 (id[151])\",    \"SellTimePoint4 (id[152])\",    \"SellTimePoint5 (id[153])\",    \"SellTimePoint6 (id[154])\",    \"SellModeKWPoint1 (id[155])\",    \"SellModeKWPoint2 (id[156])\",    \"SellModeKWPoint3 (id[157])\",    \"SellModeKWPoint4 (id[158])\",    \"SellModeKWPoint5 (id[159])\",    \"SellModeKWPoint6 (id[160])\",    \"SellModeBattVolt1 (id[161])\",    \"SellModeBattVolt2 (id[162])\",    \"SellModeBattVolt3 (id[163])\",    \"SellModeBattVolt4 (id[164])\",    \"SellModeBattVolt5 (id[165])\",    \"SellModeBattVolt6 (id[166])\",    \"SellModeBattCapacity1 (id[167])\",    \"SellModeBattCapacity2 (id[168])\",    \"SellModeBattCapacity3 (id[169])\",    \"SellModeBattCapacity4 (id[170])\",    \"SellModeBattCapacity5 (id[171])\",    \"SellModeBattCapacity6 (id[172])\",    \"ChargeModePoint1 (id[173])\",    \"ChargeModePoint2 (id[174])\",    \"ChargeModePoint3 (id[175])\",    \"ChargeModePoint4 (id[176])\",    \"ChargeModePoint5 (id[177])\", \"GridHighVoltage (id[185])\",    \"GridLowVoltage (id[186])\",    \"GridHighFreq (id[187])\",    \"GridLowFreq (id[188])\",    \"GeneratorConnected (id[189])\",    \"GeneratorPeakShavingPower (id[190])\",    \"GridPeakShavingPower (id[191])\",    \"SmartLoadOpenDelay (id[192])\",    \"OutputPF (id[193])\",    \"BMSChargedVoltage (id[210])\",    \"BMSDischargedVoltage (id[211])\",    \"BMSChargingCurrentLimit (id[212])\",    \"BMSDischargeCurrentLimit (id[213])\",    \"BMSBatteryCapacity (id[214])\",    \"BMSBatteryVoltage (id[215])\",    \"BMSBatteryCurrent (id[216])\",    \"BMSMaxChargingCurrent (id[218])\",    \"BMSMaxDischargeCurrent (id[219])\",    \"BMSBatteryAlarm (id[220])\",    \"BMSBatteryFaultLocation (id[221])\",    \"BMSBatterySymbol (id[222])\",    \"BMSBatterySOH (id[224])\",    \"MaxSolarSellPower (id[340])\", \"PowerToday (id[501])\",    \"ReactivePowerToday (id[502])\",    \"GridConnectedToday (id[503])\",    \"BatteryChargeToday (id[514])\",    \"BatteryDischargeToday (id[515])\",    \"BatteryChargeTotal (id[516])\",    \"BatteryDischargeTotal (id[518])\",    \"TodayBuyGrid (id[520])\",    \"TodaySoldGrid (id[521])\",    \"TotalBuyGrid (id[522])\",    \"TotalSellGrid (id[524])\",    \"TodayToLoad (id[526])\",    \"TotalToLoad (id[527])\",    \"TodayFromPV (id[529])\",    \"TodayFromPVString1 (id[530])\",    \"TodayFromPVString2 (id[531])\",    \"TodayFromPVString3 (id[532])\",    \"TodayFromPVString4 (id[533])\",    \"TotalFromPV (id[534])\",    \"TodayFromGenerator (id[536])\",    \"TotalFromGenerator (id[537])\",    \"TodayGeneratorWorkTime (id[539])\",    \"DCTransformerTemp (id[540])\",    \"HeatsinkTemp (id[541])\",    \"LoadAnnualConsumption (id[545])\",    \"BatteryTemp (id[586])\",    \"BatteryVoltage (id[587])\",    \"BatterySOC (id[588])\",    \"BatteryOutPower (id[590])\",    \"BatteryOutCurrent (id[591])\",    \"BatteryCorrectedAH (id[592])\",    \"GRIDPhaseAVolt (id[598])\",    \"GRIDPhaseBVolt (id[599])\",    \"GRIDPhaseCVolt (id[600])\",    \"GRIDPhaseABVolt (id[601])\",    \"GRIDPhaseBCVolt (id[602])\",    \"GRIDPhaseCAVolt (id[603])\",    \"GRIDPhaseAPowerIn (id[604])\",    \"GRIDPhaseBPowerIn (id[605])\",    \"GRIDPhaseCPowerIn (id[606])\",    \"GRIDActivePowerIn (id[607])\",    \"GRIDActiveApparentPower (id[608])\", \"GRIDFrequency (id[609])\",    \"GRIDPhaseACurrentIn (id[610])\",    \"GRIDPhaseBCurrentIn (id[611])\",    \"GRIDPhaseCCurrentIn (id[612])\",    \"GRIDPhaseACurrentOutG (id[613])\",    \"GRIDPhaseBCurrentOutG (id[614])\",    \"GRIDPhaseCCurrentOutG (id[615])\",    \"GRIDPhaseAPowerOutG (id[616])\",    \"GRIDPhaseBPowerOutG (id[617])\",    \"GRIDPhaseCPowerOutG (id[618])\",    \"GRIDTotalPowerOutG (id[619])\",    \"GRIDTotalAppPowerOutG (id[620])\",    \"GRIDPhaseAPower (id[622])\",    \"GRIDPhaseBPower (id[623])\",    \"GRIDPhaseCPower (id[624])\",    \"GRIDTotalPower (id[625])\",    \"GRIDPhaseAVoltOut (id[627])\",    \"GRIDPhaseBVoltOut (id[628])\",    \"GRIDPhaseCVoltOut (id[629])\",    \"InverterPhaseACurrentOut (id[630])\",    \"InverterPhaseBCurrentOut (id[631])\",    \"InverterPhaseCCurrentOut (id[632])\",    \"InverterPhaseAPowerOut (id[633])\",    \"InverterPhaseBPowerOut (id[634])\",    \"InverterPhaseCPowerOut (id[635])\",    \"InverterTotalPowerOut (id[636])\",    \"InverterTotalApparentPowerOut (id[637])\",    \"InverterFrequency (id[638])\",    \"UPSPhaseAPower (id[640])\",    \"UPSPhaseBPower (id[641])\",    \"UPSPhaseCPower (id[642])\",    \"UPSTotalPower (id[643])\",    \"LoadPhaseAVolt (id[644])\",    \"LoadPhaseBVolt (id[645])\",    \"LoadPhaseCVolt (id[646])\",    \"LoadPhaseACurrent (id[647])\",    \"LoadPhaseBCurrent (id[648])\",    \"LoadPhaseCCurrent (id[649])\",    \"LoadPhaseAPower (id[650])\",    \"LoadPhaseBPower (id[651])\",    \"LoadPhaseCPower (id[652])\",    \"LoadTotalPower (id[653])\",    \"GeneratorPhaseAVoltage (id[661])\",    \"GeneratorPhaseBVoltage (id[662])\",    \"GeneratorPhaseCVoltage (id[663])\",    \"GeneratorPhaseAPower (id[664])\",    \"GeneratorPhaseBPower (id[665])\",    \"GeneratorPhaseCPower (id[666])\",    \"GeneratorTotalPower (id[667])\",    \"PV1InPower (id[672])\",    \"PV2InPower (id[673])\",    \"PV3InPower (id[674])\",    \"PV4InPower (id[675])\",    \"PV1Voltage (id[676])\",    \"PV1Current (id[677])\",    \"PV2Voltage (id[678])\",    \"PV2Current (id[679])\",    \"PV3Voltage (id[680])\",    \"PV3Current (id[681])\",    \"PV4Voltage (id[682])\",    \"PV4Current (id[683])\"]\n          }\n        },\n        \"required\": [\n          \"register\"\n        ]\n      }\n    }\n  }\n}",
+            "commandUiSchema": "{\n  \"settings\": {\n    \"ui:options\": {\n      \"collapsable\":false,\n      \"addLabel\": \"Add register\"\n    } \n  }\n}",
+            "commandType": ""
+          },
+          "initialValue": [],
+          "payloadMapping": {
+            "enableCustomMapping": false
+          },
+          "type": "COMMAND_FORM_WIDGET_ID"
+        },
+        "lastUpdated": 1730799888392,
+        "layout": {
+          "h": 8,
+          "minH": 3.5,
+          "minW": 2,
+          "w": 5,
+          "x": 0,
+          "y": 13
+        },
+        "order": 0
+      },
+      "299f6603-f5d7-41cc-8040-44c11e98fac9": {
+        "config": {
+          "appearance": {
+            "enableScaling": false
+          },
+          "content": "<div style=\"margin:0; padding:0; margin-left: 15px; min-width:100px; min-width:100px;\">\n  <span style=\"color: #3E4343; font-size: 2em; display: inline;\">${value[\"value\"]}</span>\n  <span style=\"margin-left:5px;\"/>\n  <span style=\"color: #C4C4C4; font-size: 1.5em; display: inline;\"> kWh</span>\n</div>",
+          "header": {
+            "displayIcon": false,
+            "displayTitle": true,
+            "stylingCustomization": {
+              "additionalStyles": {
+                "header": {},
+                "title": {
+                  "overflow": "hidden"
+                }
+              },
+              "textPlacement": "start",
+              "titleTextColor": "#5a6062"
+            },
+            "title": "Today to load"
+          },
+          "pollingInterval": 300000,
+          "serviceIntegration": [
+            {
+              "fieldName": "value",
+              "appName": "{APP_NAME}",
+              "endpointsCardinality": "single",
+              "endpointId": "${dashboard.id}",
+              "relatedEndpoints": false,
+              "endpoint": "${dashboard.route.id}",
+              "service": "epr",
+              "endpointValues": [
+                {
+                  "path": ""
+                }
+              ],
+              "source": "telemetry",
+              "telemetryValues": [
+                {
+                  "timeSeriesName": "auto~Today_To_Load",
+                  "valuePath": "values.value",
+                  "variableName": "value"
+                }
+              ],
+              "telemetryService": "epts"
+            }
+          ],
+          "type": "rawHTML"
+        },
+        "info": {
+          "version": "1.2.0"
+        },
+        "lastUpdated": 1730713007563,
+        "layout": {
+          "h": 2,
+          "minH": 1,
+          "minW": 2,
+          "w": 3,
+          "x": 3,
+          "y": 0
+        },
+        "order": 7
+      },
+      "4f4eb6ca-d868-4e52-9693-8d724837bb0a": {
+        "config": {
+          "commandsDefinition": {
+            "commandField": "deye_write",
+            "commandSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"settings\": {\n      \"default\": [\n        {}\n      ],\n      \"title\": \"\",\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"register\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"77\",\n              \"78\",\n              \"79\",\n              \"80\",\n              \"98\",\n              \"99\",\n              \"100\",\n              \"102\",\n              \"104\",\n              \"105\",\n              \"106\",\n              \"107\",\n              \"108\",\n              \"109\",\n              \"111\",\n              \"114\",\n              \"115\",\n              \"116\",\n              \"117\",\n              \"118\",\n              \"119\",\n              \"120\",\n              \"121\",\n              \"122\",\n              \"123\",\n              \"124\",\n              \"125\",\n              \"126\",\n              \"127\",\n              \"128\",\n              \"142\",\n              \"143\",\n              \"145\",\n              \"154\",\n              \"155\",\n              \"156\",\n              \"157\",\n              \"158\",\n              \"159\",\n              \"166\",\n              \"167\",\n              \"168\",\n              \"169\",\n              \"170\",\n              \"171\"\n            ],\n            \"enumNames\": [\n              \"ActivePowerRegulation (id[77] value_range[0-120])\",\n              \"ReactivePowerRegulation (id[78] value_range[0-120])\",\n              \"ApparentPowerRegulation (id[79] value_range[0-120])\",\n              \"SwitchOnOff (id[80] value_range[0-1])\",\n              \"BatterControlMode (id[98] value_range[0-1])\",\n              \"EqualizationV (id[99] value_range[38-61])\",\n              \"AbsorbtionV (id[100] value_range[38-61])\",\n              \"BatteryCapacity (id[102] value_range[0-2000])\",\n              \"ZeroExportPower (id[104] value_range[20-12000])\",\n              \"EqualizatonDaysCycle (id[105] value_range[0-90])\",\n              \"EqualizationTime (id[106] value_range[0-20])\",\n              \"TEMPCO_mV (id[107] value_range[0-50])\",\n              \"MaxChargeAmps (id[108] value_range[0-185])\",\n              \"MaxDischargeAmps (id[109] value_range[0-185])\",\n              \"BatteryControl (id[111] value_range[0-2])\",\n              \"BattChargingEfficiency (id[114] value_range[0-100])\",\n              \"BattCapacityShutDown (id[115] value_range[0-100])\",\n              \"BattCapacityRestart (id[116] value_range[0-100])\",\n              \"BattCapacityLow (id[117] value_range[0-100])\",\n              \"BatteryVoltsShutDown (id[118] value_range[38-63])\",\n              \"BatteryVoltsRestart (id[119] value_range[38-63])\",\n              \"BatteryVoltsLow (id[120] value_range[38-63])\",\n              \"GeneratorMaxWorkTime (id[121] value_range[0-23])\",\n              \"GeneratorCoolingTime (id[122] value_range[0-23])\",\n              \"GeneratorStartVoltage (id[123] value_range[0-63])\",\n              \"GeneratorStartCapacity (id[124] value_range[0-63])\",\n              \"GeneratorChargeCurrent (id[125] value_range[0-185])\",\n              \"GridChargeStartVoltage (id[126] value_range[38-61])\",\n              \"GridChargeStartCapacity (id[127] value_range[0-100])\",\n              \"GridChargeBattCurrent (id[128] value_range[0-185])\",\n              \"InverterWorkMode (id[142] value_range[0-2])\",\n              \"GridExportLimit (id[143] value_range[0-15000])\",\n              \"SolarSell (id[145] value_range[0-1])\",\n              \"SellModeWatts1 (id[154] value_range[0-∞])\",\n              \"SellModeWatts2 (id[155] value_range[0-∞])\",\n              \"SellModeWatts3 (id[156] value_range[0-∞])\",\n              \"SellModeWatts4 (id[157] value_range[0-∞])\",\n              \"SellModeWatts5 (id[158] value_range[0-∞])\",\n              \"SellModeWatts6 (id[159] value_range[0-∞])\",\n              \"SellModeSOC1 (id[166] value_range[0-100])\",\n              \"SellModeSOC2 (id[167] value_range[0-100])\",\n              \"SellModeSOC3 (id[168] value_range[0-100])\",\n              \"SellModeSOC4 (id[169] value_range[0-100])\",\n              \"SellModeSOC5 (id[170] value_range[0-100])\",\n              \"SellModeSOC6 (id[171] value_range[0-100])\",\n              \"RestoreConnectionTime (id[172] value_range[10-300])\",\n              \"GridFrequency (id[173] value_range[0-1])\",\n              \"GridType (id[174] value_range[0-2])\",\n              \"GridHighVoltage (id[175] value_range[180-270])\",\n              \"GridLowVoltage (id[176] value_range[180-270])\",\n              \"GridFrequencyHigh (id[177] value_range[45-65])\",\n              \"GridFrequencyLow (id[178] value_range[45-65])\",\n              \"GridPeakShavingPower (id[179] value_range[0-16000])\"\n            ]\n          },\n          \"value\": {\n            \"type\": \"number\"\n          }\n        },\n        \"required\": [\n          \"value\",\n          \"register\"\n        ]\n      }\n    }\n  }\n}",
+            "commandType": "",
+            "commandUiSchema": "{\n  \"settings\": {\n    \"ui:options\": {\n      \"collapsable\":false,\n      \"addLabel\": \"Add register\"\n    } \n  }\n}",
+            "configuration": "custom"
+          },
+          "dataSource": {
+            "enablePolling": false,
+            "showCommandStatus": false,
+            "metadataService": "epr",
+            "applicationVersion": "{APP_VERSION}",
+            "pollingInterval": 5000,
+            "commandService": "cex",
+            "resultRetentionTtl": 60000,
+            "waitTimeout": 5,
+            "application": "{APP_NAME}",
+            "timeseriesService": "epts",
+            "executionType": "endpoint",
+            "endpoint": "${dashboard.id}",
+            "commandStatusTemplate": "<div>Status: ${params.status}</div>\n<div>Time: ${params.updatedAt | formatDate}</div>",
+            "enableConfirmation": false
+          },
+          "header": {
+            "displayIcon": true,
+            "displayTitle": true,
+            "stylingCustomization": {
+              "additionalStyles": {
+                "header": {},
+                "title": {}
+              },
+              "textPlacement": "start"
+            },
+            "title": "Inverter write command form"
+          },
+          "initialValue": [],
+          "payloadMapping": {
+            "enableCustomMapping": false
+          },
+          "type": "COMMAND_FORM_WIDGET_ID"
+        },
+        "lastUpdated": 1730458328925,
+        "layout": {
+          "h": 8,
+          "minH": 3.5,
+          "minW": 2,
+          "w": 7,
+          "x": 5,
+          "y": 13
+        },
+        "order": 1
+      },
+      "117545b4-9253-466f-8bcc-e59edcef6386": {
+        "config": {
+          "appearance": {
+            "enableScaling": false
+          },
+          "content": "<div style=\"margin:0; padding:0; margin-left: 15px; min-width:100px; min-width:100px;\">\n  <span style=\"color: #3E4343; font-size: 2em; display: inline;\">${value[\"value\"]}</span>\n  <span style=\"margin-left:5px;\"/>\n  <span style=\"color: #C4C4C4; font-size: 1.5em; display: inline;\"> kWh</span>\n</div>",
+          "header": {
+            "displayIcon": false,
+            "displayTitle": true,
+            "stylingCustomization": {
+              "additionalStyles": {
+                "header": {},
+                "title": {
+                  "overflow": "hidden"
+                }
+              },
+              "textPlacement": "start",
+              "titleTextColor": "#5a6062"
+            },
+            "title": "Today from generator"
+          },
+          "pollingInterval": 300000,
+          "serviceIntegration": [
+            {
+              "fieldName": "value",
+              "appName": "{APP_NAME}",
+              "endpointsCardinality": "single",
+              "endpointId": "${dashboard.id}",
+              "relatedEndpoints": false,
+              "endpoint": "${dashboard.route.id}",
+              "service": "epr",
+              "endpointValues": [
+                {
+                  "path": ""
+                }
+              ],
+              "source": "telemetry",
+              "telemetryValues": [
+                {
+                  "timeSeriesName": "auto~Today_From_Generator",
+                  "valuePath": "values.value",
+                  "variableName": "value"
+                }
+              ],
+              "telemetryService": "epts"
+            }
+          ],
+          "type": "rawHTML"
+        },
+        "info": {
+          "version": "1.2.0"
+        },
+        "lastUpdated": 1730219608455,
+        "layout": {
+          "h": 2,
+          "minH": 1,
+          "minW": 2,
+          "w": 3,
+          "x": 9,
+          "y": 0
+        },
+        "order": 6
+      },
+      "6e4cfc39-1071-4ace-81dc-65292f39f6d2": {
+        "config": {
+          "advancedTemplates": [],
+          "appearance": {
+            "contentFit": "image"
+          },
+          "backgroundImage": {
+            "backgroundType": "image",
+            "url": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/64821e22-3011-41a4-ac6a-0d1f0079dc58.png",
+            "values": []
+          },
+          "fields": [
+            {
+              "coordinates": {
+                "x1": "168",
+                "y1": "73"
+              },
+              "name": "generator",
+              "styling": {
+                "additionalStyles": {
+                  "text-align": "center"
+                },
+                "color": "#4E4ABC",
+                "fontSize": "16",
+                "redirectBlockPlacement": {}
+              },
+              "timeSeriesName": "auto~Gen_Total_Power",
+              "values": [
+                {
+                  "mathExpression": "params.value",
+                  "enableMathExpression": false,
+                  "path": "values.value",
+                  "displayUnit": "W",
+                  "displayScale": 1,
+                  "unitStyle": {
+                    "padding-left": "4px"
+                  },
+                  "style": {},
+                  "valueUnit": "W",
+                  "type": "path",
+                  "hoverStyles": {},
+                  "measure": "Power"
+                }
+              ]
+            },
+            {
+              "coordinates": {
+                "x1": "-168",
+                "y1": "73"
+              },
+              "name": "solar",
+              "styling": {
+                "additionalStyles": {
+                  "text-align": "center"
+                },
+                "color": "#FFA400",
+                "fontSize": "16",
+                "redirectBlockPlacement": {}
+              },
+              "timeSeriesName": "auto~Pv1_In_Power",
+              "values": [
+                {
+                  "mathExpression": "params.pv1 + params.pv2 + params.pv3 + params.pv4",
+                  "enableMathExpression": true,
+                  "path": "values.value",
+                  "mathExpressionParams": [
+                    {
+                      "defaultValue": 0,
+                      "timeSeriesName": "auto~Pv2_In_Power",
+                      "timeSeriesService": "epts",
+                      "timeSeriesValue": "values.value",
+                      "valueType": "timeseries",
+                      "variableName": "pv2"
+                    },
+                    {
+                      "defaultValue": 0,
+                      "timeSeriesName": "auto~Pv3_In_Power",
+                      "timeSeriesService": "epts",
+                      "timeSeriesValue": "values.value",
+                      "valueType": "timeseries",
+                      "variableName": "pv3"
+                    },
+                    {
+                      "defaultValue": 0,
+                      "timeSeriesName": "auto~Pv4_In_Power",
+                      "timeSeriesService": "epts",
+                      "timeSeriesValue": "values.value",
+                      "valueType": "timeseries",
+                      "variableName": "pv4"
+                    },
+                    {
+                      "defaultValue": 0,
+                      "timeSeriesName": "auto~Pv1_In_Power",
+                      "timeSeriesService": "epts",
+                      "timeSeriesValue": "values.value",
+                      "valueType": "timeseries",
+                      "variableName": "pv1"
+                    }
+                  ],
+                  "displayScale": 1,
+                  "unitStyle": {
+                    "padding-left": "4"
+                  },
+                  "style": {},
+                  "displayPostfix": "W",
+                  "type": "path",
+                  "hoverStyles": {},
+                  "measure": "Custom"
+                }
+              ]
+            },
+            {
+              "coordinates": {
+                "x1": "-245",
+                "y1": "207"
+              },
+              "name": "grid",
+              "styling": {
+                "additionalStyles": {
+                  "text-align": "center"
+                },
+                "color": "#5488C2",
+                "fontSize": "16",
+                "redirectBlockPlacement": {}
+              },
+              "timeSeriesName": "auto~Grid_Total_Power",
+              "values": [
+                {
+                  "path": "values.value",
+                  "displayUnit": "W",
+                  "displayScale": 1,
+                  "unitStyle": {
+                    "padding-left": "4px"
+                  },
+                  "style": {},
+                  "valueUnit": "W",
+                  "type": "path",
+                  "hoverStyles": {},
+                  "measure": "Power"
+                }
+              ]
+            },
+            {
+              "coordinates": {
+                "x1": "250",
+                "y1": "207"
+              },
+              "name": "load",
+              "styling": {
+                "additionalStyles": {
+                  "text-align": "center"
+                },
+                "color": "#43BBAE",
+                "fontSize": "16",
+                "redirectBlockPlacement": {}
+              },
+              "timeSeriesName": "auto~Load_Total_Power",
+              "values": [
+                {
+                  "displayPostfix": "W",
+                  "displayScale": 1,
+                  "hoverStyles": {},
+                  "measure": "Custom",
+                  "path": "values.value",
+                  "style": {},
+                  "type": "path",
+                  "unitStyle": {
+                    "padding-left": "4"
+                  }
+                }
+              ]
+            },
+            {
+              "coordinates": {
+                "x1": "125",
+                "y1": "335"
+              },
+              "name": "battery_charge",
+              "styling": {
+                "additionalStyles": {
+                  "text-align": "center"
+                },
+                "color": "#FFB5C7",
+                "fontSize": "24",
+                "redirectBlockPlacement": {}
+              },
+              "timeSeriesName": "auto~Battery_Soc",
+              "values": [
+                {
+                  "displayPostfix": "%",
+                  "hoverStyles": {},
+                  "measure": "Custom",
+                  "path": "values.value",
+                  "style": {},
+                  "type": "path"
+                }
+              ]
+            },
+            {
+              "coordinates": {
+                "x1": "-128",
+                "y1": "325"
+              },
+              "name": "battery_voltage",
+              "styling": {
+                "additionalStyles": {
+                  "text-align": "center"
+                },
+                "color": "#FFB5C7",
+                "fontSize": "16",
+                "redirectBlockPlacement": {}
+              },
+              "timeSeriesName": "auto~Battery_Voltage",
+              "values": [
+                {
+                  "displayPostfix": "V",
+                  "displayScale": 1,
+                  "hoverStyles": {},
+                  "measure": "Custom",
+                  "path": "values.value",
+                  "style": {},
+                  "type": "path",
+                  "unitStyle": {
+                    "padding-left": "3"
+                  }
+                }
+              ]
+            },
+            {
+              "coordinates": {
+                "x1": "-128",
+                "y1": "350"
+              },
+              "name": "battery_current",
+              "styling": {
+                "additionalStyles": {
+                  "text-align": "center"
+                },
+                "color": "#FFB5C7",
+                "fontSize": "16",
+                "redirectBlockPlacement": {
+                  "height": 0,
+                  "width": 0
+                }
+              },
+              "timeSeriesName": "auto~Battery_Out_Current",
+              "values": [
+                {
+                  "displayPostfix": "A",
+                  "displayScale": 2,
+                  "hoverStyles": {},
+                  "measure": "Custom",
+                  "path": "values.value",
+                  "style": {},
+                  "type": "path",
+                  "unitStyle": {
+                    "padding-left": "3"
+                  }
+                }
+              ]
+            },
+            {
+              "coordinates": {
+                "x1": "-128",
+                "y1": "375"
+              },
+              "name": "battery_out_power",
+              "styling": {
+                "additionalStyles": {
+                  "text-align": "center"
+                },
+                "color": "#FFB5C7",
+                "fontSize": "16",
+                "redirectBlockPlacement": {}
+              },
+              "timeSeriesName": "auto~Battery_Out_Power",
+              "values": [
+                {
+                  "displayPostfix": "W",
+                  "hoverStyles": {},
+                  "measure": "Custom",
+                  "path": "values.value",
+                  "style": {},
+                  "type": "path",
+                  "unitStyle": {
+                    "padding-left": "3"
+                  }
+                }
+              ]
+            },
+            {
+              "coordinates": {
+                "x1": "143",
+                "y1": "165"
+              },
+              "name": "consumed",
+              "styling": {
+                "additionalStyles": {
+                  "text-align": "center"
+                },
+                "color": "#7F7F7F",
+                "fontSize": "16",
+                "redirectBlockPlacement": {}
+              },
+              "timeSeriesName": "auto~Inverter_Total_Apparent_Out_Power",
+              "values": [
+                {
+                  "displayPostfix": "W",
+                  "displayScale": 1,
+                  "hoverStyles": {},
+                  "measure": "Custom",
+                  "path": "values.value",
+                  "style": {},
+                  "type": "path",
+                  "unitStyle": {
+                    "padding-left": "4px"
+                  }
+                }
+              ]
+            },
+            {
+              "coordinates": {
+                "x1": "-35",
+                "y1": "250"
+              },
+              "name": "State",
+              "styling": {
+                "additionalStyles": {
+                  "text-align": "center"
+                },
+                "fontSize": "",
+                "redirectBlockPlacement": {}
+              },
+              "timeSeriesName": "auto~Inverter_State",
+              "values": [
+                {
+                  "displayScale": -1,
+                  "hoverStyles": {},
+                  "icons": [
+                    {
+                      "condition": "2",
+                      "icon": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/4a3be883-1339-4bbe-a133-84b60403a8b8.svg",
+                      "operator": "!="
+                    },
+                    {
+                      "condition": "2",
+                      "icon": "https://minio.cloud.kaaiot.com/d6312fc1-4c5d-4d1d-8c8c-8ab16435b560-public/__wd_resources/7c644967-be88-4436-8eaf-57ea67a43dab.svg",
+                      "operator": "=="
+                    }
+                  ],
+                  "measure": "Custom",
+                  "path": "values.value",
+                  "style": {},
+                  "type": "icon"
+                }
+              ]
+            }
+          ],
+          "header": {
+            "displayIcon": false,
+            "displayTitle": true,
+            "stylingCustomization": {
+              "additionalStyles": {
+                "header": {},
+                "title": {}
+              },
+              "textPlacement": "start"
+            },
+            "title": "Current State"
+          },
+          "serviceIntegration": {
+            "appName": "{APP_NAME}",
+            "endpoint": "${dashboard.id}",
+            "metadataServiceName": "epr",
+            "serviceName": "epts",
+            "updateInterval": 3000
+          },
+          "type": "epLabel"
+        },
+        "lastUpdated": 1730713057657,
+        "layout": {
+          "h": 11,
+          "minH": 3.5,
+          "minW": 2,
+          "w": 5,
+          "x": 0,
+          "y": 2
+        },
+        "order": 8
+      }
+    },
+    "configuration": {
+      "actions": {
+        "defaultDateRangeValue": {
+          "from": "now-1w",
+          "to": "now"
+        },
+        "enableDataExport": false,
+        "enableDateRange": true,
+        "valueKey": "range"
+      }
+    },
+    "displayTitle": true,
+    "defaultEndpoint": "firstAvailable",
+    "title": "Inverter dashboard",
+    "dashboardPath": "/inverter",
+    "isTopLevel": false,
+    "displayDescription": false,
+    "icons": {
+      "default": {
+        "path": "/img/dashboard/grey.svg",
+        "type": "default"
+      },
+      "hover": {
+        "path": "/img/dashboard/grey.svg",
+        "type": "hover"
+      },
+      "selected": {
+        "path": "/img/dashboard/grey.svg",
+        "type": "selected"
+      }
+    },
+    "titleConfig": {
+      "metadataService": "epr",
+      "template": "<div>${params.name}'s dashboard</div>",
+      "templateType": "Advanced",
+      "title": "New dashboard",
+      "variables": [
+        {
+          "assetField": "name",
+          "defaultValue": "name",
+          "metadataAttribute": "metadata.name",
+          "name": "name"
+        }
+      ]
+    },
+    "applicationName": "{APP_NAME}",
+    "sidebarTitle": "New dashboard",
+    "description": "No description",
+    "entityType": "endpointId",
+    "dashboardResourceId": "dashboard-d3000170-d78f-4d7d-9be6-a47f931c6b59"
+  }
