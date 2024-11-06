@@ -98,4 +98,4 @@ To keep things simple, here’s a quick example. After running the `python3 main
 2. Navigate to the `./template/output` folder and copy the code from `device_overview.json`.
 3. Paste the code into the import dialog.
 
-You should now see a dashboard similar to the one shown at the begginning of this part.  
+You should now see a dashboard similar to the one shown at the beginning of this section.
