@@ -54,7 +54,7 @@ export APPLICATION_VERSION="{your-application-version}"
 export ENDPOINT_TOKEN="{your-endpoint-token}"
 ```
 
-- **IP**: If you're connecting locally, use the IP address found in the `index_cn.html` file under the **Device Information** tab. For a proxy setup, set the IP to `localhost`.
+- **IP**: If you're connecting **locally**, use the IP address found in the `index_cn.html` file under the **Device Information** tab. For a **proxy setup**, set the IP to `localhost`.
 
 - **DEFAULT_KPC_HOST**, **DEFAULT_KPC_PORT**, **APPLICATION_VERSION**, and **ENDPOINT_TOKEN**: These values can be found in the `./examples/simple_client` directory of this repository. Refer to this example for a working configuration.  
 
@@ -98,5 +98,4 @@ To keep things simple, here’s a quick example. After running the `python3 main
 2. Navigate to the `./template/output` folder and copy the code from `device_overview.json`.
 3. Paste the code into the import dialog.
 
-You should now see a dashboard similar to the one shown below:  
-![Dashboard](./img/dashboard.jpg)
+You should now see a dashboard similar to the one shown at the begginning of this part.  
