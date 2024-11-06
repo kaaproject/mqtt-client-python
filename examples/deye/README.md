@@ -1,6 +1,6 @@
 # DEYE MQTT Client
 
-This example integrates the DEYE inverter with the KAA platform. It utilizes the [deye-controller](https://github.com/githubDante/deye-controller) library to fetch data from the inverter and then uses `kaa_mqtt_client` to send data to the KAA platform.
+This example integrates the (Deye SUN-12K-SG04LP3-EU)[https://www.deyeinverter.com/deyeinverter/2024/02/03/instructions_sun-5-12k-sg04lp3-eu_240203_en.pdf] hybrid inverter with the KAA platform. It utilizes the [deye-controller](https://github.com/githubDante/deye-controller) library to fetch data from the inverter and then uses `kaa_mqtt_client` to send data to the KAA platform.
 
 ![Device Page](./img/device_page.jpg)
 
