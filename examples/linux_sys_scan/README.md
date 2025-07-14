@@ -72,6 +72,8 @@ To resolve the issue, you need to create a new application and an endpoint. The 
    - Check the **MQTT** option.
    - Copy the resulting URL.
 
+    ![kpc host](./img/kpc_host.jpg)
+
    Next, remove `mqtt://` from the URL. You should end up with something like this: `mqtt.cloud.kaaiot.com`. 
 
    This value is your `DEFAULT_KPC_HOST`, which is the last variable.
